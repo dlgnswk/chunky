@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+
 import MainButton from '../shared/Button/MainButton';
 import Container from '../shared/Container/Container';
 import Logo from '../shared/Logo/Logo';
@@ -8,6 +9,10 @@ import './style.scss';
 
 function Login() {
   const navigate = useNavigate();
+
+  const goMain = () => {
+    navigate('/');
+  };
 
   return (
     <>
@@ -21,7 +26,7 @@ function Login() {
             <LoginInput text="ID" />
             <LoginInput text="Password" />
           </div>
-          <MainButton text="Login" />
+          <MainButton text="Login" type="button" handleClick={goMain} />
           <button className="text-button" onClick={() => navigate('/register')}>
             <span>회원이 아니세요? </span>
             <span className="text-button-title">Join</span>
