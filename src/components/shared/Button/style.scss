@@ -1,6 +1,7 @@
 @use '../../../styles/mixin.scss' as mixin;
 
 .main-button {
+  @include mixin.font-pixelifySans;
   margin: auto;
   width: 200px;
   text-align: center;
@@ -10,7 +11,7 @@
   border-radius: 8px;
   color: white;
   background-color: var(--primary);
-  font-family: 'PixelifySans-bold';
+  font-weight: 700;
   font-size: 28px;
 }
 
