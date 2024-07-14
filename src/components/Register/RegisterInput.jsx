@@ -1,9 +1,18 @@
-function RegisterInput({ title, placeholder }) {
+function RegisterInput({ title, placeholder, type, feature, error }) {
   return (
-    <>
-      <p className="input-title">{title}</p>
-      <input className="input-content" placeholder={placeholder} />
-    </>
+    <div className="input-container">
+      <label className="input-title" htmlFor={title}>
+        {title}
+      </label>
+      <input
+        className="input-content"
+        id={title}
+        type={type}
+        placeholder={placeholder}
+        {...feature}
+      />
+      <p className="error-message">{error ? error.message : ' '}</p>
+    </div>
   );
 }
 

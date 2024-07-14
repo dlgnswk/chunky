@@ -1,6 +1,6 @@
 @use '../../styles/mixin' as mixin;
 
-.wrapper {
+.container {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -15,24 +15,35 @@
 
   .register-form {
     text-align: left;
-
-    .register-section {
-      margin-bottom: 30px;
-
-      .input-title {
-        font-size: 18px;
-      }
-    }
   }
 }
 
-.input-content {
-  height: 32px;
-  width: 300px;
-  margin-top: 8px;
-  margin-bottom: 20px;
-  border: solid 1px #c9c9c9;
-  border-radius: 5px;
-  padding: 3px 3px;
-  font-size: 16px;
+.input-container {
+  display: flex;
+  flex-direction: column;
+
+  .input-title {
+    font-size: 18px;
+  }
+
+  .input-content {
+    @include mixin.font-urbanist;
+    height: 32px;
+    width: 300px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+    border: solid 1px #c9c9c9;
+    border-radius: 5px;
+    padding: 3px 3px;
+    font-size: 16px;
+  }
+
+  .error-message {
+    width: 306px;
+    height: 12px;
+    font-size: 12px;
+    text-align: right;
+    color: tomato;
+    margin-bottom: 20px;
+  }
 }
