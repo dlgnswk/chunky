@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import { noop } from 'lodash';
+
 import MainButton from '../shared/Button/MainButton';
 import RegisterInput from './RegisterInput';
 
@@ -40,7 +41,8 @@ function Register() {
               },
             }),
           }}
-          error={errors.id}
+          error={errors.id || {}}
+          autocomplete=""
         />
         <RegisterInput
           title="비밀번호"
@@ -55,7 +57,7 @@ function Register() {
               },
             }),
           }}
-          error={errors.password}
+          error={errors.password || {}}
           autocomplete="username new-password"
         />
         <RegisterInput
@@ -69,7 +71,7 @@ function Register() {
                 value === password || '입력하신 비밀번호와 일치하지 않아요.',
             }),
           }}
-          error={errors.confirmPassword}
+          error={errors.confirmPassword || {}}
           autocomplete="username new-password"
         />
         <RegisterInput
@@ -89,7 +91,8 @@ function Register() {
               },
             }),
           }}
-          error={errors.userName}
+          error={errors.userName || {}}
+          autocomplete=""
         />
         <RegisterInput
           title="이메일"
@@ -98,7 +101,8 @@ function Register() {
           feature={{
             ...register('email', { required: '이메일을 입력해주세요.' }),
           }}
-          error={errors.email}
+          error={errors.email || {}}
+          autocomplete=""
         />
         <MainButton text="Join" type="submit" handleClick={noop} />
       </form>
