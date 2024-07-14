@@ -1,0 +1,46 @@
+@use '../../styles/mixin' as mixin;
+
+.wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  text-align: center;
+
+  .login-logo {
+    width: 235px;
+    margin: auto;
+    margin-bottom: 30px;
+  }
+
+  .text-button {
+    margin-top: 10px;
+    color: #c3c3c3;
+
+    .text-button-title {
+      color: black;
+      font-family: 'PixelifySans-Bold';
+      font-size: 20px;
+    }
+  }
+
+  .text-button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    .login-input {
+      width: 200px;
+      font-size: 16px;
+      border: 0;
+      border-bottom: solid 1px #c3c3c3;
+      padding: 2px 2px;
+      margin-bottom: 10px;
+    }
+  }
+}

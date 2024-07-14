@@ -1,0 +1,11 @@
+@use '../../../styles/mixin.scss' as mixin;
+
+.container {
+  margin: 0 auto;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 32px 64px;
+  border-radius: 10px;
+}

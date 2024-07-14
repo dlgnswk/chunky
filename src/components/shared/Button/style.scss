@@ -1,0 +1,21 @@
+@use '../../../styles/mixin.scss' as mixin;
+
+.main-button {
+  width: 200px;
+  text-align: center;
+  display: block;
+  padding: 5px 60px;
+  border: 0;
+  border-radius: 8px;
+  color: white;
+  background-color: var(--primary);
+  font-family: 'PixelifySans-bold';
+  font-size: 28px;
+}
+
+.main-button:hover {
+  cursor: pointer;
+  color: var(--primary);
+  background-color: white;
+  box-shadow: 0 0 0 2px var(--primary) inset;
+}
