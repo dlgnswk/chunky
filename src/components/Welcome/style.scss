@@ -1,0 +1,36 @@
+@use '../../styles/mixin.scss' as mixin;
+
+.container {
+  text-align: center;
+
+  .welcome-image-container {
+    width: 300px;
+    margin: auto;
+    margin-bottom: 15px;
+
+    .welcome-image {
+      border-radius: 8px;
+    }
+  }
+
+  .welcome-message {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+
+  .intro-message {
+    margin-bottom: 30px;
+
+    .intro-logo {
+      width: 80px;
+      display: inline;
+      margin-right: 3px;
+    }
+
+    .horizon-text {
+      display: inline;
+      vertical-align: middle;
+    }
+  }
+}
