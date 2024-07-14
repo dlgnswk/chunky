@@ -2,6 +2,7 @@ import MainButton from '../shared/Button/MainButton';
 import Container from '../shared/Container/Container';
 import Logo from '../shared/Logo/Logo';
 import LoginInput from './LoginInput';
+
 import './style.scss';
 
 function Login() {
