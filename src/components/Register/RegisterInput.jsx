@@ -1,4 +1,11 @@
-function RegisterInput({ title, placeholder, type, feature, error }) {
+function RegisterInput({
+  title,
+  placeholder,
+  type,
+  feature,
+  error,
+  autocomplete,
+}) {
   return (
     <div className="input-container">
       <label className="input-title" htmlFor={title}>
@@ -10,6 +17,7 @@ function RegisterInput({ title, placeholder, type, feature, error }) {
         type={type}
         placeholder={placeholder}
         {...feature}
+        autoComplete={autocomplete}
       />
       <p className="error-message">{error ? error.message : ' '}</p>
     </div>

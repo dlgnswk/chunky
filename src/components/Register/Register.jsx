@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
+import { noop } from 'lodash';
 import MainButton from '../shared/Button/MainButton';
 import RegisterInput from './RegisterInput';
 
@@ -55,6 +56,7 @@ function Register() {
             }),
           }}
           error={errors.password}
+          autocomplete="username new-password"
         />
         <RegisterInput
           title="비밀번호 재입력"
@@ -68,6 +70,7 @@ function Register() {
             }),
           }}
           error={errors.confirmPassword}
+          autocomplete="username new-password"
         />
         <RegisterInput
           title="유저 이름"
@@ -97,7 +100,7 @@ function Register() {
           }}
           error={errors.email}
         />
-        <MainButton text="Join" type="submit" />
+        <MainButton text="Join" type="submit" handleClick={noop} />
       </form>
     </div>
   );
