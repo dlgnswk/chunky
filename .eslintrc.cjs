@@ -14,7 +14,7 @@ module.exports = {
       env: {
         node: true,
       },
-      files: ['.eslintrc.{js,cjs}', './tailwind.config.js'],
+      files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'module',
       },
@@ -43,6 +43,7 @@ module.exports = {
     'no-param-reassign': 0,
     'global-require': 0,
     'no-underscore-dangle': 'off',
+    'prettier/prettier': ['warn', { singleQuote: true }],
   },
   settings: {
     react: {
