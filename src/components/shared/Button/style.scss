@@ -1,6 +1,7 @@
 @use '../../../styles/mixin.scss' as mixin;
 
 .main-button {
+  margin: auto;
   width: 200px;
   text-align: center;
   display: block;

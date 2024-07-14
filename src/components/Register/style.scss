@@ -1,0 +1,38 @@
+@use '../../styles/mixin' as mixin;
+
+.wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .register-form-title {
+    text-align: left;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+  }
+
+  .register-form {
+    text-align: left;
+
+    .register-section {
+      margin-bottom: 30px;
+
+      .input-title {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.input-content {
+  height: 32px;
+  width: 300px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  border: solid 1px #c9c9c9;
+  border-radius: 5px;
+  padding: 3px 3px;
+  font-size: 16px;
+}
