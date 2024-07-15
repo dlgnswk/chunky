@@ -1,0 +1,104 @@
+@use '../../styles/mixin.scss' as mixin;
+
+.work-space {
+  display: flex;
+  height: 100vh;
+  gap: 15px;
+
+  .side-panel {
+    display: flex;
+    flex-direction: column;
+    width: 18%;
+    gap: 5px;
+  }
+
+  .main-panel {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 15px;
+  }
+}
+
+.setting-area {
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 20px;
+
+  .main-logo {
+    width: 120px;
+    margin-bottom: 10px;
+  }
+
+  .user-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    .user-name {
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .logout-button {
+      @include mixin.font-urbanist;
+      font-size: 16px;
+      background-color: rgba(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .logout-button:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  .layout-setting {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .layout-select {
+      @include mixin.font-urbanist;
+      border: 0;
+      font-weight: 700;
+    }
+  }
+}
+
+.layer-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 20px;
+}
+
+.drawing-area {
+  display: flex;
+  flex: 1;
+  gap: 15px;
+  margin-top: 15px;
+
+  .canvas-2d,
+  .canvas-3d {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+  }
+}
+
+.button-area {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
