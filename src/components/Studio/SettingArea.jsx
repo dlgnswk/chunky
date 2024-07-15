@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import useStore from '../../store/store';
+
 import ModalButton from '../shared/Button/ModalButton';
 import Logo from '../shared/Logo/Logo';
 
 function SettingArea() {
-  const [isModalOpened, setIsModalOpened] = useState(false);
-  const [modalType, setModalType] = useState('');
+  const { isModalOpened, setIsModalOpened, modalType, setModalType } =
+    useStore();
 
   const userName = 'leeraeroon';
 

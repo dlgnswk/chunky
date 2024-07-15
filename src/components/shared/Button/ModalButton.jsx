@@ -1,13 +1,11 @@
 import { GoArrowUpRight } from 'react-icons/go';
 import Modal from '../Modal/Modal';
+import useStore from '../../../store/store';
 
-function ModalButton({
-  text,
-  isModalOpened,
-  setIsModalOpened,
-  setModalType,
-  modalType,
-}) {
+function ModalButton({ text }) {
+  const { isModalOpened, setIsModalOpened, modalType, setModalType } =
+    useStore();
+
   const openModal = () => {
     setIsModalOpened((prev) => !prev);
     setModalType(text);
