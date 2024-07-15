@@ -1,0 +1,84 @@
+@use '../../../styles/mixin.scss' as mixin;
+
+.modal-window {
+  @include mixin.font-pixelifySans;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 90px;
+  width: 440px;
+  padding: 20px;
+  background-color: var(--text-color);
+  border-radius: 10px;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    margin-bottom: 10px;
+
+    .modal-title {
+      @include mixin.font-urbanist;
+      font-size: 20px;
+    }
+
+    .modal-close-button {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0);
+      color: white;
+      border: 0;
+      font-size: 28px;
+    }
+
+    .modal-close-button:hover {
+      cursor: pointer;
+    }
+  }
+
+  .modal-content {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    gap: 10px;
+    @include mixin.font-urbanist;
+    color: white;
+
+    .card {
+      width: 140px;
+      height: 140px;
+      background-color: white;
+      border-radius: 10px;
+      color: var(--primary);
+
+      .card-image {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .card-title {
+        @include mixin.font-urbanist;
+        font-size: 20px;
+        font-weight: 700;
+        margin: 10px;
+        width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .card:hover {
+      width: 140px;
+      height: 140px;
+      background-color: var(--primary);
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
