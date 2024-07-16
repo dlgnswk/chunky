@@ -4,7 +4,8 @@ import {
   AiOutlineCopy,
   AiOutlineDelete,
 } from 'react-icons/ai';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 import useStore from '../../store/store';
 
 function LayerCard({
@@ -14,11 +15,31 @@ function LayerCard({
   visible,
   selectLayer,
   handleSelectClick,
+  moveCard,
 }) {
   const { layerList, copyLayer, updateLayer, removeLayer, setAlertState } =
     useStore();
   const [newName, setNewName] = useState(name);
   const [newHeight, setNewHeight] = useState(height);
+
+  const ref = useRef(null);
+
+  const [, drag] = useDrag({
+    type: 'LAYER_CARD',
+    item: { index },
+  });
+
+  const [, drop] = useDrop({
+    accept: 'LAYER_CARD',
+    hover(item) {
+      if (item.index !== index) {
+        moveCard(item.index, index);
+        item.index = index;
+      }
+    },
+  });
+
+  drag(drop(ref));
 
   const handleVisibleClick = (e) => {
     e.stopPropagation();
@@ -70,6 +91,7 @@ function LayerCard({
 
   return (
     <div
+      ref={ref}
       className={selectLayer.name === name ? 'select-layer-card' : 'layer-card'}
       onClick={handleSelectClick}
       role="button"

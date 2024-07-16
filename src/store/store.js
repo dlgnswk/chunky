@@ -72,6 +72,8 @@ const useStore = create((set) => ({
     set((state) => ({
       layerList: state.layerList.filter((layer) => layer.index !== index),
     })),
+
+  setLayerList: (newList) => set({ layerList: newList }),
 }));
 
 export default useStore;
