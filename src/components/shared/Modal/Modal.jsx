@@ -1,6 +1,6 @@
 import { IoCloseOutline } from 'react-icons/io5';
-
 import './style.scss';
+import { useState } from 'react';
 
 function Modal({ text, setIsModalOpened }) {
   const presetList = [
@@ -11,14 +11,44 @@ function Modal({ text, setIsModalOpened }) {
   ];
 
   const chunkyList = [
-    { title: '작업중1', src: 'src/assets/images/chunkyDefault.png' },
-    { title: '중간 수정본', src: 'src/assets/images/chunkyDefault.png' },
-    { title: '최초최최종수정', src: 'src/assets/images/chunkyDefault.png' },
-    { title: '작업중123123', src: 'src/assets/images/chunkyDefault.png' },
-    { title: '최종본', src: 'src/assets/images/chunkyDefault.png' },
-    { title: '최종수정본', src: 'src/assets/images/chunkyDefault.png' },
-    { title: '최종의최종수정본2', src: 'src/assets/images/chunkyDefault.png' },
+    {
+      title: '작업중1',
+      src: 'src/assets/images/chunkyDefault.png',
+      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
+    },
+    {
+      title: '중간 수정본',
+      src: 'src/assets/images/chunkyDefault.png',
+      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
+    },
+    {
+      title: '최초최최종수정',
+      src: 'src/assets/images/chunkyDefault.png',
+      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
+    },
+    {
+      title: '작업중123123',
+      src: 'src/assets/images/chunkyDefault.png',
+      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
+    },
+    {
+      title: '최종본',
+      src: 'src/assets/images/chunkyDefault.png',
+      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
+    },
+    {
+      title: '최종수정본',
+      src: 'src/assets/images/chunkyDefault.png',
+      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
+    },
+    {
+      title: '최종의최종수정본2',
+      src: 'src/assets/images/chunkyDefault.png',
+      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
+    },
   ];
+
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const handleCloseClick = () => {
     setIsModalOpened(false);
@@ -49,11 +79,19 @@ function Modal({ text, setIsModalOpened }) {
             );
           })}
         {text === 'Chunky' &&
-          chunkyList.map((chunky) => {
+          chunkyList.map((chunky, index) => {
             return (
-              <div className="card" key={chunky.title}>
+              <div
+                className="card"
+                key={chunky.title}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
                 <div className="card-image">
-                  <img src={chunky.src} alt="chunky" />
+                  <img
+                    src={hoveredIndex === index ? chunky.hoverSrc : chunky.src}
+                    alt="chunky"
+                  />
                 </div>
                 <p className="card-title">{chunky.title}</p>
               </div>
