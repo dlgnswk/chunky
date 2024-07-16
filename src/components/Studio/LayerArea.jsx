@@ -1,33 +1,52 @@
+import { useState } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi2';
+
+import useStore from '../../store/store';
+
 import LayerCard from './LayerCard';
 
 function LayerArea() {
-  const layerList = [
-    { index: 0, name: 'layer00', height: 1, visible: true },
-    { index: 1, name: 'layer01', height: 3, visible: true },
-    { index: 2, name: 'layer02', height: 2, visible: false },
-    { index: 3, name: 'layer03', height: 5, visible: true },
-  ];
+  const [selectLayer, setSelectLayer] = useState({});
+  const { layerList, addLayer } = useStore();
+
+  const handleSelectClick = (layer) => {
+    setSelectLayer(layer);
+  };
+
+  const handleAddLayerClick = () => {
+    addLayer({});
+  };
 
   return (
     <div className="layer-area">
       <div className="layer-header">
         <div className="title">Layer</div>
-        <button className="layer-add-button" aria-label="add layer">
+        <button
+          className="layer-add-button"
+          aria-label="add layer"
+          onClick={handleAddLayerClick}
+        >
           <HiOutlinePlus />
         </button>
       </div>
       <div className="layer-content">
-        {layerList.reverse().map((layer) => {
-          return (
-            <LayerCard
-              key={layer.name}
-              name={layer.name}
-              height={layer.height}
-              visible={layer.visible}
-            />
-          );
-        })}
+        {layerList.length === 0 ? (
+          <div>레이어를 추가하세요.</div>
+        ) : (
+          layerList.reverse().map((layer) => {
+            return (
+              <LayerCard
+                key={layer.name}
+                name={layer.name}
+                index={layer.index}
+                height={layer.height}
+                visible={layer.visible}
+                selectLayer={selectLayer}
+                handleSelectClick={() => handleSelectClick(layer)}
+              />
+            );
+          })
+        )}
       </div>
     </div>
   );
