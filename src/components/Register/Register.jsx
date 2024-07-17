@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -5,11 +6,13 @@ import { noop } from 'lodash';
 
 import MainButton from '../shared/Button/MainButton';
 import RegisterInput from './RegisterInput';
+import useStore from '../../store/store';
 
 import './style.scss';
 
 function Register() {
   const navigate = useNavigate();
+  const { registerUser, setAlertState } = useStore();
 
   const {
     register,
@@ -20,8 +23,14 @@ function Register() {
 
   const password = watch('password', '');
 
-  const onSubmit = () => {
-    navigate('/welcome');
+  const onSubmit = async (data) => {
+    try {
+      await registerUser(data.email, data.password, data.userName);
+      navigate('/welcome');
+      setAlertState('success-register');
+    } catch (error) {
+      setAlertState('failed-register');
+    }
   };
 
   return (
@@ -29,19 +38,23 @@ function Register() {
       <p className="register-form-title">회원 정보를 입력해주세요.</p>
       <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
         <RegisterInput
-          title="아이디"
-          placeholder="id"
-          type="id"
+          title="이메일"
+          placeholder="email"
+          type="email"
           feature={{
-            ...register('id', {
-              required: '아이디를 입력해주세요.',
+            ...register('email', {
+              required: '이메일을 입력해주세요.',
               minLength: {
-                value: 3,
-                message: '아이디는 3글자 이상으로 입력해주세요.',
+                value: 5,
+                message: '이메일은 5글자 이상으로 입력해주세요.',
+              },
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: '유효한 이메일 주소를 입력해주세요.',
               },
             }),
           }}
-          error={errors.id || {}}
+          error={errors.email || {}}
           autocomplete=""
         />
         <RegisterInput
@@ -77,7 +90,7 @@ function Register() {
         <RegisterInput
           title="유저 이름"
           placeholder="user name"
-          type="userName"
+          type="text"
           feature={{
             ...register('userName', {
               required: '유저명을 입력해주세요.',
@@ -94,17 +107,7 @@ function Register() {
           error={errors.userName || {}}
           autocomplete=""
         />
-        <RegisterInput
-          title="이메일"
-          placeholder="email"
-          type="email"
-          feature={{
-            ...register('email', { required: '이메일을 입력해주세요.' }),
-          }}
-          error={errors.email || {}}
-          autocomplete=""
-        />
-        <MainButton text="Join" type="submit" handleClick={noop} />
+        <MainButton text="JOIN" type="submit" handleClick={noop} />
       </form>
     </div>
   );
