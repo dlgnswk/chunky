@@ -299,14 +299,75 @@
     background-color: white;
     border-radius: 10px;
     padding: 20px;
+    position: relative;
+
+    .toolbox-container {
+      background-color: #f9f9f9;
+      padding: 10px;
+      position: absolute;
+      top: 5%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 10px;
+      border-radius: 10px;
+      z-index: 3;
+
+      .tool-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        color: var(--text-color);
+        font-size: 20px;
+        border: 0;
+        border-radius: 8px;
+        padding: 6px 8px;
+
+        svg {
+          fill: var(--text-color);
+          transition: fill 0.3s ease;
+        }
+      }
+
+      .tool-button:hover {
+        background-color: var(--primary);
+        cursor: pointer;
+        color: white;
+        font-size: 20px;
+
+        svg {
+          fill: white;
+        }
+      }
+
+      .tool-button.selected {
+        background-color: var(--primary);
+        color: white;
+
+        svg {
+          fill: white;
+        }
+      }
+    }
   }
 
   .canvas-2d {
     flex: 4;
 
+    .drawing-screen {
+      border: solid 1px gray;
+      width: 100%;
+      height: 100%;
+    }
     .default-logo {
       font-size: 60px;
       color: rgb(213, 213, 213);
+    }
+
+    .drawing-canvas {
+      background-color: white;
+      border: solid 2px var(--text-color);
     }
   }
 
@@ -321,11 +382,10 @@
 }
 
 .button-area {
-  height: 80px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 20px;
+  justify-content: flex-end;
+  padding-bottom: 15px;
 }
 
 .alert-container {
