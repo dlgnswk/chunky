@@ -19,7 +19,7 @@ import './styles/variables.scss';
 function App() {
   const alertState = useStore((state) => state.alertState);
   const removeAlert = useStore((state) => state.removeAlert);
-  const isLoggedIn = true;
+  const user = useStore((state) => state.user);
 
   const handleCloseAlert = (id) => {
     removeAlert(id);
@@ -39,10 +39,16 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Navigate to={isLoggedIn ? '/studio' : '/login'} />}
+            element={<Navigate to={user ? '/studio' : '/login'} />}
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/studio" element={<Studio />} />
+          <Route
+            path="/login"
+            element={user ? <Navigate to="/studio" /> : <Login />}
+          />
+          <Route
+            path="/studio"
+            element={user ? <Studio /> : <Navigate to="/login" />}
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/welcome" element={<Welcome />} />
         </Routes>
