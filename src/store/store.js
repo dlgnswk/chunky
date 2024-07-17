@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { v4 as uuidv4 } from 'uuid';
 import {
   PiHandWaving,
   PiLineSegment,
@@ -9,6 +10,14 @@ import {
   PiEraser,
   PiImage,
 } from 'react-icons/pi';
+
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
+import { auth } from '../services/firebase-config';
 
 import ViewBackIcon from '../components/shared/Icon/ViewBackIcon';
 import ViewFrontIcon from '../components/shared/Icon/viewFrontIcon';
@@ -52,24 +61,106 @@ const findEmptyIndex = (layerList) => {
 };
 
 const useStore = create((set) => ({
+  user: JSON.parse(localStorage.getItem('user')) || null,
+
   isModalOpened: false,
   alertState: [],
   modalType: '',
+
   layerList: initialLayerList,
   nextLayerIndex: initialLayerList.length,
+
   drawingToolList: drawingIconList,
   viewToolList: viewIconList,
+
   canvasSize: { width: 210, height: 210, depth: 210 },
 
+  setUser: (user) => set({ user }),
+  login: async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const { user } = userCredential;
+      localStorage.setItem('user', JSON.stringify(user));
+      set({ user });
+    } catch (error) {
+      if (error.code === 'auth/invalid-email') {
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'invalid-email' },
+          ],
+        }));
+      } else if (error.code === 'auth/invalid-credential') {
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'invalid-credential' },
+          ],
+        }));
+      } else {
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'failed-login' },
+          ],
+        }));
+      }
+    }
+  },
+  registerUser: async (email, password, userName) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const { user } = userCredential;
+      await updateProfile(user, { displayName: userName });
+      localStorage.setItem('user', JSON.stringify(user));
+      set({ user });
+    } catch (error) {
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: 'registration-failed' },
+        ],
+      }));
+      throw error;
+    }
+  },
+  logout: async () => {
+    try {
+      await auth.signOut();
+      localStorage.removeItem('user');
+      set({ user: null });
+    } catch (error) {
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: 'failed-logout' },
+        ],
+      }));
+    }
+  },
+
   setIsModalOpened: (isOpen) => set({ isModalOpened: isOpen }),
-  setAlertState: (alert) => set({ alertState: [alert] }),
+  setAlertState: (message) =>
+    set((state) => ({
+      alertState: [...state.alertState, { id: uuidv4(), message }],
+    })),
   removeAlert: (id) =>
     set((state) => ({
       alertState: state.alertState.filter((alert) => alert.id !== id),
     })),
   setModalType: (type) => set({ modalType: type }),
+
   setDrawingToolList: (drawingTool) => set({ drawingToolList: drawingTool }),
   setViewToolList: (viewTool) => set({ viewToolList: viewTool }),
+
   setCanvasSize: (width, height, depth) =>
     set({ canvasSize: { width, height, depth } }),
 
@@ -122,5 +213,15 @@ const useStore = create((set) => ({
 
   setLayerList: (newList) => set({ layerList: newList }),
 }));
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    localStorage.setItem('user', JSON.stringify(user));
+    useStore.setState({ user });
+  } else {
+    localStorage.removeItem('user');
+    useStore.setState({ user: null });
+  }
+});
 
 export default useStore;

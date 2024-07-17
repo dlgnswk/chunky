@@ -4,11 +4,13 @@
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -280%);
+  transform: translate(-50%, -330%);
   width: 235px;
   margin: auto;
-  margin-bottom: 30px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .wrapper {
@@ -20,7 +22,7 @@
 
   .text-button {
     @include mixin.font-urbanist;
-    margin-top: 10px;
+    margin-top: 20px;
     border: 0;
     background-color: rgba(0, 0, 0, 0);
     color: #c3c3c3;
@@ -29,7 +31,7 @@
       @include mixin.font-pixelifySans;
       color: black;
       font-weight: 700;
-      font-size: 20px;
+      font-size: 16px;
     }
   }
 
@@ -50,7 +52,45 @@
       border: 0;
       border-bottom: solid 1px #c3c3c3;
       padding: 3px 3px;
+      margin-bottom: 5px;
+    }
+
+    .error-message {
+      width: 200px;
+      height: 12px;
+      font-size: 12px;
+      text-align: right;
+      color: tomato;
       margin-bottom: 10px;
     }
+  }
+
+  .google-login-button {
+    @include mixin.font-urbanist;
+    background-color: var(--text-color);
+    border: 0;
+    margin: 0 3px;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    color: white;
+
+    .social-login-icon {
+      width: 16px;
+      margin-right: 5px;
+    }
+
+    .social-login-text {
+      font-weight: 600;
+    }
+  }
+
+  .google-login-button:hover {
+    cursor: pointer;
+    color: var(--text-color);
+    background-color: white;
+    box-shadow: 0 0 0 2px var(--text-color) inset;
   }
 }

@@ -1,7 +1,10 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { signOut } from 'firebase/auth';
 import useStore from '../../store/store';
 import ModalButton from '../shared/Button/ModalButton';
 import Logo from '../shared/Logo/Logo';
+import { auth } from '../../services/firebase-config';
 
 function SettingArea() {
   const {
@@ -11,8 +14,6 @@ function SettingArea() {
     setModalType,
     setCanvasSize,
   } = useStore();
-
-  const userName = 'leeraeroon';
 
   const handleLayoutChange = (event) => {
     const selectedValue = event.target.value;
@@ -34,14 +35,38 @@ function SettingArea() {
     }
   };
 
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (userData && userData.displayName) {
+      setUserName(userData.displayName);
+    }
+  }, []);
+
+  const navigate = useNavigate();
+  const { setAlertState } = useStore();
+
+  const handleLogoutClick = async () => {
+    try {
+      await signOut(auth);
+      setAlertState('success-logout');
+      navigate('/login');
+    } catch (error) {
+      setAlertState('failed-logout');
+    }
+  };
+
   return (
     <div className="setting-area">
       <div className="main-logo">
         <Logo />
       </div>
       <div className="user-info">
-        <span className="user-name">{userName},</span>
-        <button className="logout-button">Logout</button>
+        <span className="user-name">{userName} 님,</span>
+        <button className="logout-button" onClick={handleLogoutClick}>
+          Logout
+        </button>
       </div>
       <div className="layout-setting">
         <span>Layout</span>
