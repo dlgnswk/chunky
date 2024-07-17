@@ -53,3 +53,81 @@
     cursor: pointer;
   }
 }
+
+.file-container {
+  background-color: #c6cbd3;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  margin-left: 20px;
+  padding: 5px;
+  border-radius: 10px;
+
+  .file-icon {
+    color: #c6cbd3;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 6px;
+
+    svg {
+      stroke-width: 1.5;
+    }
+  }
+
+  .file-action {
+    flex-grow: 1;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+  }
+}
+
+.able-file-container {
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  margin-left: 20px;
+  padding: 5px;
+  border-radius: 10px;
+
+  .file-icon {
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 6px;
+    color: var(--primary);
+
+    svg {
+      stroke-width: 1.5;
+    }
+  }
+
+  .file-action {
+    flex-grow: 1;
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+  }
+}
+
+.able-file-container:hover {
+  cursor: pointer;
+  background-color: var(--primary);
+  color: white;
+}
