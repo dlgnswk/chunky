@@ -112,7 +112,6 @@ function Canvas2D() {
     const mouseY = clientY - rect.top;
 
     if (event.deltaY < 0) {
-      // Zoom in
       setScale((prevScale) => {
         const newScale = Math.min(prevScale + scaleFactor, 3);
         setOffset((prevOffset) => ({
@@ -122,7 +121,6 @@ function Canvas2D() {
         return newScale;
       });
     } else {
-      // Zoom out
       setScale((prevScale) => {
         const newScale = Math.max(prevScale - scaleFactor, 0.5);
         setOffset((prevOffset) => ({
