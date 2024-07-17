@@ -1,9 +1,9 @@
 import SettingArea from './SettingArea';
 import LayerArea from './LayerArea';
 import DrawingArea from './DrawingArea';
+import ButtonArea from './ButtonArea';
 
 import './style.scss';
-import ButtonArea from './ButtonArea';
 
 function Studio() {
   return (
