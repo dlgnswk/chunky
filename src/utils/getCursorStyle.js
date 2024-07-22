@@ -15,6 +15,10 @@ function getCursorStyle(selectedTool, dragging) {
     return 'crosshair';
   }
 
+  if (selectedTool === 'paintBucket') {
+    return 'url(/cursorPaint.png) 16 16, auto';
+  }
+
   if (selectedTool === 'eraser') {
     return 'url(/cursorEraser.png) 16 16, auto';
   }

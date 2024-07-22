@@ -18,11 +18,11 @@ const handleKeyDown = (event, selectTool) => {
     case 'KeyC':
       selectTool('circle');
       break;
+    case 'KeyP':
+      selectTool('paintBucket');
+      break;
     case 'KeyE':
       selectTool('eraser');
-      break;
-    case 'KeyI':
-      selectTool('image');
       break;
     default:
       break;
