@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 function Modal({ text, setIsModalOpened }) {
   const presetList = [
-    { title: '빌라 사보아', src: 'src/assets/images/presetDefault.png' },
-    { title: '구겐하임', src: 'src/assets/images/presetDefault.png' },
-    { title: '오페라 하우스', src: 'src/assets/images/presetDefault.png' },
-    { title: '록펠러 센터', src: 'src/assets/images/presetDefault.png' },
+    { title: '에어팟 케이스', src: 'src/assets/images/presetDefault02.png' },
+    { title: '카라비너', src: 'src/assets/images/presetDefault03.png' },
+    { title: '키링', src: 'src/assets/images/presetDefault04.png' },
+    { title: '건물 모형', src: 'src/assets/images/presetDefault01.png' },
   ];
 
   const chunkyList = [
