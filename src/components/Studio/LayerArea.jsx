@@ -1,21 +1,36 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi2';
-
 import useStore from '../../store/store';
-
 import LayerCard from './LayerCard';
 
 function LayerArea() {
-  const [selectLayer, setSelectLayer] = useState({});
-  const { layerList, addLayer } = useStore();
+  const {
+    layerList = [],
+    addLayer,
+    selectedLayer,
+    setSelectedLayer,
+    loadLayers,
+  } = useStore();
+
+  useEffect(() => {
+    loadLayers();
+  }, [loadLayers]);
+
+  useEffect(() => {
+    if (layerList.length > 0 && !selectedLayer) {
+      setSelectedLayer(layerList[layerList.length - 1]);
+    }
+  }, [layerList, selectedLayer, setSelectedLayer]);
 
   const handleSelectClick = (layer) => {
-    setSelectLayer(layer);
+    setSelectedLayer(layer);
   };
 
   const handleAddLayerClick = () => {
-    addLayer({});
+    addLayer();
   };
+
+  const safeLayers = Array.isArray(layerList) ? layerList : [];
 
   return (
     <div className="layer-area">
@@ -30,22 +45,24 @@ function LayerArea() {
         </button>
       </div>
       <div className="layer-content">
-        {layerList.length === 0 ? (
+        {safeLayers.length === 0 ? (
           <div>레이어를 추가하세요.</div>
         ) : (
-          layerList.reverse().map((layer) => {
-            return (
+          safeLayers
+            .slice()
+            .reverse()
+            .map((layer) => (
               <LayerCard
-                key={layer.name}
+                key={layer.id}
+                id={layer.id}
                 name={layer.name}
                 index={layer.index}
                 height={layer.height}
                 visible={layer.visible}
-                selectLayer={selectLayer}
+                selectLayer={selectedLayer}
                 handleSelectClick={() => handleSelectClick(layer)}
               />
-            );
-          })
+            ))
         )}
       </div>
     </div>

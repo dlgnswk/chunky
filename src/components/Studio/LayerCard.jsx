@@ -4,7 +4,7 @@ import {
   AiOutlineCopy,
   AiOutlineDelete,
 } from 'react-icons/ai';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useStore from '../../store/store';
 
 function LayerCard({
@@ -15,10 +15,14 @@ function LayerCard({
   selectLayer,
   handleSelectClick,
 }) {
-  const { layerList, copyLayer, updateLayer, removeLayer, setAlertState } =
-    useStore();
+  const { copyLayer, updateLayer, removeLayer, setAlertState } = useStore();
   const [newName, setNewName] = useState(name);
   const [newHeight, setNewHeight] = useState(height);
+
+  useEffect(() => {
+    setNewName(name);
+    setNewHeight(height);
+  }, [name, height]);
 
   const handleVisibleClick = (e) => {
     e.stopPropagation();
@@ -38,8 +42,17 @@ function LayerCard({
   };
 
   const handleNameBlurOrEnter = () => {
+    if (newName.trim() === '') {
+      setNewName(name);
+      return;
+    }
+
     if (
-      layerList.some((layer) => layer.name === newName && layer.index !== index)
+      useStore
+        .getState()
+        .layerList.some(
+          (layer) => layer.name === newName && layer.index !== index,
+        )
     ) {
       setNewName(name);
       setAlertState({ id: Date.now(), message: 'layer-name' });
@@ -53,7 +66,8 @@ function LayerCard({
   };
 
   const handleHeightBlurOrEnter = () => {
-    if (Number(newHeight) < 1 || Number(newHeight) > 210) {
+    const heightValue = Number(newHeight);
+    if (heightValue < 1 || heightValue > 827) {
       setNewHeight(height);
       setAlertState({ id: Date.now(), message: 'invalid-height' });
     } else {
@@ -70,7 +84,11 @@ function LayerCard({
 
   return (
     <div
-      className={selectLayer.name === name ? 'select-layer-card' : 'layer-card'}
+      className={
+        selectLayer && selectLayer.name === name
+          ? 'select-layer-card'
+          : 'layer-card'
+      }
       onClick={handleSelectClick}
       role="button"
       tabIndex="0"
