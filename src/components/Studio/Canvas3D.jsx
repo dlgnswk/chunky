@@ -7,7 +7,7 @@ import ToolBox from './ToolBox';
 
 function Canvas3D() {
   const { layerList, viewToolList } = useStore();
-  const [selectedTool, setSelectedTool] = useState(null);
+  const [selectedTool, setSelectedTool] = useState('viewPerspective');
 
   const selectTool = (tool) => {
     setSelectedTool((prevTool) => (prevTool === tool ? null : tool));
@@ -26,6 +26,7 @@ function Canvas3D() {
           <IoCubeOutline />
         </div>
       )}
+      <canvas className="rendering-canvas"></canvas>
     </div>
   );
 }
