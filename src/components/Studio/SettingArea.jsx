@@ -6,6 +6,13 @@ import ModalButton from '../shared/Button/ModalButton';
 import Logo from '../shared/Logo/Logo';
 import { auth } from '../../services/firebase-config';
 
+const LAYOUT_OPTIONS = {
+  option1: { width: 827, height: 827, depth: 827 },
+  option2: { width: 866, height: 866, depth: 984 },
+  option3: { width: 1181, height: 1181, depth: 1181 },
+  option4: { width: 1575, height: 1575, depth: 1772 },
+};
+
 function SettingArea() {
   const {
     isModalOpened,
@@ -13,27 +20,8 @@ function SettingArea() {
     modalType,
     setModalType,
     setCanvasSize,
+    setAlertState,
   } = useStore();
-
-  const handleLayoutChange = (event) => {
-    const selectedValue = event.target.value;
-    switch (selectedValue) {
-      case 'option1':
-        setCanvasSize(210, 210, 210);
-        break;
-      case 'option2':
-        setCanvasSize(220, 220, 250);
-        break;
-      case 'option3':
-        setCanvasSize(300, 300, 300);
-        break;
-      case 'option4':
-        setCanvasSize(400, 400, 450);
-        break;
-      default:
-        break;
-    }
-  };
 
   const [userName, setUserName] = useState('');
 
@@ -45,7 +33,15 @@ function SettingArea() {
   }, []);
 
   const navigate = useNavigate();
-  const { setAlertState } = useStore();
+
+  const handleLayoutChange = (event) => {
+    const selectedValue = event.target.value;
+    const layout = LAYOUT_OPTIONS[selectedValue];
+
+    if (layout) {
+      setCanvasSize(layout.width, layout.height, layout.depth);
+    }
+  };
 
   const handleLogoutClick = async () => {
     try {
