@@ -26,7 +26,7 @@ function Canvas3D() {
           <IoCubeOutline />
         </div>
       )}
-      <canvas className="rendering-canvas"></canvas>
+      {layerList.length !== 0 && <canvas className="rendering-canvas"></canvas>}
     </div>
   );
 }
