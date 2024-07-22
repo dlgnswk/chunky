@@ -292,7 +292,7 @@
 
   .canvas-2d,
   .canvas-3d {
-    flex: 1;
+    flex: 5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -352,31 +352,21 @@
     }
   }
 
-  .canvas-2d {
-    flex: 5;
-
+  .canvas-2d,
+  .canvas-3d {
     .drawing-screen {
       border: solid 1px gray;
       width: 100%;
       height: 100%;
     }
     .default-logo {
-      font-size: 60px;
+      font-size: 70px;
       color: rgb(213, 213, 213);
     }
 
     .drawing-canvas {
       background-color: white;
       border: solid 2px var(--text-color);
-    }
-  }
-
-  .canvas-3d {
-    flex: 5;
-
-    .default-logo {
-      font-size: 70px;
-      color: rgb(213, 213, 213);
     }
   }
 }
