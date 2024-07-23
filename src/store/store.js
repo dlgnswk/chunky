@@ -61,52 +61,17 @@ const useStore = create((set, get) => ({
   drawingToolList: DRAWING_ICON_LIST,
   viewToolList: VIEW_ICON_LIST,
   canvasSize: INITIAL_CANVAS_SIZE,
-  undoStack: [],
   layerList: [],
+
+  setSelectedLayer(layer) {
+    set({ selectedLayer: layer });
+  },
 
   initializeLayerListener: (userId) => {
     const unsubscribe = firestore.subscribeToLayers(userId, (layers) => {
       set({ layerList: layers });
     });
     return unsubscribe;
-  },
-
-  addToUndoStack: (action) =>
-    set((state) => ({
-      undoStack: [...state.undoStack, action],
-    })),
-
-  undo: async () => {
-    const state = get();
-    if (state.undoStack.length === 0) return;
-
-    const lastAction = state.undoStack[state.undoStack.length - 1];
-    const newUndoStack = state.undoStack.slice(0, -1);
-
-    if (lastAction.type === 'ADD_PATH') {
-      const { layerIndex, pathIndex } = lastAction;
-      const updatedLayerList = state.layerList.map((layer) => {
-        if (layer.index === layerIndex) {
-          return {
-            ...layer,
-            path: layer.path.filter((_, index) => index !== pathIndex),
-          };
-        }
-        return layer;
-      });
-
-      const updatedLayer = updatedLayerList.find(
-        (layer) => layer.index === layerIndex,
-      );
-      if (updatedLayer) {
-        await get().updateLayerInFirestore(updatedLayer);
-      }
-
-      set({
-        layerList: updatedLayerList,
-        undoStack: newUndoStack,
-      });
-    }
   },
 
   addPathToLayer: (layerIndex, path) => {
@@ -143,7 +108,11 @@ const useStore = create((set, get) => ({
     });
   },
 
-  setLayerList: (newLayerList) => set({ layerList: newLayerList }),
+  setLayerList: (newLayerList) => {
+    set(() => {
+      return { layerList: newLayerList };
+    });
+  },
 
   setUser(user) {
     set({ user });
@@ -241,7 +210,7 @@ const useStore = create((set, get) => ({
       height: 1,
       visible: true,
       path: [],
-      fill: null, // 새 레이어에 fill 속성 추가
+      fill: null,
     };
     const id = await firestore.addLayerToFirestore(uid, newLayer);
     if (id) {
@@ -278,15 +247,22 @@ const useStore = create((set, get) => ({
   updateLayerInFirestore: async (layer) => {
     try {
       const { uid } = get().user;
-
       if (!layer || typeof layer !== 'object' || !layer.id) {
         return false;
       }
 
       const success = await firestore.updateLayerInFirestoreDB(uid, layer);
       if (success) {
+        set((state) => {
+          const newLayerList = state.layerList.map((l) =>
+            l.id === layer.id ? { ...layer } : l,
+          );
+
+          return { layerList: newLayerList };
+        });
         return true;
       }
+
       return false;
     } catch (error) {
       return false;
@@ -312,6 +288,12 @@ const useStore = create((set, get) => ({
     });
   },
 
+  refreshLayerState: async () => {
+    const { uid } = get().user;
+    const layers = await firestore.getLayersFromFirestore(uid);
+    set({ layerList: layers });
+  },
+
   removePathFromLayer(index, updatedPaths) {
     set((state) => {
       const updatedLayerList = state.layerList.map((layer) =>
@@ -325,10 +307,6 @@ const useStore = create((set, get) => ({
       }
       return { layerList: updatedLayerList };
     });
-  },
-
-  setSelectedLayer(layer) {
-    set({ selectedLayer: layer });
   },
 }));
 

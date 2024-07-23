@@ -23,12 +23,16 @@ const subscribeToLayers = (userId, callback) => {
 async function addLayerToFirestore(uid, layer) {
   const layerCollectionRef = collection(db, 'users', uid, 'layers');
   try {
-    // path 속성의 각 요소에 fill 속성이 없으면 'none'으로 설정
     const updatedPath = layer.path.map((path) => ({
       ...path,
       fill: path.fill || 'none',
+      mask: path.mask || null,
     }));
-    const layerWithUpdatedPath = { ...layer, path: updatedPath };
+    const layerWithUpdatedPath = {
+      ...layer,
+      path: updatedPath,
+      masks: layer.masks || [],
+    };
     const docRef = await addDoc(layerCollectionRef, layerWithUpdatedPath);
     return docRef.id;
   } catch (e) {
@@ -42,12 +46,17 @@ async function getLayersFromFirestore(uid) {
     const querySnapshot = await getDocs(layerCollectionRef);
     return querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      // path 속성의 각 요소에 fill 속성이 없으면 'none'으로 설정
       const updatedPath = data.path.map((path) => ({
         ...path,
         fill: path.fill || 'none',
+        mask: path.mask || null,
       }));
-      return { ...data, id: doc.id, path: updatedPath };
+      return {
+        ...data,
+        id: doc.id,
+        path: updatedPath,
+        masks: data.masks || [],
+      };
     });
   } catch (e) {
     return [];
@@ -71,19 +80,15 @@ async function updateLayerInFirestoreDB(uid, layer) {
 
   const layerDocRef = firestoreDoc(db, 'users', uid, 'layers', layer.id);
   try {
-    const updatedPath = Array.isArray(layer.path)
-      ? layer.path.map((path) => ({
-          ...path,
-          fill: path.fill || 'none',
-        }))
-      : [];
-
-    const layerToUpdate = {
+    const updatedLayer = {
       ...layer,
-      path: updatedPath,
+      path: layer.path.map((path) => ({
+        ...path,
+        fill: path.fill || 'none',
+      })),
     };
 
-    await updateDoc(layerDocRef, layerToUpdate);
+    await updateDoc(layerDocRef, updatedLayer);
     return true;
   } catch (e) {
     return false;

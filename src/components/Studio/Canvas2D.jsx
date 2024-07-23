@@ -11,6 +11,7 @@ import getCursorStyle from '../../utils/getCursorStyle';
 import drawBezierCurve from '../../utils/drawBezierCurve';
 import drawTriangle from '../../utils/drawTriangle';
 import drawCircle from '../../utils/drawCircle';
+import { drawPath } from '../../utils/pathUtils';
 
 function Canvas2D() {
   const {
@@ -22,6 +23,7 @@ function Canvas2D() {
     user,
     layerList,
     initializeLayerListener,
+    setLayerList,
   } = useStore();
 
   const canvasRef = useRef(null);
@@ -40,7 +42,6 @@ function Canvas2D() {
   const [wasLayerListEmpty, setWasLayerListEmpty] = useState(true);
   const [selectedTool, setSelectedTool] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const undo = useStore((state) => state.undo);
 
   useEffect(() => {
     let unsubscribe;
@@ -55,91 +56,134 @@ function Canvas2D() {
   }, [user, initializeLayerListener]);
 
   const fillPath = useCallback((path, color) => {
-    const context = canvasRef.current.getContext('2d');
+    if (canvasRef.current) {
+      const context = canvasRef.current.getContext('2d');
 
-    context.save();
-    context.fillStyle = color;
-    context.beginPath();
+      context.save();
+      context.fillStyle = color;
+      context.beginPath();
 
-    switch (path.type) {
-      case 'rectangle':
-        context.rect(path.x, path.y, path.width, path.height);
-        break;
-      case 'triangle':
-        context.moveTo(path.points[0].x, path.points[0].y);
-        context.lineTo(path.points[1].x, path.points[1].y);
-        context.lineTo(path.points[2].x, path.points[2].y);
-        context.closePath();
-        break;
-      case 'bezier':
-        context.moveTo(path.x1, path.y1);
-        context.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
-        break;
-      case 'circle':
-        context.arc(path.center.x, path.center.y, path.radius, 0, 2 * Math.PI);
-        break;
-      default:
-        break;
+      switch (path?.type) {
+        case 'rectangle':
+          context.rect(path.x, path.y, path.width, path.height);
+          break;
+        case 'triangle':
+          context.moveTo(path.points[0].x, path.points[0].y);
+          context.lineTo(path.points[1].x, path.points[1].y);
+          context.lineTo(path.points[2].x, path.points[2].y);
+          context.closePath();
+          break;
+        case 'bezier':
+          context.moveTo(path.x1, path.y1);
+          context.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
+          break;
+        case 'circle':
+          context.arc(
+            path.center.x,
+            path.center.y,
+            path.radius,
+            0,
+            2 * Math.PI,
+          );
+          break;
+        default:
+          break;
+      }
+
+      context.fill();
+      context.restore();
     }
-
-    context.fill();
-    context.restore();
   }, []);
 
   const renderLayersRef = useRef(null);
 
-  const renderLayers = useCallback(
-    (context) => {
-      layerList.forEach((layer) => {
-        if (layer && layer.visible && Array.isArray(layer.path)) {
-          layer.path.forEach((path) => {
-            context.beginPath();
+  const renderLayers = useCallback(() => {
+    const ctx = canvasRef.current?.getContext('2d');
+    layerList.forEach((layer) => {
+      if (layer && layer.visible && Array.isArray(layer.path)) {
+        layer.path.forEach((path) => {
+          ctx.beginPath();
 
-            switch (path.type) {
-              case 'bezier':
-                context.moveTo(path.x1, path.y1);
-                context.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
-                break;
-              case 'rectangle':
-                context.rect(path.x, path.y, path.width, path.height);
-                break;
-              case 'triangle':
-                context.moveTo(path.points[0].x, path.points[0].y);
-                context.lineTo(path.points[1].x, path.points[1].y);
-                context.lineTo(path.points[2].x, path.points[2].y);
-                context.closePath();
-                break;
-              case 'line':
-                context.moveTo(path.x1, path.y1);
-                context.lineTo(path.x2, path.y2);
-                break;
-              case 'circle':
-                context.arc(
-                  path.center.x,
-                  path.center.y,
-                  path.radius,
-                  0,
-                  2 * Math.PI,
-                );
-                break;
-              default:
-                break;
+          switch (path.type) {
+            case 'bezier':
+              ctx.moveTo(path.x1, path.y1);
+              ctx.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
+              break;
+            case 'rectangle':
+              ctx.rect(path.x, path.y, path.width, path.height);
+              break;
+            case 'triangle':
+              ctx.moveTo(path.points[0].x, path.points[0].y);
+              ctx.lineTo(path.points[1].x, path.points[1].y);
+              ctx.lineTo(path.points[2].x, path.points[2].y);
+              ctx.closePath();
+              break;
+            case 'line':
+              ctx.moveTo(path.x1, path.y1);
+              ctx.lineTo(path.x2, path.y2);
+              break;
+            case 'circle':
+              ctx.arc(
+                path.center.x,
+                path.center.y,
+                path.radius,
+                0,
+                2 * Math.PI,
+              );
+              break;
+            case 'polyline':
+              ctx.moveTo(path.points[0].x, path.points[0].y);
+              for (let i = 1; i < path.points.length; i += 1) {
+                ctx.lineTo(path.points[i].x, path.points[i].y);
+              }
+              if (path.closed) {
+                ctx.closePath();
+              }
+              break;
+            default:
+              break;
+          }
+
+          if (path.fill && path.fill !== 'none') {
+            if (path.mask) {
+              const mask = layer.masks.find((m) => m.id === path.mask);
+              if (mask) {
+                ctx.save();
+                ctx.beginPath();
+                drawPath(ctx, mask.outerPath);
+                ctx.clip();
+                mask.innerPaths.forEach((innerPath) => {
+                  ctx.beginPath();
+                  drawPath(ctx, innerPath);
+                  ctx.clip('evenodd');
+                });
+                ctx.fillStyle = path.fill;
+                drawPath(ctx, path);
+                ctx.fill();
+                ctx.restore();
+              }
+            } else {
+              ctx.fillStyle = path.fill;
+              ctx.fill();
             }
+          }
 
-            if (path.fill && path.fill !== 'none') {
-              context.fillStyle = path.fill;
-              context.fill();
-            }
+          if (path.closed) {
+            ctx.closePath();
+          }
 
-            context.strokeStyle = 'blue';
-            context.lineWidth = 1;
-            context.stroke();
-          });
-        }
-      });
-    },
-    [layerList],
-  );
+          if (path.fill && path.fill !== 'none') {
+            ctx.fillStyle = path.fill;
+            ctx.fill();
+          }
+
+          ctx.strokeStyle = 'blue';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+      }
+    });
+  }, [layerList, canvasRef]);
 
   const updateLayerInFirestore = useStore(
     (state) => state.updateLayerInFirestore,
@@ -187,7 +231,7 @@ function Canvas2D() {
     renderLayers,
     fillPath,
     updateLayerInFirestore,
-    renderLayers,
+    setLayerList,
   );
 
   const selectTool = (tool) => {
@@ -196,7 +240,6 @@ function Canvas2D() {
         return null;
       }
       if (tool === 'eraser') {
-        // 지우개 도구 선택 시 상태 초기화
         setIsErasing(false);
         setEraserStart(null);
         setEraserEnd(null);
@@ -231,21 +274,13 @@ function Canvas2D() {
       if (event.key === 'Escape' && (lineStart || bezierStart || rectStart)) {
         cancelDrawing();
       }
-
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        (event.key === 'z' || event.key === 'Z')
-      ) {
-        event.preventDefault();
-        undo();
-      }
     };
 
     window.addEventListener('keydown', handleKeyDownCallback);
     return () => {
       window.removeEventListener('keydown', handleKeyDownCallback);
     };
-  }, [selectTool, lineStart, bezierStart, rectStart, cancelDrawing, undo]);
+  }, [selectTool, lineStart, bezierStart, rectStart, cancelDrawing]);
 
   useEffect(() => {
     if (selectedTool !== 'eraser') {
@@ -418,13 +453,14 @@ function Canvas2D() {
 
     context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     drawGrid(context, canvasSize.width, canvasSize.height);
-    renderLayers(context);
+    renderLayers();
     renderCurrentTool(context);
     renderSnapPoint(context);
     if (isErasing && eraserStart && eraserEnd) {
       renderEraserArea(context);
     }
   }, [
+    layerList,
     canvasRef,
     canvasSize,
     renderLayers,
@@ -463,35 +499,27 @@ function Canvas2D() {
       return;
     }
 
-    // 캔버스 크기 설정
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
 
-    // 캔버스 초기화
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 그리드 그리기
     drawGrid(ctx, canvasSize.width, canvasSize.height);
 
-    // 레이어 렌더링
     renderLayers(ctx);
 
-    // 현재 선택된 도구 렌더링
     renderCurrentTool(ctx);
 
-    // 스냅 포인트 렌더링
     renderSnapPoint(ctx);
 
-    // 지우개 영역 렌더링 (해당되는 경우)
     if (isErasing && eraserStart && eraserEnd) {
       renderEraserArea(ctx);
     }
 
-    // 윈도우 리사이즈 이벤트 리스너
     const handleResize = () => {
       canvas.width = canvasSize.width;
       canvas.height = canvasSize.height;
-      // 리사이즈 시 모든 렌더링 함수 다시 호출
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGrid(ctx, canvasSize.width, canvasSize.height);
       renderLayers(ctx);
@@ -596,6 +624,10 @@ function Canvas2D() {
     layerList,
   ]);
 
+  useEffect(() => {
+    renderCanvas();
+  }, [layerList, renderCanvas]);
+
   return (
     <div className="canvas-2d">
       <ToolBox
@@ -641,6 +673,7 @@ function Canvas2D() {
               left: `${offset.x}px`,
               top: `${offset.y}px`,
             }}
+            onClick={handleCanvasClick}
           ></canvas>
         </button>
       )}
