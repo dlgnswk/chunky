@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi2';
+import { v4 as uuidv4 } from 'uuid';
+
 import useStore from '../../store/store';
+
 import LayerCard from './LayerCard';
 
 function LayerArea() {
@@ -53,8 +56,8 @@ function LayerArea() {
             .reverse()
             .map((layer) => (
               <LayerCard
-                key={layer.id}
-                id={layer.id}
+                key={uuidv4()}
+                id={uuidv4()}
                 name={layer.name}
                 index={layer.index}
                 height={layer.height}
