@@ -1,8 +1,24 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import useStore from '../store/store';
+import { createMask, isPathInsidePath } from '../utils/pathUtils';
 
 const SNAP_THRESHOLD = 10;
 const ERASER_SIZE = 5;
+
+const autoClosePath = (path, threshold = 5) => {
+  if (path.type === 'line' || path.type === 'bezier') {
+    const pathStartPoint = { x: path.x1, y: path.y1 };
+    const pathEndPoint = { x: path.x2, y: path.y2 };
+    const distance = Math.sqrt(
+      (pathStartPoint.x - pathEndPoint.x) ** 2 +
+        (pathStartPoint.y - pathEndPoint.y) ** 2,
+    );
+    if (distance <= threshold) {
+      return { ...path, closed: true };
+    }
+  }
+  return path;
+};
 
 const useMouseHandlers = (
   selectedTool,
@@ -16,7 +32,6 @@ const useMouseHandlers = (
   addPathToLayer,
   selectedLayer,
   layerList,
-  updateLayerInFirestore,
   setLayerList,
   renderCanvas,
 ) => {
@@ -40,6 +55,12 @@ const useMouseHandlers = (
   const [isErasing, setIsErasing] = useState(false);
   const [eraserStart, setEraserStart] = useState(null);
   const [eraserEnd, setEraserEnd] = useState(null);
+  const [currentPath, setCurrentPath] = useState([]);
+  const [isDrawing, setIsDrawing] = useState(false);
+
+  useEffect(() => {
+    renderCanvas();
+  }, [layerList, renderCanvas]);
 
   useEffect(() => {
     if (selectedTool !== 'eraser') {
@@ -71,58 +92,40 @@ const useMouseHandlers = (
   );
 
   const isPointInPath = (path, x, y) => {
-    const ctx = document.createElement('canvas').getContext('2d');
-    ctx.beginPath();
+    const context = document.createElement('canvas').getContext('2d');
+    context.beginPath();
 
     switch (path.type) {
       case 'rectangle':
-        ctx.rect(path.x, path.y, path.width, path.height);
+        context.rect(path.x, path.y, path.width, path.height);
         break;
       case 'circle':
-        ctx.arc(path.cx, path.cy, path.r, 0, Math.PI * 2);
+        context.arc(path.center.x, path.center.y, path.radius, 0, Math.PI * 2);
         break;
       case 'line':
-        ctx.moveTo(path.x1, path.y1);
-        ctx.lineTo(path.x2, path.y2);
+        context.moveTo(path.x1, path.y1);
+        context.lineTo(path.x2, path.y2);
         break;
       case 'bezier':
-        ctx.moveTo(path.x1, path.y1);
-        ctx.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
+        context.moveTo(path.x1, path.y1);
+        context.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
         break;
       case 'triangle':
-        ctx.moveTo(path.points[0].x, path.points[0].y);
-        ctx.lineTo(path.points[1].x, path.points[1].y);
-        ctx.lineTo(path.points[2].x, path.points[2].y);
-        ctx.closePath();
+        context.moveTo(path.points[0].x, path.points[0].y);
+        context.lineTo(path.points[1].x, path.points[1].y);
+        context.lineTo(path.points[2].x, path.points[2].y);
+        context.closePath();
         break;
       default:
-        break;
+        return false;
     }
 
-    return ctx.isPointInPath(x, y);
+    if (path.closed) {
+      context.closePath();
+    }
+
+    return context.isPointInPath(x, y);
   };
-
-  const handlePaintBucket = useCallback(
-    (event) => {
-      const canvas = canvasRef.current;
-      const rect = canvas.getBoundingClientRect();
-      const x = Math.floor((event.clientX - rect.left) / scale);
-      const y = Math.floor((event.clientY - rect.top) / scale);
-
-      if (selectedLayer) {
-        selectedLayer.path.forEach((path, pathIndex) => {
-          if (isPointInPath(path, x, y)) {
-            useStore
-              .getState()
-              .updatePathInLayer(selectedLayer.index, pathIndex, {
-                fill: paintBucketColor,
-              });
-          }
-        });
-      }
-    },
-    [selectedLayer, paintBucketColor, scale, canvasRef],
-  );
 
   useEffect(() => {
     const updateCanvas = () => {
@@ -158,7 +161,7 @@ const useMouseHandlers = (
               });
               ctx.closePath();
             }
-            if (path.fill) {
+            if (path.fill && path.fill !== 'none') {
               ctx.fillStyle = path.fill;
               ctx.fill();
             }
@@ -440,10 +443,10 @@ const useMouseHandlers = (
         );
       case 'rectangle':
         return (
-          path.x < maxX &&
-          path.x + path.width > minX &&
-          path.y < maxY &&
-          path.y + path.height > minY
+          path.x >= minX &&
+          path.x + path.width <= maxX &&
+          path.y >= minY &&
+          path.y + path.height <= maxY
         );
       case 'circle': {
         const centerInArea =
@@ -474,6 +477,14 @@ const useMouseHandlers = (
             path.cy >= minY &&
             path.cy <= maxY)
         );
+      case 'triangle':
+        return path.points.some(
+          (point) =>
+            point.x >= minX &&
+            point.x <= maxX &&
+            point.y >= minY &&
+            point.y <= maxY,
+        );
       default:
         return false;
     }
@@ -487,64 +498,11 @@ const useMouseHandlers = (
     };
   };
 
-  const handleMouseDown = (event) => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    let mouseX = (event.clientX - rect.left) / scale;
-    let mouseY = (event.clientY - rect.top) / scale;
-
-    const nearestPoint = findNearestPoint(mouseX, mouseY);
-    if (nearestPoint) {
-      mouseX = nearestPoint.x;
-      mouseY = nearestPoint.y;
-    }
-
-    if (selectedTool === 'move') {
-      setDragging(true);
-      setStartPoint({
-        x: event.clientX - offsetX,
-        y: event.clientY - offsetY,
-      });
-    } else if (selectedTool === 'bezier') {
-      if (!bezierStart) {
-        setBezierStart({ x: mouseX, y: mouseY });
-        setIsBezierDrawing(true);
-      } else if (!bezierEnd) {
-        setBezierEnd({ x: mouseX, y: mouseY });
-        setBezierControl({ x: mouseX, y: mouseY });
-      }
-    } else if (selectedTool === 'rectangle') {
-      setRectStart({ x: mouseX, y: mouseY });
-      setRectEnd({ x: mouseX, y: mouseY });
-    } else if (selectedTool === 'triangle') {
-      setTrianglePoints((prevPoints) => {
-        const newPoints = [...prevPoints, { x: mouseX, y: mouseY }];
-        if (newPoints.length === 3) {
-          if (selectedLayer) {
-            addPathToLayer(selectedLayer.index, {
-              type: 'triangle',
-              points: newPoints,
-            });
-          }
-          return [];
-        }
-        return newPoints;
-      });
-    } else if (selectedTool === 'circle') {
-      if (!circleCenter) {
-        setCircleCenter({ x: mouseX, y: mouseY });
-      }
-    } else if (selectedTool === 'eraser') {
-      setIsErasing(true);
-      const mousePos = getMousePosition(event);
-      setEraserStart(mousePos);
-      setEraserEnd(mousePos);
-    } else if (selectedTool === 'paintBucket') {
-      handlePaintBucket(event);
-    }
-  };
-
   const handleMouseMove = useCallback(
     (event) => {
+      if (!canvasRef.current) {
+        return;
+      }
       const rect = canvasRef.current.getBoundingClientRect();
       let mouseX = (event.clientX - rect.left) / scale;
       let mouseY = (event.clientY - rect.top) / scale;
@@ -575,6 +533,9 @@ const useMouseHandlers = (
             mouseX = lineStart.x;
           }
         }
+
+        const point = getMousePosition(event);
+        setCurrentPath((prev) => [...prev.slice(0, -1), point]);
         setLineEnd({ x: mouseX, y: mouseY });
       } else if (
         selectedTool === 'bezier' &&
@@ -612,54 +573,6 @@ const useMouseHandlers = (
       getMousePosition,
     ],
   );
-
-  const handleCanvasClick = (event) => {
-    if (selectedTool === 'rectangle') return;
-
-    if (selectedTool === 'paintBucket') {
-      handlePaintBucket(event);
-      return;
-    }
-
-    const rect = canvasRef.current.getBoundingClientRect();
-    let mouseX = (event.clientX - rect.left) / scale;
-    let mouseY = (event.clientY - rect.top) / scale;
-
-    const nearestPoint = findNearestPoint(mouseX, mouseY);
-    if (nearestPoint) {
-      mouseX = nearestPoint.x;
-      mouseY = nearestPoint.y;
-    }
-    if (selectedTool === 'line') {
-      if (!lineStart) {
-        setLineStart({ x: mouseX, y: mouseY });
-        setLineEnd({ x: mouseX, y: mouseY });
-      } else {
-        if (isShiftPressed) {
-          const dx = mouseX - lineStart.x;
-          const dy = mouseY - lineStart.y;
-          if (Math.abs(dx) > Math.abs(dy)) {
-            mouseY = lineStart.y;
-          } else {
-            mouseX = lineStart.x;
-          }
-        }
-
-        setLineEnd({ x: mouseX, y: mouseY });
-        if (selectedLayer) {
-          addPathToLayer(selectedLayer.index, {
-            type: 'line',
-            x1: lineStart.x,
-            y1: lineStart.y,
-            x2: mouseX,
-            y2: mouseY,
-          });
-        }
-        setLineStart(null);
-        setLineEnd(null);
-      }
-    }
-  };
 
   const isLineIntersectingWithCircle = (line, circle) => {
     const { x1, y1, x2, y2 } = line;
@@ -776,17 +689,194 @@ const useMouseHandlers = (
     }
   }, [selectedLayer, erasedAreas, addPathToLayer, renderCanvas]);
 
-  const updateLayerList = useCallback((updatedLayer) => {
-    setLayerList((prevLayers) => {
-      const newLayerList = prevLayers.map((layer) => {
-        return layer.id === updatedLayer.id ? updatedLayer : layer;
+  const updateLayerList = useCallback(
+    (updatedLayer) => {
+      if (!updatedLayer || !updatedLayer.id) {
+        return null;
+      }
+
+      setLayerList((prevLayers) => {
+        const newLayerList = prevLayers.map((layer) =>
+          layer.id === updatedLayer.id ? updatedLayer : layer,
+        );
+        return newLayerList;
       });
 
-      return newLayerList;
-    });
+      return updatedLayer;
+    },
+    [setLayerList],
+  );
+
+  useEffect(() => {}, [layerList]);
+
+  const updatePathWithFill = async (
+    clickedPath,
+    clickedPathIndex,
+    paths,
+    fillColor,
+    selectedOneLayer,
+  ) => {
+    const innerPaths = paths.filter(
+      (path, index) =>
+        index !== clickedPathIndex && isPathInsidePath(path, clickedPath),
+    );
+
+    const updatedPath = {
+      ...clickedPath,
+      fill: fillColor,
+    };
+
+    const updatedLayer = {
+      ...selectedOneLayer,
+      path: [...selectedOneLayer.path],
+    };
+
+    if (innerPaths.length > 0) {
+      const maskId = `mask-${Date.now()}`;
+      const mask = await createMask(maskId, clickedPath, innerPaths);
+      updatedPath.mask = maskId;
+      updatedLayer.masks = [...(selectedOneLayer.masks || []), mask];
+
+      // Update the clicked path
+      updatedLayer.path[clickedPathIndex] = updatedPath;
+
+      // Update inner paths to use the new mask
+      innerPaths.forEach((innerPath) => {
+        const innerPathIndex = updatedLayer.path.findIndex(
+          (p) => p === innerPath,
+        );
+        if (innerPathIndex !== -1) {
+          updatedLayer.path[innerPathIndex] = {
+            ...innerPath,
+            mask: maskId,
+          };
+        }
+      });
+    } else {
+      // If there are no inner paths, just update the clicked path
+      updatedLayer.path[clickedPathIndex] = updatedPath;
+    }
 
     return updatedLayer;
-  }, []);
+  };
+
+  const updateLayerInFirestore = useStore(
+    (state) => state.updateLayerInFirestore,
+  );
+
+  const handlePaintBucket = useCallback(
+    async (event) => {
+      if (selectedTool !== 'paintBucket') return;
+
+      const rect = canvasRef.current.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / scale;
+      const y = (event.clientY - rect.top) / scale;
+
+      // 현재 레이어 리스트에서 클릭된 경로 찾기
+      const clickedLayerInfo = layerList.reduce(
+        (result, layer) => {
+          if (result.clickedLayer) return result; // 이미 찾은 경우 더 이상 진행하지 않음
+
+          const pathIndex = layer.path.findIndex((path) =>
+            isPointInPath(path, x, y),
+          );
+
+          if (pathIndex !== -1) {
+            return { clickedLayer: layer, clickedPathIndex: pathIndex };
+          }
+
+          return result;
+        },
+        { clickedLayer: null, clickedPathIndex: -1 },
+      );
+
+      const { clickedLayer, clickedPathIndex } = clickedLayerInfo;
+
+      if (clickedLayer && clickedPathIndex !== -1) {
+        const clickedPath = clickedLayer.path[clickedPathIndex];
+
+        const updatedLayer = await updatePathWithFill(
+          clickedPath,
+          clickedPathIndex,
+          clickedLayer.path,
+          paintBucketColor,
+          clickedLayer,
+        );
+
+        if (updatedLayer) {
+          const success = await updateLayerInFirestore(updatedLayer);
+
+          if (success) {
+            setLayerList((prevLayers) => {
+              const newLayerList = prevLayers.map((layer) =>
+                layer.id === updatedLayer.id ? updatedLayer : layer,
+              );
+              return newLayerList;
+            });
+          }
+        }
+
+        renderCanvas();
+      }
+    },
+    [
+      selectedTool,
+      layerList,
+      canvasRef,
+      scale,
+      paintBucketColor,
+      updateLayerInFirestore,
+      setLayerList,
+      renderCanvas,
+    ],
+  );
+
+  const handleCanvasClick = (event) => {
+    if (selectedTool === 'paintBucket') {
+      handlePaintBucket(event);
+      return;
+    }
+    if (selectedTool === 'rectangle') return;
+
+    const rect = canvasRef.current.getBoundingClientRect();
+    let mouseX = (event.clientX - rect.left) / scale;
+    let mouseY = (event.clientY - rect.top) / scale;
+
+    const nearestPoint = findNearestPoint(mouseX, mouseY);
+    if (nearestPoint) {
+      mouseX = nearestPoint.x;
+      mouseY = nearestPoint.y;
+    }
+    if (selectedTool === 'line') {
+      if (!lineStart) {
+        setLineStart({ x: mouseX, y: mouseY });
+        setLineEnd({ x: mouseX, y: mouseY });
+      } else {
+        if (isShiftPressed) {
+          const dx = mouseX - lineStart.x;
+          const dy = mouseY - lineStart.y;
+          if (Math.abs(dx) > Math.abs(dy)) {
+            mouseY = lineStart.y;
+          } else {
+            mouseX = lineStart.x;
+          }
+        }
+
+        setLineEnd({ x: mouseX, y: mouseY });
+        if (selectedLayer) {
+          addPathToLayer(selectedLayer.index, {
+            type: 'line',
+            x1: lineStart.x,
+            y1: lineStart.y,
+            x2: mouseX,
+            y2: mouseY,
+          });
+        }
+        setLineStart(null);
+        setLineEnd(null);
+      }
+    }
+  };
 
   const handleMouseUp = useCallback(async () => {
     if (
@@ -797,36 +887,50 @@ const useMouseHandlers = (
       selectedLayer
     ) {
       try {
-        const updatedPaths = selectedLayer.path.filter((path) => {
-          return !isPathInEraserArea(path, {
+        const currentLayer = layerList.find(
+          (layer) => layer.id === selectedLayer.id,
+        );
+
+        if (!currentLayer) {
+          return;
+        }
+
+        const updatedPaths = currentLayer.path.filter((path) => {
+          const shouldKeep = !isPathInEraserArea(path, {
             start: eraserStart,
             end: eraserEnd,
           });
+          return shouldKeep;
         });
 
         const updatedLayer = {
-          ...selectedLayer,
-          id: selectedLayer.id,
+          ...currentLayer,
           path: updatedPaths,
         };
 
-        updateLayerList(updatedLayer);
+        const success = await updateLayerInFirestore(updatedLayer);
 
-        await useStore.getState().updateLayerInFirestore(updatedLayer);
+        if (success) {
+          setLayerList((prevLayers) => {
+            const newLayers = prevLayers.map((layer) =>
+              layer.id === updatedLayer.id ? updatedLayer : layer,
+            );
+
+            return newLayers;
+          });
+        }
       } catch (error) {
-        return false;
+        return;
       } finally {
         setIsErasing(false);
         setEraserStart(null);
         setEraserEnd(null);
-
-        finalizeErase();
       }
     }
 
     if (selectedTool === 'move') {
       setDragging(false);
-    } else if (selectedTool === 'line' && lineStart && lineEnd) {
+    } else if (selectedTool === 'line' && isDrawing) {
       if (selectedLayer) {
         const newPath = {
           type: 'line',
@@ -835,10 +939,51 @@ const useMouseHandlers = (
           x2: lineEnd.x,
           y2: lineEnd.y,
         };
-        addPathToLayer(selectedLayer.index, newPath);
+
+        // 현재 레이어의 path 배열 가져오기
+        const currentPaths = [...selectedLayer.path];
+
+        // 첫 번째 라인인 경우
+        if (currentPaths.length === 0) {
+          addPathToLayer(selectedLayer.index, newPath);
+        } else {
+          // 이전 라인의 끝점과 현재 라인의 시작점이 같은지 확인
+          const prevLine = currentPaths[currentPaths.length - 1];
+          if (prevLine.x2 === newPath.x1 && prevLine.y2 === newPath.y1) {
+            // 현재 라인의 끝점과 첫 번째 라인의 시작점 사이의 거리 계산
+            const firstLine = currentPaths[0];
+            const distance = Math.sqrt(
+              (newPath.x2 - firstLine.x1) ** 2 +
+                (newPath.y2 - firstLine.y1) ** 2,
+            );
+
+            // 거리가 충분히 가까우면 (예: 5픽셀 이내) 경로를 닫음
+            if (distance <= 5) {
+              const closedPath = {
+                type: 'polyline',
+                points: currentPaths
+                  .map((line) => ({ x: line.x1, y: line.y1 }))
+                  .concat({ x: firstLine.x1, y: firstLine.y1 }),
+                closed: true,
+              };
+              // 기존의 열린 선들을 모두 제거하고 닫힌 경로로 대체
+              selectedLayer.path = selectedLayer.path.filter(
+                (path) => path.type !== 'line',
+              );
+              addPathToLayer(selectedLayer.index, closedPath);
+            } else {
+              // 경로가 닫히지 않았으면 새 라인 추가
+              addPathToLayer(selectedLayer.index, newPath);
+            }
+          } else {
+            // 연속되지 않은 새로운 라인 시작
+            addPathToLayer(selectedLayer.index, newPath);
+          }
+        }
       }
       setLineStart(null);
       setLineEnd(null);
+      setIsDrawing(false);
     } else if (
       selectedTool === 'bezier' &&
       bezierStart &&
@@ -846,7 +991,7 @@ const useMouseHandlers = (
       bezierControl
     ) {
       if (selectedLayer) {
-        const newPath = {
+        const newPath = autoClosePath({
           type: 'bezier',
           x1: bezierStart.x,
           y1: bezierStart.y,
@@ -854,7 +999,7 @@ const useMouseHandlers = (
           y2: bezierEnd.y,
           cx: bezierControl.x,
           cy: bezierControl.y,
-        };
+        });
         addPathToLayer(selectedLayer.index, newPath);
       }
       setBezierStart(null);
@@ -862,7 +1007,12 @@ const useMouseHandlers = (
       setBezierControl(null);
       setIsBezierDrawing(false);
     } else if (selectedTool === 'rectangle' && rectStart && rectEnd) {
-      if (selectedLayer) {
+      // 최신 레이어 상태를 가져옵니다.
+      const currentLayer = layerList.find(
+        (layer) => layer.id === selectedLayer.id,
+      );
+
+      if (currentLayer) {
         const newPath = {
           type: 'rectangle',
           x: Math.min(rectStart.x, rectEnd.x),
@@ -871,7 +1021,23 @@ const useMouseHandlers = (
           height: Math.abs(rectEnd.y - rectStart.y),
           fill: 'none',
         };
-        addPathToLayer(selectedLayer.index, newPath);
+
+        const updatedLayer = {
+          ...currentLayer,
+          path: [...currentLayer.path, newPath], // 기존 경로를 유지하면서 새 경로 추가
+        };
+
+        const success = await updateLayerInFirestore(updatedLayer);
+
+        if (success) {
+          setLayerList((prevLayers) => {
+            const newLayers = prevLayers.map((layer) =>
+              layer.id === updatedLayer.id ? updatedLayer : layer,
+            );
+
+            return newLayers;
+          });
+        }
       }
       setRectStart(null);
       setRectEnd(null);
@@ -887,8 +1053,8 @@ const useMouseHandlers = (
       setCircleCenter(null);
       setCircleRadius(0);
     }
+
     renderCanvas();
-    return false;
   }, [
     selectedTool,
     isErasing,
@@ -900,6 +1066,70 @@ const useMouseHandlers = (
     isPathInEraserArea,
     renderCanvas,
   ]);
+
+  const handleMouseDown = (event) => {
+    const rect = canvasRef.current.getBoundingClientRect();
+    let mouseX = (event.clientX - rect.left) / scale;
+    let mouseY = (event.clientY - rect.top) / scale;
+
+    const nearestPoint = findNearestPoint(mouseX, mouseY);
+    if (nearestPoint) {
+      mouseX = nearestPoint.x;
+      mouseY = nearestPoint.y;
+    }
+
+    if (selectedTool === 'move') {
+      setDragging(true);
+      setStartPoint({
+        x: event.clientX - offsetX,
+        y: event.clientY - offsetY,
+      });
+    } else if (selectedTool === 'line') {
+      const point = getMousePosition(event);
+      if (!isDrawing) {
+        setIsDrawing(true);
+        setCurrentPath([point]);
+      } else {
+        setCurrentPath((prev) => [...prev, point]);
+      }
+    } else if (selectedTool === 'bezier') {
+      if (!bezierStart) {
+        setBezierStart({ x: mouseX, y: mouseY });
+        setIsBezierDrawing(true);
+      } else if (!bezierEnd) {
+        setBezierEnd({ x: mouseX, y: mouseY });
+        setBezierControl({ x: mouseX, y: mouseY });
+      }
+    } else if (selectedTool === 'rectangle') {
+      setRectStart({ x: mouseX, y: mouseY });
+      setRectEnd({ x: mouseX, y: mouseY });
+    } else if (selectedTool === 'triangle') {
+      setTrianglePoints((prevPoints) => {
+        const newPoints = [...prevPoints, { x: mouseX, y: mouseY }];
+        if (newPoints.length === 3) {
+          if (selectedLayer) {
+            addPathToLayer(selectedLayer.index, {
+              type: 'triangle',
+              points: newPoints,
+            });
+          }
+          return [];
+        }
+        return newPoints;
+      });
+    } else if (selectedTool === 'circle') {
+      if (!circleCenter) {
+        setCircleCenter({ x: mouseX, y: mouseY });
+      }
+    } else if (selectedTool === 'eraser') {
+      setIsErasing(true);
+      const mousePos = getMousePosition(event);
+      setEraserStart(mousePos);
+      setEraserEnd(mousePos);
+    } else if (selectedTool === 'paintBucket') {
+      handlePaintBucket(event);
+    }
+  };
 
   return {
     handleMouseDown,
@@ -930,6 +1160,7 @@ const useMouseHandlers = (
     eraserEnd,
     setEraserEnd,
     renderEraserArea,
+    setLayerList,
   };
 };
 
