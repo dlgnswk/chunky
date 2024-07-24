@@ -216,6 +216,10 @@ function Canvas2D() {
     setEraserStart,
     eraserEnd,
     setEraserEnd,
+    currentPolyline,
+    setCurrentPolyline,
+    isDrawingPolyline,
+    setIsDrawingPolyline,
   } = useMouseHandlers(
     selectedTool,
     { x: offset.x, y: offset.y, scale },
@@ -303,87 +307,50 @@ function Canvas2D() {
 
   const renderCurrentTool = useCallback(
     (ctx) => {
-      if (selectedTool === 'line' && lineStart && lineEnd) {
-        drawLine(ctx, lineStart.x, lineStart.y, lineEnd.x, lineEnd.y, 'red', 1);
-      } else if (selectedTool === 'bezier') {
-        if (bezierStart && bezierEnd && bezierControl) {
-          drawBezierCurve(
-            ctx,
-            bezierStart.x,
-            bezierStart.y,
-            bezierEnd.x,
-            bezierEnd.y,
-            bezierControl.x,
-            bezierControl.y,
-            'red',
-            1,
-          );
-        } else if (bezierStart && bezierEnd) {
-          drawLine(
-            ctx,
-            bezierStart.x,
-            bezierStart.y,
-            bezierEnd.x,
-            bezierEnd.y,
-            'red',
-            1,
-          );
-        } else if (bezierStart) {
-          drawLine(
-            ctx,
-            bezierStart.x,
-            bezierStart.y,
-            snapPoint ? snapPoint.x : mousePosition.x,
-            snapPoint ? snapPoint.y : mousePosition.y,
-            'red',
-            1,
-          );
-        }
-      } else if (selectedTool === 'rectangle' && rectStart && rectEnd) {
+      if (
+        selectedTool === 'line' &&
+        isDrawingPolyline &&
+        currentPolyline.length > 0
+      ) {
+        // 완성된 선 그리기
         ctx.beginPath();
-        ctx.rect(
-          rectStart.x,
-          rectStart.y,
-          rectEnd.x - rectStart.x,
-          rectEnd.y - rectStart.y,
-        );
-        ctx.strokeStyle = 'red';
+        ctx.moveTo(currentPolyline[0].x, currentPolyline[0].y);
+        for (let i = 1; i < currentPolyline.length; i += 1) {
+          if (currentPolyline[i]) {
+            ctx.lineTo(currentPolyline[i].x, currentPolyline[i].y);
+          }
+        }
+        ctx.strokeStyle = 'blue';
         ctx.lineWidth = 1;
         ctx.stroke();
-      } else if (selectedTool === 'triangle') {
-        if (trianglePoints.length === 1) {
-          drawLine(
-            ctx,
-            trianglePoints[0].x,
-            trianglePoints[0].y,
-            currentMousePos.x,
-            currentMousePos.y,
-            'red',
-            1,
+
+        // 현재 그리고 있는 선 (마지막 점에서 마우스 커서까지)
+        if (lineEnd && currentPolyline[currentPolyline.length - 1]) {
+          ctx.beginPath();
+          ctx.moveTo(
+            currentPolyline[currentPolyline.length - 1].x,
+            currentPolyline[currentPolyline.length - 1].y,
           );
-        } else if (trianglePoints.length === 2) {
-          drawTriangle(ctx, [...trianglePoints, currentMousePos], 'red', 1);
+          ctx.lineTo(lineEnd.x, lineEnd.y);
+          ctx.strokeStyle = 'red';
+          ctx.lineWidth = 1;
+          ctx.stroke();
         }
-      } else if (selectedTool === 'circle' && circleCenter && circleRadius) {
-        drawCircle(ctx, circleCenter, circleRadius, 'red', 1);
+
+        // 예상 닫힘 선 (점선으로 표시)
+        if (currentPolyline.length > 2 && lineEnd && currentPolyline[0]) {
+          ctx.beginPath();
+          ctx.moveTo(lineEnd.x, lineEnd.y);
+          ctx.lineTo(currentPolyline[0].x, currentPolyline[0].y);
+          ctx.setLineDash([5, 5]);
+          ctx.strokeStyle = 'gray';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
       }
     },
-    [
-      selectedTool,
-      lineStart,
-      lineEnd,
-      bezierStart,
-      bezierEnd,
-      bezierControl,
-      rectStart,
-      rectEnd,
-      trianglePoints,
-      currentMousePos,
-      circleCenter,
-      circleRadius,
-      snapPoint,
-      mousePosition,
-    ],
+    [selectedTool, isDrawingPolyline, currentPolyline, lineEnd],
   );
 
   const renderSnapPoint = useCallback(

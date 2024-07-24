@@ -57,6 +57,8 @@ const useMouseHandlers = (
   const [eraserEnd, setEraserEnd] = useState(null);
   const [currentPath, setCurrentPath] = useState([]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [currentPolyline, setCurrentPolyline] = useState([]);
+  const [isDrawingPolyline, setIsDrawingPolyline] = useState(false);
 
   useEffect(() => {
     renderCanvas();
@@ -106,6 +108,17 @@ const useMouseHandlers = (
         context.moveTo(path.x1, path.y1);
         context.lineTo(path.x2, path.y2);
         break;
+      case 'polyline':
+        if (path.points && path.points.length > 2) {
+          context.moveTo(path.points[0].x, path.points[0].y);
+          for (let i = 1; i < path.points.length; i += 1) {
+            context.lineTo(path.points[i].x, path.points[i].y);
+          }
+          if (path.closed) {
+            context.closePath();
+          }
+        }
+        break;
       case 'bezier':
         context.moveTo(path.x1, path.y1);
         context.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
@@ -149,6 +162,28 @@ const useMouseHandlers = (
             } else if (path.type === 'line') {
               ctx.moveTo(path.x1, path.y1);
               ctx.lineTo(path.x2, path.y2);
+            } else if (path.type === 'polyline') {
+              ctx.beginPath();
+              ctx.moveTo(path.points[0].x, path.points[0].y);
+              for (let i = 1; i < path.points.length; i += 1) {
+                ctx.lineTo(path.points[i].x, path.points[i].y);
+              }
+              if (path.closed) {
+                ctx.closePath();
+              }
+              if (path.fill && path.fill !== 'none') {
+                ctx.fillStyle = path.fill;
+                ctx.fill();
+              }
+              ctx.stroke();
+
+              // 스냅 포인트 표시 (기존 렌더링 이후에 추가)
+              path.points.forEach((point) => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'red';
+                ctx.fill();
+              });
             } else if (path.type === 'bezier') {
               ctx.moveTo(path.x1, path.y1);
               ctx.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
@@ -356,6 +391,8 @@ const useMouseHandlers = (
                 { x: path.x1, y: path.y1 },
                 { x: path.x2, y: path.y2 },
               ];
+            } else if (path.type === 'polyline') {
+              points = path.points;
             } else if (path.type === 'triangle') {
               points = path.points;
             } else if (path.type === 'bezier') {
@@ -395,30 +432,9 @@ const useMouseHandlers = (
     setCircleRadius(0);
   }, []);
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape' && (lineStart || rectStart || bezierStart)) {
-        cancelDrawing();
-      }
-      if (event.key === 'Shift') {
-        setIsShiftPressed(true);
-      }
-    };
-
-    const handleKeyUp = (event) => {
-      if (event.key === 'Shift') {
-        setIsShiftPressed(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [lineStart, rectStart, bezierStart, cancelDrawing]);
+  const updateLayerInFirestore = useStore(
+    (state) => state.updateLayerInFirestore,
+  );
 
   const isPathInEraserArea = (path, area) => {
     if (!area || !area.start || !area.end) return false;
@@ -523,20 +539,9 @@ const useMouseHandlers = (
           x: event.clientX - startPoint.x,
           y: event.clientY - startPoint.y,
         });
-      } else if (selectedTool === 'line' && lineStart) {
-        if (isShiftPressed) {
-          const dx = mouseX - lineStart.x;
-          const dy = mouseY - lineStart.y;
-          if (Math.abs(dx) > Math.abs(dy)) {
-            mouseY = lineStart.y;
-          } else {
-            mouseX = lineStart.x;
-          }
-        }
-
+      } else if (selectedTool === 'line' && isDrawingPolyline) {
         const point = getMousePosition(event);
-        setCurrentPath((prev) => [...prev.slice(0, -1), point]);
-        setLineEnd({ x: mouseX, y: mouseY });
+        setLineEnd(point);
       } else if (
         selectedTool === 'bezier' &&
         isBezierDrawing &&
@@ -573,6 +578,82 @@ const useMouseHandlers = (
       getMousePosition,
     ],
   );
+
+  const finalizePolyline = useCallback(() => {
+    if (selectedLayer && isDrawingPolyline && currentPolyline.length > 1) {
+      const closedPath = {
+        type: 'polyline',
+        points: [...currentPolyline, currentPolyline[0]],
+        closed: true,
+      };
+      // 기존의 열린 선들을 모두 제거하고 닫힌 경로로 대체
+      const updatedLayer = {
+        ...selectedLayer,
+        path: selectedLayer.path
+          .filter((path) => path.type !== 'line')
+          .concat(closedPath),
+      };
+      updateLayerInFirestore(updatedLayer);
+
+      setIsDrawingPolyline(false);
+      setCurrentPolyline([]);
+      setLineStart(null);
+      setLineEnd(null);
+    }
+  }, [
+    selectedLayer,
+    isDrawingPolyline,
+    currentPolyline,
+    updateLayerInFirestore,
+  ]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (
+        event.key === ' ' &&
+        isDrawingPolyline &&
+        currentPolyline.length > 1
+      ) {
+        // 스페이스바를 눌렀을 때 폴리라인 완성
+        event.preventDefault(); // 스페이스바의 기본 동작 방지
+        finalizePolyline();
+      } else if (event.key === 'Escape' && isDrawingPolyline) {
+        // ESC를 누르면 폴리라인 그리기를 중단
+        setIsDrawingPolyline(false);
+        setCurrentPolyline([]);
+        setLineStart(null);
+        setLineEnd(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isDrawingPolyline, currentPolyline, finalizePolyline]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (
+        event.key === 'Enter' &&
+        isDrawingPolyline &&
+        currentPolyline.length > 1
+      ) {
+        finalizePolyline();
+      } else if (event.key === 'Escape' && isDrawingPolyline) {
+        // ESC를 누르면 완전히 종료
+        setIsDrawingPolyline(false);
+        setCurrentPolyline([]);
+        setLineStart(null);
+        setLineEnd(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [finalizePolyline, isDrawingPolyline]);
 
   const isLineIntersectingWithCircle = (line, circle) => {
     const { x1, y1, x2, y2 } = line;
@@ -726,6 +807,10 @@ const useMouseHandlers = (
       fill: fillColor,
     };
 
+    if (clickedPath.type === 'polyline' && !clickedPath.closed) {
+      updatedPath.closed = true;
+    }
+
     const updatedLayer = {
       ...selectedOneLayer,
       path: [...selectedOneLayer.path],
@@ -759,10 +844,6 @@ const useMouseHandlers = (
 
     return updatedLayer;
   };
-
-  const updateLayerInFirestore = useStore(
-    (state) => state.updateLayerInFirestore,
-  );
 
   const handlePaintBucket = useCallback(
     async (event) => {
@@ -848,32 +929,17 @@ const useMouseHandlers = (
       mouseY = nearestPoint.y;
     }
     if (selectedTool === 'line') {
-      if (!lineStart) {
-        setLineStart({ x: mouseX, y: mouseY });
-        setLineEnd({ x: mouseX, y: mouseY });
+      const newPoint = { x: mouseX, y: mouseY };
+      if (!isDrawingPolyline) {
+        // 새로운 폴리라인 시작
+        setIsDrawingPolyline(true);
+        setCurrentPolyline([newPoint]);
+        setLineStart(newPoint);
+        setLineEnd(newPoint);
       } else {
-        if (isShiftPressed) {
-          const dx = mouseX - lineStart.x;
-          const dy = mouseY - lineStart.y;
-          if (Math.abs(dx) > Math.abs(dy)) {
-            mouseY = lineStart.y;
-          } else {
-            mouseX = lineStart.x;
-          }
-        }
-
-        setLineEnd({ x: mouseX, y: mouseY });
-        if (selectedLayer) {
-          addPathToLayer(selectedLayer.index, {
-            type: 'line',
-            x1: lineStart.x,
-            y1: lineStart.y,
-            x2: mouseX,
-            y2: mouseY,
-          });
-        }
-        setLineStart(null);
-        setLineEnd(null);
+        // 기존 폴리라인에 점 추가
+        setCurrentPolyline((prev) => [...prev, newPoint]);
+        setLineEnd(newPoint);
       }
     }
   };
@@ -930,8 +996,8 @@ const useMouseHandlers = (
 
     if (selectedTool === 'move') {
       setDragging(false);
-    } else if (selectedTool === 'line' && isDrawing) {
-      if (selectedLayer) {
+    } else if (selectedTool === 'line' && isDrawingPolyline) {
+      if (selectedLayer && lineStart && lineEnd) {
         const newPath = {
           type: 'line',
           x1: lineStart.x,
@@ -981,9 +1047,8 @@ const useMouseHandlers = (
           }
         }
       }
-      setLineStart(null);
-      setLineEnd(null);
-      setIsDrawing(false);
+
+      setLineStart(lineEnd);
     } else if (
       selectedTool === 'bezier' &&
       bezierStart &&
@@ -1086,11 +1151,16 @@ const useMouseHandlers = (
       });
     } else if (selectedTool === 'line') {
       const point = getMousePosition(event);
-      if (!isDrawing) {
-        setIsDrawing(true);
-        setCurrentPath([point]);
+      if (!isDrawingPolyline) {
+        setIsDrawingPolyline(true);
+        setLineStart(point);
+        setLineEnd(point);
+        setCurrentPolyline([point]);
       } else {
-        setCurrentPath((prev) => [...prev, point]);
+        setLineEnd(point);
+        setCurrentPolyline((prev) => [...prev, point]);
+        // 새로운 선을 그릴 때마다 lineStart를 업데이트합니다.
+        setLineStart(lineEnd);
       }
     } else if (selectedTool === 'bezier') {
       if (!bezierStart) {
@@ -1161,6 +1231,11 @@ const useMouseHandlers = (
     setEraserEnd,
     renderEraserArea,
     setLayerList,
+    currentPolyline,
+    setCurrentPolyline,
+    isDrawingPolyline,
+    setIsDrawingPolyline,
+    finalizePolyline,
   };
 };
 
