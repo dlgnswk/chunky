@@ -261,7 +261,6 @@ const useStore = create((set, get) => ({
 
       return false;
     } catch (error) {
-      console.error('Error updating layer:', error);
       return false;
     }
   },
