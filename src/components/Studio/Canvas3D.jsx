@@ -1,5 +1,7 @@
 import { IoCubeOutline } from 'react-icons/io5';
 import { useState } from 'react';
+import { OrbitControls } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
 
 import useStore from '../../store/store';
 
@@ -26,7 +28,7 @@ function Canvas3D() {
           <IoCubeOutline />
         </div>
       )}
-      {layerList.length !== 0 && <canvas className="rendering-canvas"></canvas>}
+      {layerList.length !== 0 && <Canvas className="rendering-canvas"></Canvas>}
     </div>
   );
 }
