@@ -6,6 +6,7 @@ import {
 } from 'react-icons/ai';
 import { useState, useEffect } from 'react';
 import useStore from '../../store/store';
+import firestore from '../../services/firestore';
 
 function LayerCard({
   name,
@@ -15,7 +16,8 @@ function LayerCard({
   selectLayer,
   handleSelectClick,
 }) {
-  const { copyLayer, updateLayer, removeLayer, setAlertState } = useStore();
+  const { updateLayer, removeLayer, setAlertState, user, updateLayerHeight } =
+    useStore();
   const [newName, setNewName] = useState(name);
   const [newHeight, setNewHeight] = useState(height);
 
@@ -29,10 +31,6 @@ function LayerCard({
     updateLayer(index, { visible: !visible });
   };
 
-  const handleCopyClick = () => {
-    copyLayer(index);
-  };
-
   const handleRemoveClick = () => {
     removeLayer(index);
   };
@@ -41,7 +39,7 @@ function LayerCard({
     setNewName(e.target.value);
   };
 
-  const handleNameBlurOrEnter = () => {
+  const handleNameBlur = () => {
     if (newName.trim() === '') {
       setNewName(name);
       return;
@@ -65,20 +63,19 @@ function LayerCard({
     setNewHeight(e.target.value);
   };
 
-  const handleHeightBlurOrEnter = () => {
+  const handleHeightBlur = async () => {
     const heightValue = Number(newHeight);
     if (heightValue < 1 || heightValue > 827) {
       setNewHeight(height);
       setAlertState({ id: Date.now(), message: 'invalid-height' });
     } else {
-      updateLayer(index, { height: newHeight });
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleNameBlurOrEnter();
-      handleHeightBlurOrEnter();
+      try {
+        await firestore.updateLayerHeight(user.uid, index, heightValue);
+        setNewHeight(heightValue);
+      } catch (error) {
+        setAlertState({ id: Date.now(), message: 'update-failed' });
+        setNewHeight(height);
+      }
     }
   };
 
@@ -107,8 +104,7 @@ function LayerCard({
               value={newName}
               onClick={(e) => e.stopPropagation()}
               onChange={handleNameChange}
-              onBlur={handleNameBlurOrEnter}
-              onKeyDown={handleKeyDown}
+              onBlur={handleNameBlur}
             />
           </div>
           <div>
@@ -117,8 +113,7 @@ function LayerCard({
               value={newHeight}
               onClick={(e) => e.stopPropagation()}
               onChange={handleHeightChange}
-              onBlur={handleHeightBlurOrEnter}
-              onKeyDown={handleKeyDown}
+              onBlur={handleHeightBlur}
             />
             mm
           </div>
@@ -128,7 +123,9 @@ function LayerCard({
         <button
           className="layer-icon-copy"
           aria-label="layer copy button"
-          onClick={handleCopyClick}
+          onClick={() => {
+            /* 복사 로직 */
+          }}
         >
           <AiOutlineCopy />
         </button>

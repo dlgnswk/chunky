@@ -91,10 +91,27 @@ async function updateLayerInFirestoreDB(uid, layer) {
   }
 }
 
+async function updateLayerHeight(uid, layerIndex, newHeight) {
+  const layerRef = firestoreDoc(
+    db,
+    'users',
+    uid,
+    'layers',
+    layerIndex.toString(),
+  );
+  try {
+    await updateDoc(layerRef, { height: newHeight });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 export default {
   addLayerToFirestore,
   getLayersFromFirestore,
   deleteLayerFromFirestore,
   updateLayerInFirestoreDB,
   subscribeToLayers,
+  updateLayerHeight,
 };
