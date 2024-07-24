@@ -276,7 +276,6 @@ function Canvas2D() {
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // 현재 마우스 위치까지 선 그리기
         if (lineEnd) {
           ctx.beginPath();
           ctx.moveTo(
@@ -289,14 +288,12 @@ function Canvas2D() {
           ctx.stroke();
         }
 
-        // 폴리라인 닫기 표시
         if (currentPolyline.length > 2 && lineEnd) {
           const distToStart = Math.hypot(
             lineEnd.x - currentPolyline[0].x,
             lineEnd.y - currentPolyline[0].y,
           );
           if (distToStart < 10) {
-            // 시작점과 가까우면 닫힘 표시
             ctx.beginPath();
             ctx.moveTo(lineEnd.x, lineEnd.y);
             ctx.lineTo(currentPolyline[0].x, currentPolyline[0].y);
