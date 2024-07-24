@@ -3,15 +3,10 @@ import { IoSquareOutline } from 'react-icons/io5';
 import useStore from '../../store/store';
 import ToolBox from './ToolBox';
 import drawGrid from '../../utils/drawGrid';
-import drawLine from '../../utils/drawLine';
 import useCanvasSetup from '../../hooks/useCanvasSetup';
 import handleKeyDown from '../../utils/handleKeyDown';
 import useMouseHandlers from '../../hooks/useMouseHandlers';
 import getCursorStyle from '../../utils/getCursorStyle';
-import drawBezierCurve from '../../utils/drawBezierCurve';
-import drawTriangle from '../../utils/drawTriangle';
-import drawCircle from '../../utils/drawCircle';
-import { drawPath } from '../../utils/pathUtils';
 
 function Canvas2D() {
   const {
@@ -145,34 +140,6 @@ function Canvas2D() {
           }
 
           if (path.fill && path.fill !== 'none') {
-            if (path.mask) {
-              const mask = layer.masks.find((m) => m.id === path.mask);
-              if (mask) {
-                ctx.save();
-                ctx.beginPath();
-                drawPath(ctx, mask.outerPath);
-                ctx.clip();
-                mask.innerPaths.forEach((innerPath) => {
-                  ctx.beginPath();
-                  drawPath(ctx, innerPath);
-                  ctx.clip('evenodd');
-                });
-                ctx.fillStyle = path.fill;
-                drawPath(ctx, path);
-                ctx.fill();
-                ctx.restore();
-              }
-            } else {
-              ctx.fillStyle = path.fill;
-              ctx.fill();
-            }
-          }
-
-          if (path.closed) {
-            ctx.closePath();
-          }
-
-          if (path.fill && path.fill !== 'none') {
             ctx.fillStyle = path.fill;
             ctx.fill();
           }
@@ -202,11 +169,9 @@ function Canvas2D() {
     bezierEnd,
     bezierControl,
     rectStart,
-    rectEnd,
     trianglePoints,
     currentMousePos,
     circleCenter,
-    circleRadius,
     snapPoint,
     cancelDrawing,
     finalizeErase,
@@ -217,9 +182,7 @@ function Canvas2D() {
     eraserEnd,
     setEraserEnd,
     currentPolyline,
-    setCurrentPolyline,
     isDrawingPolyline,
-    setIsDrawingPolyline,
   } = useMouseHandlers(
     selectedTool,
     { x: offset.x, y: offset.y, scale },
@@ -312,7 +275,6 @@ function Canvas2D() {
         isDrawingPolyline &&
         currentPolyline.length > 0
       ) {
-        // 완성된 선 그리기
         ctx.beginPath();
         ctx.moveTo(currentPolyline[0].x, currentPolyline[0].y);
         for (let i = 1; i < currentPolyline.length; i += 1) {
@@ -324,7 +286,6 @@ function Canvas2D() {
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // 현재 그리고 있는 선 (마지막 점에서 마우스 커서까지)
         if (lineEnd && currentPolyline[currentPolyline.length - 1]) {
           ctx.beginPath();
           ctx.moveTo(
@@ -332,12 +293,11 @@ function Canvas2D() {
             currentPolyline[currentPolyline.length - 1].y,
           );
           ctx.lineTo(lineEnd.x, lineEnd.y);
-          ctx.strokeStyle = 'red';
+          ctx.strokeStyle = 'tomato';
           ctx.lineWidth = 1;
           ctx.stroke();
         }
 
-        // 예상 닫힘 선 (점선으로 표시)
         if (currentPolyline.length > 2 && lineEnd && currentPolyline[0]) {
           ctx.beginPath();
           ctx.moveTo(lineEnd.x, lineEnd.y);
@@ -348,9 +308,72 @@ function Canvas2D() {
           ctx.stroke();
           ctx.setLineDash([]);
         }
+      } else if (selectedTool === 'bezier' && bezierStart && bezierEnd) {
+        ctx.beginPath();
+        ctx.moveTo(bezierStart.x, bezierStart.y);
+        ctx.quadraticCurveTo(
+          bezierControl ? bezierControl.x : currentMousePos.x,
+          bezierControl ? bezierControl.y : currentMousePos.y,
+          bezierEnd.x,
+          bezierEnd.y,
+        );
+        ctx.strokeStyle = 'tomato';
+        ctx.stroke();
+      } else if (selectedTool === 'rectangle' && rectStart) {
+        ctx.beginPath();
+        ctx.rect(
+          rectStart.x,
+          rectStart.y,
+          currentMousePos.x - rectStart.x,
+          currentMousePos.y - rectStart.y,
+        );
+        ctx.strokeStyle = 'tomato';
+        ctx.stroke();
+      } else if (selectedTool === 'triangle' && trianglePoints.length > 0) {
+        ctx.beginPath();
+        ctx.moveTo(trianglePoints[0].x, trianglePoints[0].y);
+        for (let i = 1; i < trianglePoints.length; i += 1) {
+          ctx.lineTo(trianglePoints[i].x, trianglePoints[i].y);
+        }
+        if (trianglePoints.length < 3) {
+          ctx.lineTo(currentMousePos.x, currentMousePos.y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = 'tomato';
+        ctx.stroke();
+      } else if (selectedTool === 'circle' && circleCenter) {
+        const radius = Math.sqrt(
+          (currentMousePos.x - circleCenter.x) ** 2 +
+            (currentMousePos.y - circleCenter.y) ** 2,
+        );
+        ctx.beginPath();
+        ctx.arc(circleCenter.x, circleCenter.y, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'tomato';
+        ctx.stroke();
+      }
+
+      // Snap point 표시
+      if (snapPoint) {
+        ctx.beginPath();
+        ctx.arc(snapPoint.x, snapPoint.y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = 'tomato';
+        ctx.fill();
       }
     },
-    [selectedTool, isDrawingPolyline, currentPolyline, lineEnd],
+    [
+      selectedTool,
+      isDrawingPolyline,
+      currentPolyline,
+      lineEnd,
+      bezierStart,
+      bezierEnd,
+      bezierControl,
+      rectStart,
+      trianglePoints,
+      circleCenter,
+      currentMousePos,
+      snapPoint,
+    ],
   );
 
   const renderSnapPoint = useCallback(

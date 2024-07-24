@@ -26,12 +26,10 @@ async function addLayerToFirestore(uid, layer) {
     const updatedPath = layer.path.map((path) => ({
       ...path,
       fill: path.fill || 'none',
-      mask: path.mask || null,
     }));
     const layerWithUpdatedPath = {
       ...layer,
       path: updatedPath,
-      masks: layer.masks || [],
     };
     const docRef = await addDoc(layerCollectionRef, layerWithUpdatedPath);
     return docRef.id;
@@ -49,13 +47,11 @@ async function getLayersFromFirestore(uid) {
       const updatedPath = data.path.map((path) => ({
         ...path,
         fill: path.fill || 'none',
-        mask: path.mask || null,
       }));
       return {
         ...data,
         id: doc.id,
         path: updatedPath,
-        masks: data.masks || [],
       };
     });
   } catch (e) {

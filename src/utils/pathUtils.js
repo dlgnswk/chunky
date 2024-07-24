@@ -1,11 +1,3 @@
-const createMask = async (maskId, outerPath, innerPaths) => {
-  return {
-    id: maskId,
-    outerPath,
-    innerPaths,
-  };
-};
-
 const drawPath = (ctx, path) => {
   switch (path.type) {
     case 'rectangle':
@@ -25,7 +17,7 @@ const drawPath = (ctx, path) => {
       ctx.arc(path.center.x, path.center.y, path.radius, 0, 2 * Math.PI);
       break;
     default:
-      console.warn(`Unknown path type: ${path.type}`);
+      break;
   }
 };
 
@@ -49,7 +41,6 @@ const getPathPoints = (path) => {
     case 'circle':
       return [path.center];
     default:
-      console.warn(`Unknown path type: ${path.type}`);
       return [];
   }
 };
@@ -67,4 +58,4 @@ const isPathInsidePath = (innerPath, outerPath) => {
   );
 };
 
-export { createMask, drawPath, getPathPoints, isPointInPath, isPathInsidePath };
+export { drawPath, getPathPoints, isPointInPath, isPathInsidePath };

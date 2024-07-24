@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import useStore from '../store/store';
-import { createMask, isPathInsidePath } from '../utils/pathUtils';
 
 const SNAP_THRESHOLD = 10;
 const ERASER_SIZE = 5;
@@ -177,7 +176,6 @@ const useMouseHandlers = (
               }
               ctx.stroke();
 
-              // 스냅 포인트 표시 (기존 렌더링 이후에 추가)
               path.points.forEach((point) => {
                 ctx.beginPath();
                 ctx.arc(point.x, point.y, 3, 0, Math.PI * 2);
@@ -457,6 +455,14 @@ const useMouseHandlers = (
             path.y2 >= minY &&
             path.y2 <= maxY)
         );
+      case 'polyline':
+        return path.points.some(
+          (point) =>
+            point.x >= minX &&
+            point.x <= maxX &&
+            point.y >= minY &&
+            point.y <= maxY,
+        );
       case 'rectangle':
         return (
           path.x >= minX &&
@@ -580,18 +586,17 @@ const useMouseHandlers = (
   );
 
   const finalizePolyline = useCallback(() => {
-    if (selectedLayer && isDrawingPolyline && currentPolyline.length > 1) {
+    if (selectedLayer && isDrawingPolyline && currentPolyline.length > 2) {
       const closedPath = {
         type: 'polyline',
         points: [...currentPolyline, currentPolyline[0]],
         closed: true,
+        fill: 'none',
       };
-      // 기존의 열린 선들을 모두 제거하고 닫힌 경로로 대체
+
       const updatedLayer = {
         ...selectedLayer,
-        path: selectedLayer.path
-          .filter((path) => path.type !== 'line')
-          .concat(closedPath),
+        path: [...selectedLayer.path, closedPath],
       };
       updateLayerInFirestore(updatedLayer);
 
@@ -614,11 +619,9 @@ const useMouseHandlers = (
         isDrawingPolyline &&
         currentPolyline.length > 1
       ) {
-        // 스페이스바를 눌렀을 때 폴리라인 완성
-        event.preventDefault(); // 스페이스바의 기본 동작 방지
+        event.preventDefault();
         finalizePolyline();
       } else if (event.key === 'Escape' && isDrawingPolyline) {
-        // ESC를 누르면 폴리라인 그리기를 중단
         setIsDrawingPolyline(false);
         setCurrentPolyline([]);
         setLineStart(null);
@@ -641,7 +644,6 @@ const useMouseHandlers = (
       ) {
         finalizePolyline();
       } else if (event.key === 'Escape' && isDrawingPolyline) {
-        // ESC를 누르면 완전히 종료
         setIsDrawingPolyline(false);
         setCurrentPolyline([]);
         setLineStart(null);
@@ -790,61 +792,6 @@ const useMouseHandlers = (
 
   useEffect(() => {}, [layerList]);
 
-  const updatePathWithFill = async (
-    clickedPath,
-    clickedPathIndex,
-    paths,
-    fillColor,
-    selectedOneLayer,
-  ) => {
-    const innerPaths = paths.filter(
-      (path, index) =>
-        index !== clickedPathIndex && isPathInsidePath(path, clickedPath),
-    );
-
-    const updatedPath = {
-      ...clickedPath,
-      fill: fillColor,
-    };
-
-    if (clickedPath.type === 'polyline' && !clickedPath.closed) {
-      updatedPath.closed = true;
-    }
-
-    const updatedLayer = {
-      ...selectedOneLayer,
-      path: [...selectedOneLayer.path],
-    };
-
-    if (innerPaths.length > 0) {
-      const maskId = `mask-${Date.now()}`;
-      const mask = await createMask(maskId, clickedPath, innerPaths);
-      updatedPath.mask = maskId;
-      updatedLayer.masks = [...(selectedOneLayer.masks || []), mask];
-
-      // Update the clicked path
-      updatedLayer.path[clickedPathIndex] = updatedPath;
-
-      // Update inner paths to use the new mask
-      innerPaths.forEach((innerPath) => {
-        const innerPathIndex = updatedLayer.path.findIndex(
-          (p) => p === innerPath,
-        );
-        if (innerPathIndex !== -1) {
-          updatedLayer.path[innerPathIndex] = {
-            ...innerPath,
-            mask: maskId,
-          };
-        }
-      });
-    } else {
-      // If there are no inner paths, just update the clicked path
-      updatedLayer.path[clickedPathIndex] = updatedPath;
-    }
-
-    return updatedLayer;
-  };
-
   const handlePaintBucket = useCallback(
     async (event) => {
       if (selectedTool !== 'paintBucket') return;
@@ -853,10 +800,9 @@ const useMouseHandlers = (
       const x = (event.clientX - rect.left) / scale;
       const y = (event.clientY - rect.top) / scale;
 
-      // 현재 레이어 리스트에서 클릭된 경로 찾기
       const clickedLayerInfo = layerList.reduce(
         (result, layer) => {
-          if (result.clickedLayer) return result; // 이미 찾은 경우 더 이상 진행하지 않음
+          if (result.clickedLayer) return result;
 
           const pathIndex = layer.path.findIndex((path) =>
             isPointInPath(path, x, y),
@@ -876,25 +822,31 @@ const useMouseHandlers = (
       if (clickedLayer && clickedPathIndex !== -1) {
         const clickedPath = clickedLayer.path[clickedPathIndex];
 
-        const updatedLayer = await updatePathWithFill(
-          clickedPath,
-          clickedPathIndex,
-          clickedLayer.path,
-          paintBucketColor,
-          clickedLayer,
-        );
+        // 폴리라인이고 닫혀있지 않다면 닫아줍니다.
+        if (clickedPath.type === 'polyline' && !clickedPath.closed) {
+          clickedPath.closed = true;
+          clickedPath.points.push(clickedPath.points[0]);
+        }
 
-        if (updatedLayer) {
-          const success = await updateLayerInFirestore(updatedLayer);
+        const updatedPath = {
+          ...clickedPath,
+          fill: paintBucketColor,
+        };
 
-          if (success) {
-            setLayerList((prevLayers) => {
-              const newLayerList = prevLayers.map((layer) =>
-                layer.id === updatedLayer.id ? updatedLayer : layer,
-              );
-              return newLayerList;
-            });
-          }
+        const updatedLayer = {
+          ...clickedLayer,
+          path: [...clickedLayer.path],
+        };
+        updatedLayer.path[clickedPathIndex] = updatedPath;
+
+        const success = await updateLayerInFirestore(updatedLayer);
+
+        if (success) {
+          setLayerList((prevLayers) =>
+            prevLayers.map((layer) =>
+              layer.id === updatedLayer.id ? updatedLayer : layer,
+            ),
+          );
         }
 
         renderCanvas();
@@ -931,13 +883,11 @@ const useMouseHandlers = (
     if (selectedTool === 'line') {
       const newPoint = { x: mouseX, y: mouseY };
       if (!isDrawingPolyline) {
-        // 새로운 폴리라인 시작
         setIsDrawingPolyline(true);
         setCurrentPolyline([newPoint]);
         setLineStart(newPoint);
         setLineEnd(newPoint);
       } else {
-        // 기존 폴리라인에 점 추가
         setCurrentPolyline((prev) => [...prev, newPoint]);
         setLineEnd(newPoint);
       }
@@ -1006,24 +956,19 @@ const useMouseHandlers = (
           y2: lineEnd.y,
         };
 
-        // 현재 레이어의 path 배열 가져오기
         const currentPaths = [...selectedLayer.path];
 
-        // 첫 번째 라인인 경우
         if (currentPaths.length === 0) {
           addPathToLayer(selectedLayer.index, newPath);
         } else {
-          // 이전 라인의 끝점과 현재 라인의 시작점이 같은지 확인
           const prevLine = currentPaths[currentPaths.length - 1];
           if (prevLine.x2 === newPath.x1 && prevLine.y2 === newPath.y1) {
-            // 현재 라인의 끝점과 첫 번째 라인의 시작점 사이의 거리 계산
             const firstLine = currentPaths[0];
             const distance = Math.sqrt(
               (newPath.x2 - firstLine.x1) ** 2 +
                 (newPath.y2 - firstLine.y1) ** 2,
             );
 
-            // 거리가 충분히 가까우면 (예: 5픽셀 이내) 경로를 닫음
             if (distance <= 5) {
               const closedPath = {
                 type: 'polyline',
@@ -1032,17 +977,15 @@ const useMouseHandlers = (
                   .concat({ x: firstLine.x1, y: firstLine.y1 }),
                 closed: true,
               };
-              // 기존의 열린 선들을 모두 제거하고 닫힌 경로로 대체
+
               selectedLayer.path = selectedLayer.path.filter(
                 (path) => path.type !== 'line',
               );
               addPathToLayer(selectedLayer.index, closedPath);
             } else {
-              // 경로가 닫히지 않았으면 새 라인 추가
               addPathToLayer(selectedLayer.index, newPath);
             }
           } else {
-            // 연속되지 않은 새로운 라인 시작
             addPathToLayer(selectedLayer.index, newPath);
           }
         }
@@ -1072,7 +1015,6 @@ const useMouseHandlers = (
       setBezierControl(null);
       setIsBezierDrawing(false);
     } else if (selectedTool === 'rectangle' && rectStart && rectEnd) {
-      // 최신 레이어 상태를 가져옵니다.
       const currentLayer = layerList.find(
         (layer) => layer.id === selectedLayer.id,
       );
@@ -1089,7 +1031,7 @@ const useMouseHandlers = (
 
         const updatedLayer = {
           ...currentLayer,
-          path: [...currentLayer.path, newPath], // 기존 경로를 유지하면서 새 경로 추가
+          path: [...currentLayer.path, newPath],
         };
 
         const success = await updateLayerInFirestore(updatedLayer);
@@ -1159,7 +1101,7 @@ const useMouseHandlers = (
       } else {
         setLineEnd(point);
         setCurrentPolyline((prev) => [...prev, point]);
-        // 새로운 선을 그릴 때마다 lineStart를 업데이트합니다.
+
         setLineStart(lineEnd);
       }
     } else if (selectedTool === 'bezier') {
