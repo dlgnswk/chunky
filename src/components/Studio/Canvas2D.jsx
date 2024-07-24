@@ -242,31 +242,6 @@ function Canvas2D() {
   ]);
 
   useEffect(() => {
-    const handleKeyDownCallback = (event) => {
-      handleKeyDown(event, selectTool);
-      if (event.key === 'Escape' && (lineStart || bezierStart || rectStart)) {
-        cancelDrawing();
-      }
-      if (event.key === 'Enter' && isDrawingPolyline) {
-        finalizePolyline();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDownCallback);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDownCallback);
-    };
-  }, [
-    selectTool,
-    lineStart,
-    bezierStart,
-    rectStart,
-    cancelDrawing,
-    isDrawingPolyline,
-    finalizePolyline,
-  ]);
-
-  useEffect(() => {
     if (selectedTool !== 'eraser') {
       finalizeErase();
     }
@@ -295,15 +270,14 @@ function Canvas2D() {
         ctx.beginPath();
         ctx.moveTo(currentPolyline[0].x, currentPolyline[0].y);
         for (let i = 1; i < currentPolyline.length; i += 1) {
-          if (currentPolyline[i]) {
-            ctx.lineTo(currentPolyline[i].x, currentPolyline[i].y);
-          }
+          ctx.lineTo(currentPolyline[i].x, currentPolyline[i].y);
         }
         ctx.strokeStyle = 'blue';
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        if (lineEnd && currentPolyline[currentPolyline.length - 1]) {
+        // 현재 마우스 위치까지 선 그리기
+        if (lineEnd) {
           ctx.beginPath();
           ctx.moveTo(
             currentPolyline[currentPolyline.length - 1].x,
@@ -315,15 +289,23 @@ function Canvas2D() {
           ctx.stroke();
         }
 
-        if (currentPolyline.length > 2 && lineEnd && currentPolyline[0]) {
-          ctx.beginPath();
-          ctx.moveTo(lineEnd.x, lineEnd.y);
-          ctx.lineTo(currentPolyline[0].x, currentPolyline[0].y);
-          ctx.setLineDash([5, 5]);
-          ctx.strokeStyle = 'gray';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-          ctx.setLineDash([]);
+        // 폴리라인 닫기 표시
+        if (currentPolyline.length > 2 && lineEnd) {
+          const distToStart = Math.hypot(
+            lineEnd.x - currentPolyline[0].x,
+            lineEnd.y - currentPolyline[0].y,
+          );
+          if (distToStart < 10) {
+            // 시작점과 가까우면 닫힘 표시
+            ctx.beginPath();
+            ctx.moveTo(lineEnd.x, lineEnd.y);
+            ctx.lineTo(currentPolyline[0].x, currentPolyline[0].y);
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = 'gray';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
         }
       } else if (selectedTool === 'bezier' && bezierStart && bezierEnd) {
         ctx.beginPath();
@@ -466,7 +448,6 @@ function Canvas2D() {
       renderEraserArea(context);
     }
   }, [
-    layerList,
     canvasRef,
     canvasSize,
     renderLayers,
@@ -476,6 +457,35 @@ function Canvas2D() {
     isErasing,
     eraserStart,
     eraserEnd,
+  ]);
+
+  useEffect(() => {
+    const handleKeyDownCallback = (event) => {
+      handleKeyDown(event, selectTool);
+      if (event.key === 'Escape') {
+        if (lineStart || bezierStart || rectStart || isDrawingPolyline) {
+          cancelDrawing();
+          renderCanvas();
+        }
+      }
+      if (event.key === 'Enter' && isDrawingPolyline) {
+        finalizePolyline();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDownCallback);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDownCallback);
+    };
+  }, [
+    selectTool,
+    lineStart,
+    bezierStart,
+    rectStart,
+    cancelDrawing,
+    isDrawingPolyline,
+    finalizePolyline,
+    renderCanvas,
   ]);
 
   useEffect(() => {

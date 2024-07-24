@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import useStore from '../store/store';
 
 const SNAP_THRESHOLD = 10;
@@ -291,74 +291,77 @@ const useMouseHandlers = (
     return intersections;
   };
 
-  const findAllIntersections = useCallback((layers) => {
-    const intersections = [];
+  const findAllIntersections = useMemo(
+    () => (layers) => {
+      const intersections = [];
 
-    layers.forEach((layer, i) => {
-      if (layer.visible && Array.isArray(layer.path)) {
-        layer.path.forEach((path1, j) => {
-          layer.path.slice(j + 1).forEach((path2) => {
-            if (path1.type === 'line' && path2.type === 'line') {
-              const intersection = getLineLineIntersection(path1, path2);
-              if (intersection) intersections.push(intersection);
-            } else if (path1.type === 'rectangle' && path2.type === 'line') {
-              const newIntersections = getRectangleLineIntersections(
-                path1,
-                path2,
-              );
-              intersections.push(...newIntersections);
-            } else if (path1.type === 'line' && path2.type === 'rectangle') {
-              const newIntersections = getRectangleLineIntersections(
-                path2,
-                path1,
-              );
-              intersections.push(...newIntersections);
-            }
+      layers.forEach((layer, i) => {
+        if (layer.visible && Array.isArray(layer.path)) {
+          layer.path.forEach((path1, j) => {
+            layer.path.slice(j + 1).forEach((path2) => {
+              if (path1.type === 'line' && path2.type === 'line') {
+                const intersection = getLineLineIntersection(path1, path2);
+                if (intersection) intersections.push(intersection);
+              } else if (path1.type === 'rectangle' && path2.type === 'line') {
+                const newIntersections = getRectangleLineIntersections(
+                  path1,
+                  path2,
+                );
+                intersections.push(...newIntersections);
+              } else if (path1.type === 'line' && path2.type === 'rectangle') {
+                const newIntersections = getRectangleLineIntersections(
+                  path2,
+                  path1,
+                );
+                intersections.push(...newIntersections);
+              }
+            });
+
+            layers.slice(i + 1).forEach((otherLayer) => {
+              if (otherLayer.visible && Array.isArray(otherLayer.path)) {
+                otherLayer.path.forEach((path2) => {
+                  if (path1.type === 'line' && path2.type === 'line') {
+                    const intersection = getLineLineIntersection(path1, path2);
+                    if (intersection) intersections.push(intersection);
+                  } else if (
+                    path1.type === 'rectangle' &&
+                    path2.type === 'line'
+                  ) {
+                    const newIntersections = getRectangleLineIntersections(
+                      path1,
+                      path2,
+                    );
+                    intersections.push(...newIntersections);
+                  } else if (
+                    path1.type === 'line' &&
+                    path2.type === 'rectangle'
+                  ) {
+                    const newIntersections = getRectangleLineIntersections(
+                      path2,
+                      path1,
+                    );
+                    intersections.push(...newIntersections);
+                  } else if (
+                    path1.type === 'rectangle' &&
+                    path2.type === 'rectangle'
+                  ) {
+                    const newIntersections = getRectangleRectangleIntersections(
+                      path1,
+                      path2,
+                    );
+                    intersections.push(...newIntersections);
+                  }
+                });
+              }
+            });
           });
+        }
+      });
 
-          layers.slice(i + 1).forEach((otherLayer) => {
-            if (otherLayer.visible && Array.isArray(otherLayer.path)) {
-              otherLayer.path.forEach((path2) => {
-                if (path1.type === 'line' && path2.type === 'line') {
-                  const intersection = getLineLineIntersection(path1, path2);
-                  if (intersection) intersections.push(intersection);
-                } else if (
-                  path1.type === 'rectangle' &&
-                  path2.type === 'line'
-                ) {
-                  const newIntersections = getRectangleLineIntersections(
-                    path1,
-                    path2,
-                  );
-                  intersections.push(...newIntersections);
-                } else if (
-                  path1.type === 'line' &&
-                  path2.type === 'rectangle'
-                ) {
-                  const newIntersections = getRectangleLineIntersections(
-                    path2,
-                    path1,
-                  );
-                  intersections.push(...newIntersections);
-                } else if (
-                  path1.type === 'rectangle' &&
-                  path2.type === 'rectangle'
-                ) {
-                  const newIntersections = getRectangleRectangleIntersections(
-                    path1,
-                    path2,
-                  );
-                  intersections.push(...newIntersections);
-                }
-              });
-            }
-          });
-        });
-      }
-    });
-
-    return intersections;
-  }, []);
+      return intersections;
+    },
+    [],
+  );
 
   const findNearestPoint = useCallback(
     (x, y) => {
@@ -367,7 +370,7 @@ const useMouseHandlers = (
 
       const checkPoint = (point) => {
         const distance = Math.sqrt((x - point.x) ** 2 + (y - point.y) ** 2);
-        if (distance < minDistance && distance < SNAP_THRESHOLD) {
+        if (distance < minDistance && distance < SNAP_THRESHOLD / scale) {
           minDistance = distance;
           nearest = point;
         }
@@ -415,7 +418,11 @@ const useMouseHandlers = (
     [layerList, findAllIntersections],
   );
 
-  const cancelDrawing = useCallback(() => {
+  const updateLayerInFirestore = useStore(
+    (state) => state.updateLayerInFirestore,
+  );
+
+  const cancelDrawing = useCallback(async () => {
     setLineStart(null);
     setLineEnd(null);
     setBezierStart(null);
@@ -428,11 +435,46 @@ const useMouseHandlers = (
     setTrianglePoints([]);
     setCircleCenter(null);
     setCircleRadius(0);
-  }, []);
 
-  const updateLayerInFirestore = useStore(
-    (state) => state.updateLayerInFirestore,
-  );
+    if (selectedTool === 'line' && isDrawingPolyline) {
+      setIsDrawingPolyline(false);
+
+      if (selectedLayer && currentPolyline.length > 0) {
+        const currentLayer = layerList.find(
+          (layer) => layer.id === selectedLayer.id,
+        );
+
+        if (currentLayer) {
+          const updatedPaths = currentLayer.path.filter(
+            (path) =>
+              path.type !== 'line' ||
+              !currentPolyline.some(
+                (point) => point.x === path.x1 && point.y === path.y1,
+              ),
+          );
+
+          const updatedLayer = {
+            ...currentLayer,
+            path: updatedPaths,
+          };
+
+          await updateLayerInFirestore(updatedLayer);
+
+          await refreshLayerState();
+        }
+      }
+
+      setCurrentPolyline([]);
+    }
+  }, [
+    selectedTool,
+    isDrawingPolyline,
+    currentPolyline,
+    selectedLayer,
+    layerList,
+    updateLayerInFirestore,
+    refreshLayerState,
+  ]);
 
   const isPathInEraserArea = (path, area) => {
     if (!area || !area.start || !area.end) return false;
@@ -529,6 +571,9 @@ const useMouseHandlers = (
       let mouseX = (event.clientX - rect.left) / scale;
       let mouseY = (event.clientY - rect.top) / scale;
 
+      mouseX = Math.round(mouseX * 100) / 100;
+      mouseY = Math.round(mouseY * 100) / 100;
+
       const nearestPoint = findNearestPoint(mouseX, mouseY);
       if (nearestPoint) {
         mouseX = nearestPoint.x;
@@ -591,9 +636,14 @@ const useMouseHandlers = (
     );
 
     if (currentLayer && isDrawingPolyline && currentPolyline.length > 2) {
+      const uniquePoints = currentPolyline.filter(
+        (point, index, self) =>
+          index === self.findIndex((t) => t.x === point.x && t.y === point.y),
+      );
+
       const closedPath = {
         type: 'polyline',
-        points: currentPolyline,
+        points: uniquePoints,
         closed: true,
         fill: 'none',
       };
@@ -1091,15 +1141,20 @@ const useMouseHandlers = (
       });
     } else if (selectedTool === 'line') {
       if (selectedTool === 'line') {
-        const point = getMousePosition(event);
-        if (!isDrawingPolyline) {
+        const point = { x: mouseX, y: mouseY };
+        if (!isDrawingPolyline || currentPolyline.length === 0) {
           setIsDrawingPolyline(true);
           setCurrentPolyline([point]);
           setLineStart(point);
           setLineEnd(point);
         } else {
-          setCurrentPolyline((prev) => [...prev, point]);
-          setLineEnd(point);
+          const lastPoint = currentPolyline[currentPolyline.length - 1];
+          if (
+            Math.hypot(point.x - lastPoint.x, point.y - lastPoint.y) > 0.001
+          ) {
+            setCurrentPolyline((prev) => [...prev, point]);
+            setLineEnd(point);
+          }
         }
       }
     } else if (selectedTool === 'bezier') {
