@@ -156,6 +156,8 @@ function Canvas2D() {
     (state) => state.updateLayerInFirestore,
   );
 
+  const refreshLayerState = useStore((state) => state.refreshLayerState);
+
   renderLayersRef.current = renderLayers;
 
   const {
@@ -183,6 +185,7 @@ function Canvas2D() {
     setEraserEnd,
     currentPolyline,
     isDrawingPolyline,
+    finalizePolyline,
   } = useMouseHandlers(
     selectedTool,
     { x: offset.x, y: offset.y, scale },
@@ -199,6 +202,9 @@ function Canvas2D() {
     fillPath,
     updateLayerInFirestore,
     setLayerList,
+    updateLayerInFirestore,
+    refreshLayerState,
+    selectedLayer,
   );
 
   const selectTool = (tool) => {
@@ -241,13 +247,24 @@ function Canvas2D() {
       if (event.key === 'Escape' && (lineStart || bezierStart || rectStart)) {
         cancelDrawing();
       }
+      if (event.key === 'Enter' && isDrawingPolyline) {
+        finalizePolyline();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDownCallback);
     return () => {
       window.removeEventListener('keydown', handleKeyDownCallback);
     };
-  }, [selectTool, lineStart, bezierStart, rectStart, cancelDrawing]);
+  }, [
+    selectTool,
+    lineStart,
+    bezierStart,
+    rectStart,
+    cancelDrawing,
+    isDrawingPolyline,
+    finalizePolyline,
+  ]);
 
   useEffect(() => {
     if (selectedTool !== 'eraser') {
@@ -352,7 +369,6 @@ function Canvas2D() {
         ctx.stroke();
       }
 
-      // Snap point 표시
       if (snapPoint) {
         ctx.beginPath();
         ctx.arc(snapPoint.x, snapPoint.y, 5, 0, 2 * Math.PI);

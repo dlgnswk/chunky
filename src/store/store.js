@@ -69,43 +69,41 @@ const useStore = create((set, get) => ({
 
   initializeLayerListener: (userId) => {
     const unsubscribe = firestore.subscribeToLayers(userId, (layers) => {
-      set({ layerList: layers });
+      set((state) => {
+        const mergedLayers = layers.map((newLayer) => {
+          const existingLayer = state.layerList.find(
+            (l) => l.id === newLayer.id,
+          );
+          return existingLayer ? { ...existingLayer, ...newLayer } : newLayer;
+        });
+        return { layerList: mergedLayers };
+      });
     });
     return unsubscribe;
   },
 
-  addPathToLayer: (layerIndex, path) => {
-    set((state) => {
-      const updatedLayerList = state.layerList.map((layer) => {
-        if (layer.index === layerIndex) {
-          const updatedLayer = {
-            ...layer,
-            path: [...layer.path, { ...path, fill: 'none' }],
-          };
-          get().updateLayerInFirestore(updatedLayer);
-          return updatedLayer;
-        }
-        return layer;
-      });
-      return { layerList: updatedLayerList };
-    });
+  addPathToLayer: async (layerIndex, newPath) => {
+    const { layerList, updateLayerInFirestore } = get();
+    const layer = layerList.find((l) => l.index === layerIndex);
+    if (layer) {
+      const updatedLayer = {
+        ...layer,
+        path: [...layer.path, { ...newPath, fill: 'none' }],
+      };
+      await updateLayerInFirestore(updatedLayer);
+    }
   },
 
-  updatePathInLayer: (layerIndex, pathIndex, updates) => {
-    set((state) => {
-      const updatedLayerList = state.layerList.map((layer) => {
-        if (layer.index === layerIndex) {
-          const updatedPath = layer.path.map((p, idx) =>
-            idx === pathIndex ? { ...p, ...updates } : p,
-          );
-          const updatedLayer = { ...layer, path: updatedPath };
-          get().updateLayerInFirestore(updatedLayer);
-          return updatedLayer;
-        }
-        return layer;
-      });
-      return { layerList: updatedLayerList };
-    });
+  updatePathInLayer: async (layerIndex, pathIndex, updates) => {
+    const { user, layerList } = get();
+    const layer = layerList.find((l) => l.index === layerIndex);
+    if (layer) {
+      const updatedPath = layer.path.map((p, idx) =>
+        idx === pathIndex ? { ...p, ...updates } : p,
+      );
+      const updatedLayer = { ...layer, path: updatedPath };
+      await firestore.updateLayerInFirestoreDB(user.uid, updatedLayer);
+    }
   },
 
   setLayerList: (newLayerList) => {
@@ -253,18 +251,17 @@ const useStore = create((set, get) => ({
 
       const success = await firestore.updateLayerInFirestoreDB(uid, layer);
       if (success) {
-        set((state) => {
-          const newLayerList = state.layerList.map((l) =>
-            l.id === layer.id ? { ...layer } : l,
-          );
-
-          return { layerList: newLayerList };
-        });
+        set((state) => ({
+          layerList: state.layerList.map((l) =>
+            l.id === layer.id ? { ...l, ...layer } : l,
+          ),
+        }));
         return true;
       }
 
       return false;
     } catch (error) {
+      console.error('Error updating layer:', error);
       return false;
     }
   },
@@ -294,19 +291,13 @@ const useStore = create((set, get) => ({
     set({ layerList: layers });
   },
 
-  removePathFromLayer(index, updatedPaths) {
-    set((state) => {
-      const updatedLayerList = state.layerList.map((layer) =>
-        layer.index === index ? { ...layer, path: updatedPaths } : layer,
-      );
-      const updatedLayer = updatedLayerList.find(
-        (layer) => layer.index === index,
-      );
-      if (updatedLayer) {
-        useStore.getState().updateLayerInFirestore(updatedLayer);
-      }
-      return { layerList: updatedLayerList };
-    });
+  removePathFromLayer: async (index, updatedPaths) => {
+    const { user, layerList } = get();
+    const layer = layerList.find((l) => l.index === index);
+    if (layer) {
+      const updatedLayer = { ...layer, path: updatedPaths };
+      await firestore.updateLayerInFirestoreDB(user.uid, updatedLayer);
+    }
   },
 }));
 

@@ -33,6 +33,7 @@ const useMouseHandlers = (
   layerList,
   setLayerList,
   renderCanvas,
+  refreshLayerState,
 ) => {
   const [lineStart, setLineStart] = useState(null);
   const [lineEnd, setLineEnd] = useState(null);
@@ -54,10 +55,9 @@ const useMouseHandlers = (
   const [isErasing, setIsErasing] = useState(false);
   const [eraserStart, setEraserStart] = useState(null);
   const [eraserEnd, setEraserEnd] = useState(null);
-  const [currentPath, setCurrentPath] = useState([]);
-  const [isDrawing, setIsDrawing] = useState(false);
   const [currentPolyline, setCurrentPolyline] = useState([]);
   const [isDrawingPolyline, setIsDrawingPolyline] = useState(false);
+  const [polylineStartIndex, setPolylineStartIndex] = useState(null);
 
   useEffect(() => {
     renderCanvas();
@@ -585,31 +585,43 @@ const useMouseHandlers = (
     ],
   );
 
-  const finalizePolyline = useCallback(() => {
-    if (selectedLayer && isDrawingPolyline && currentPolyline.length > 2) {
+  const finalizePolyline = useCallback(async () => {
+    const currentLayer = layerList.find(
+      (layer) => layer.id === selectedLayer.id,
+    );
+
+    if (currentLayer && isDrawingPolyline && currentPolyline.length > 2) {
       const closedPath = {
         type: 'polyline',
-        points: [...currentPolyline, currentPolyline[0]],
+        points: currentPolyline,
         closed: true,
         fill: 'none',
       };
 
       const updatedLayer = {
-        ...selectedLayer,
-        path: [...selectedLayer.path, closedPath],
+        ...currentLayer,
+        path: [...(currentLayer.path || []), closedPath],
       };
-      updateLayerInFirestore(updatedLayer);
 
-      setIsDrawingPolyline(false);
-      setCurrentPolyline([]);
-      setLineStart(null);
-      setLineEnd(null);
+      try {
+        await updateLayerInFirestore(updatedLayer);
+        await refreshLayerState();
+
+        setIsDrawingPolyline(false);
+        setCurrentPolyline([]);
+        setLineStart(null);
+        setLineEnd(null);
+      } catch (error) {
+        console.error('Error updating layer:', error);
+      }
     }
   }, [
     selectedLayer,
+    layerList,
     isDrawingPolyline,
     currentPolyline,
     updateLayerInFirestore,
+    refreshLayerState,
   ]);
 
   useEffect(() => {
@@ -772,24 +784,6 @@ const useMouseHandlers = (
     }
   }, [selectedLayer, erasedAreas, addPathToLayer, renderCanvas]);
 
-  const updateLayerList = useCallback(
-    (updatedLayer) => {
-      if (!updatedLayer || !updatedLayer.id) {
-        return null;
-      }
-
-      setLayerList((prevLayers) => {
-        const newLayerList = prevLayers.map((layer) =>
-          layer.id === updatedLayer.id ? updatedLayer : layer,
-        );
-        return newLayerList;
-      });
-
-      return updatedLayer;
-    },
-    [setLayerList],
-  );
-
   useEffect(() => {}, [layerList]);
 
   const handlePaintBucket = useCallback(
@@ -822,7 +816,6 @@ const useMouseHandlers = (
       if (clickedLayer && clickedPathIndex !== -1) {
         const clickedPath = clickedLayer.path[clickedPathIndex];
 
-        // 폴리라인이고 닫혀있지 않다면 닫아줍니다.
         if (clickedPath.type === 'polyline' && !clickedPath.closed) {
           clickedPath.closed = true;
           clickedPath.points.push(clickedPath.points[0]);
@@ -906,35 +899,17 @@ const useMouseHandlers = (
         const currentLayer = layerList.find(
           (layer) => layer.id === selectedLayer.id,
         );
-
-        if (!currentLayer) {
-          return;
-        }
+        if (!currentLayer) return;
 
         const updatedPaths = currentLayer.path.filter((path) => {
-          const shouldKeep = !isPathInEraserArea(path, {
+          return !isPathInEraserArea(path, {
             start: eraserStart,
             end: eraserEnd,
           });
-          return shouldKeep;
         });
 
-        const updatedLayer = {
-          ...currentLayer,
-          path: updatedPaths,
-        };
-
-        const success = await updateLayerInFirestore(updatedLayer);
-
-        if (success) {
-          setLayerList((prevLayers) => {
-            const newLayers = prevLayers.map((layer) =>
-              layer.id === updatedLayer.id ? updatedLayer : layer,
-            );
-
-            return newLayers;
-          });
-        }
+        const updatedLayer = { ...currentLayer, path: updatedPaths };
+        await updateLayerInFirestore(updatedLayer);
       } catch (error) {
         return;
       } finally {
@@ -942,9 +917,7 @@ const useMouseHandlers = (
         setEraserStart(null);
         setEraserEnd(null);
       }
-    }
-
-    if (selectedTool === 'move') {
+    } else if (selectedTool === 'move') {
       setDragging(false);
     } else if (selectedTool === 'line' && isDrawingPolyline) {
       if (selectedLayer && lineStart && lineEnd) {
@@ -956,14 +929,18 @@ const useMouseHandlers = (
           y2: lineEnd.y,
         };
 
-        const currentPaths = [...selectedLayer.path];
+        const currentLayer = layerList.find(
+          (layer) => layer.id === selectedLayer.id,
+        );
+        if (!currentLayer) return;
 
-        if (currentPaths.length === 0) {
-          addPathToLayer(selectedLayer.index, newPath);
+        let updatedPaths = [...currentLayer.path];
+        if (updatedPaths.length === 0) {
+          updatedPaths.push(newPath);
         } else {
-          const prevLine = currentPaths[currentPaths.length - 1];
+          const prevLine = updatedPaths[updatedPaths.length - 1];
           if (prevLine.x2 === newPath.x1 && prevLine.y2 === newPath.y1) {
-            const firstLine = currentPaths[0];
+            const firstLine = updatedPaths[0];
             const distance = Math.sqrt(
               (newPath.x2 - firstLine.x1) ** 2 +
                 (newPath.y2 - firstLine.y1) ** 2,
@@ -972,26 +949,24 @@ const useMouseHandlers = (
             if (distance <= 5) {
               const closedPath = {
                 type: 'polyline',
-                points: currentPaths
+                points: updatedPaths
                   .map((line) => ({ x: line.x1, y: line.y1 }))
                   .concat({ x: firstLine.x1, y: firstLine.y1 }),
                 closed: true,
               };
-
-              selectedLayer.path = selectedLayer.path.filter(
-                (path) => path.type !== 'line',
-              );
-              addPathToLayer(selectedLayer.index, closedPath);
+              updatedPaths = [closedPath];
             } else {
-              addPathToLayer(selectedLayer.index, newPath);
+              updatedPaths.push(newPath);
             }
           } else {
-            addPathToLayer(selectedLayer.index, newPath);
+            updatedPaths.push(newPath);
           }
         }
-      }
 
-      setLineStart(lineEnd);
+        const updatedLayer = { ...currentLayer, path: updatedPaths };
+        await updateLayerInFirestore(updatedLayer);
+        setLineStart(lineEnd);
+      }
     } else if (
       selectedTool === 'bezier' &&
       bezierStart &&
@@ -1008,7 +983,17 @@ const useMouseHandlers = (
           cx: bezierControl.x,
           cy: bezierControl.y,
         });
-        addPathToLayer(selectedLayer.index, newPath);
+
+        const currentLayer = layerList.find(
+          (layer) => layer.id === selectedLayer.id,
+        );
+        if (currentLayer) {
+          const updatedLayer = {
+            ...currentLayer,
+            path: [...currentLayer.path, newPath],
+          };
+          await updateLayerInFirestore(updatedLayer);
+        }
       }
       setBezierStart(null);
       setBezierEnd(null);
@@ -1018,7 +1003,6 @@ const useMouseHandlers = (
       const currentLayer = layerList.find(
         (layer) => layer.id === selectedLayer.id,
       );
-
       if (currentLayer) {
         const newPath = {
           type: 'rectangle',
@@ -1034,17 +1018,7 @@ const useMouseHandlers = (
           path: [...currentLayer.path, newPath],
         };
 
-        const success = await updateLayerInFirestore(updatedLayer);
-
-        if (success) {
-          setLayerList((prevLayers) => {
-            const newLayers = prevLayers.map((layer) =>
-              layer.id === updatedLayer.id ? updatedLayer : layer,
-            );
-
-            return newLayers;
-          });
-        }
+        await updateLayerInFirestore(updatedLayer);
       }
       setRectStart(null);
       setRectEnd(null);
@@ -1055,12 +1029,24 @@ const useMouseHandlers = (
           center: circleCenter,
           radius: circleRadius,
         };
-        addPathToLayer(selectedLayer.index, newPath);
+
+        const currentLayer = layerList.find(
+          (layer) => layer.id === selectedLayer.id,
+        );
+        if (currentLayer) {
+          const updatedLayer = {
+            ...currentLayer,
+            path: [...currentLayer.path, newPath],
+          };
+          await updateLayerInFirestore(updatedLayer);
+        }
       }
       setCircleCenter(null);
       setCircleRadius(0);
     }
-
+    if (selectedTool !== 'line' && selectedTool !== 'eraser') {
+      await refreshLayerState();
+    }
     renderCanvas();
   }, [
     selectedTool,
@@ -1069,8 +1055,20 @@ const useMouseHandlers = (
     eraserEnd,
     selectedLayer,
     updateLayerInFirestore,
-    updateLayerList,
     isPathInEraserArea,
+    renderCanvas,
+    layerList,
+    lineStart,
+    lineEnd,
+    bezierStart,
+    bezierEnd,
+    bezierControl,
+    rectStart,
+    rectEnd,
+    circleCenter,
+    circleRadius,
+    autoClosePath,
+    refreshLayerState,
     renderCanvas,
   ]);
 
@@ -1092,17 +1090,17 @@ const useMouseHandlers = (
         y: event.clientY - offsetY,
       });
     } else if (selectedTool === 'line') {
-      const point = getMousePosition(event);
-      if (!isDrawingPolyline) {
-        setIsDrawingPolyline(true);
-        setLineStart(point);
-        setLineEnd(point);
-        setCurrentPolyline([point]);
-      } else {
-        setLineEnd(point);
-        setCurrentPolyline((prev) => [...prev, point]);
-
-        setLineStart(lineEnd);
+      if (selectedTool === 'line') {
+        const point = getMousePosition(event);
+        if (!isDrawingPolyline) {
+          setIsDrawingPolyline(true);
+          setCurrentPolyline([point]);
+          setLineStart(point);
+          setLineEnd(point);
+        } else {
+          setCurrentPolyline((prev) => [...prev, point]);
+          setLineEnd(point);
+        }
       }
     } else if (selectedTool === 'bezier') {
       if (!bezierStart) {
