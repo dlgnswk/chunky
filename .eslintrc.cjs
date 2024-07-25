@@ -44,6 +44,26 @@ module.exports = {
     'global-require': 0,
     'no-underscore-dangle': 'off',
     'prettier/prettier': ['warn', { singleQuote: true }],
+    'react/no-unknown-property': [
+      'error',
+      { ignore: ['geometry', 'intensity', 'position'] },
+    ],
+    'react/no-unknown-property': [
+      'error',
+      {
+        ignore: [
+          'attach',
+          'object',
+          'attachObject',
+          'count',
+          'array',
+          'itemSize',
+          'args',
+          'position',
+          'intensity',
+        ],
+      },
+    ],
   },
   settings: {
     react: {
