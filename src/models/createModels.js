@@ -26,8 +26,8 @@ function createModels(path, depth, flipHorizontally = false) {
   const mesh = new THREE.Mesh(geometry, material);
 
   if (flipHorizontally) {
-    mesh.scale.x *= -1; // X축을 기준으로 반전
-    mesh.rotation.y = Math.PI; // Y축을 중심으로 180도 회전
+    mesh.scale.x *= -1;
+    mesh.rotation.y = Math.PI;
   }
 
   return mesh;

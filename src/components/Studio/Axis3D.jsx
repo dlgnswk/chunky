@@ -19,11 +19,11 @@ function Axis3D({ size = 1, lineWidth = 3 }) {
       new THREE.Vector3(0, 0, size),
     ];
     const colors = [
-      new THREE.Color(0xff0000), // 빨강 (X축)
       new THREE.Color(0xff0000),
-      new THREE.Color(0x00ff00), // 초록 (Y축)
+      new THREE.Color(0xff0000),
       new THREE.Color(0x00ff00),
-      new THREE.Color(0x0000ff), // 파랑 (Z축)
+      new THREE.Color(0x00ff00),
+      new THREE.Color(0x0000ff),
       new THREE.Color(0x0000ff),
     ];
 
