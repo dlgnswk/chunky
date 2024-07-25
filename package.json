@@ -19,6 +19,7 @@
   "dependencies": {
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",
+    "@react-three/postprocessing": "^2.16.2",
     "@types/three": "^0.166.0",
     "firebase": "^10.12.3",
     "lodash": "^4.17.21",
