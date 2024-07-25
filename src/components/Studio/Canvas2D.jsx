@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { IoSquareOutline } from 'react-icons/io5';
-import useStore from '../../store/store';
 import ToolBox from './ToolBox';
+
+import useStore from '../../store/store';
+
 import drawGrid from '../../utils/drawGrid';
-import useCanvasSetup from '../../hooks/useCanvasSetup';
 import handleKeyDown from '../../utils/handleKeyDown';
-import useMouseHandlers from '../../hooks/useMouseHandlers';
 import getCursorStyle from '../../utils/getCursorStyle';
+
+import useMouseHandlers from '../../hooks/useMouseHandlers';
+import useCanvasSetup from '../../hooks/useCanvasSetup';
 
 function Canvas2D() {
   const {
@@ -144,7 +147,7 @@ function Canvas2D() {
             ctx.fill();
           }
 
-          ctx.strokeStyle = 'blue';
+          ctx.strokeStyle = '#0068ff';
           ctx.lineWidth = 1;
           ctx.stroke();
         });
@@ -272,7 +275,7 @@ function Canvas2D() {
         for (let i = 1; i < currentPolyline.length; i += 1) {
           ctx.lineTo(currentPolyline[i].x, currentPolyline[i].y);
         }
-        ctx.strokeStyle = 'blue';
+        ctx.strokeStyle = '#0068ff';
         ctx.lineWidth = 1;
         ctx.stroke();
 
