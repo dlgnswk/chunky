@@ -163,16 +163,19 @@ const useStore = create((set, get) => ({
   setIsModalOpened(isOpen) {
     set({ isModalOpened: isOpen });
   },
+
   setAlertState(message) {
     set((state) => ({
       alertState: [...state.alertState, { id: uuidv4(), message }],
     }));
   },
+
   removeAlert(id) {
     set((state) => ({
       alertState: state.alertState.filter((alert) => alert.id !== id),
     }));
   },
+
   setModalType(type) {
     set({ modalType: type });
   },
@@ -180,6 +183,7 @@ const useStore = create((set, get) => ({
   setDrawingToolList(drawingTool) {
     set({ drawingToolList: drawingTool });
   },
+
   setViewToolList(viewTool) {
     set({ viewToolList: viewTool });
   },
@@ -206,9 +210,10 @@ const useStore = create((set, get) => ({
       index: newIndex,
       name: `layer${newIndex}`,
       height: 1,
+      zIndex: 1,
       visible: true,
       path: [],
-      fill: null,
+      fill: '#0068ff',
     };
     const id = await firestore.addLayerToFirestore(uid, newLayer);
     if (id) {

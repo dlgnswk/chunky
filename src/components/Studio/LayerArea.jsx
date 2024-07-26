@@ -57,11 +57,14 @@ function LayerArea() {
             .map((layer) => (
               <LayerCard
                 key={uuidv4()}
+                layer={layer}
                 id={uuidv4()}
-                name={layer.name}
                 index={layer.index}
+                name={layer.name}
+                zIndex={layer.zIndex}
                 height={layer.height}
                 visible={layer.visible}
+                fill={layer.fill}
                 selectLayer={selectedLayer}
                 handleSelectClick={() => handleSelectClick(layer)}
               />

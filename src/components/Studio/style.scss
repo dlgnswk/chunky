@@ -151,10 +151,18 @@
       flex-direction: column;
       text-align: left;
 
+      .input-label {
+        font-weight: 700;
+        display: inline-block;
+        width: 20%;
+      }
+
       .layer-name-input,
-      .layer-height-input {
+      .layer-height-input,
+      .layer-z-Index-input {
         @include mixin.font-urbanist;
-        width: 60%;
+        display: inline-block;
+        width: 48%;
         border: 0;
         border-bottom: solid 1px lightgray;
         font-size: 14px;
@@ -162,37 +170,69 @@
         margin: 2px 4px 2px 0;
         background-color: rgba(0, 0, 0, 0);
       }
+
+      .units {
+        font-size: 12px;
+      }
     }
   }
 
   .layer-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .layer-icon-copy,
-    .layer-icon-delete {
-      border: 0;
-      background-color: rgba(0, 0, 0, 0);
+    .layer-icon-box {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0 5px;
-      color: #aeaeae;
-      font-size: 20px;
-    }
 
-    .layer-icon-delete {
-      font-size: 22px;
-    }
+      .layer-fill-input {
+        width: 50%;
+        border: 0;
+        background-color: rgba(0, 0, 0, 0);
+        padding-bottom: 5px;
+      }
 
-    .layer-icon-copy:hover,
-    .layer-icon-delete:hover {
-      cursor: pointer;
-      padding: 5px;
-      background-color: lightgray;
-      color: white;
-      border-radius: 8px;
+      .layer-fill-input {
+        width: 25px;
+        height: 25px;
+        border: 0;
+        padding: 0;
+        background-color: rgba(0, 0, 0, 0);
+      }
+
+      .layer-fill-input::-webkit-color-swatch {
+        border: solid 1px black;
+      }
+
+      .layer-fill-label {
+        font-size: 14px;
+        margin: 0 4px;
+      }
+
+      .layer-icon-save,
+      .layer-icon-copy,
+      .layer-icon-delete {
+        border: 0;
+        background-color: rgba(0, 0, 0, 0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        color: #aeaeae;
+        font-size: 20px;
+      }
+
+      .layer-icon-delete {
+        font-size: 22px;
+      }
+
+      .layer-icon-save:hover,
+      .layer-icon-copy:hover,
+      .layer-icon-delete:hover {
+        cursor: pointer;
+        padding: 5px;
+        background-color: lightgray;
+        color: white;
+        border-radius: 8px;
+      }
     }
   }
 }
@@ -236,50 +276,84 @@
       text-align: left;
       color: white;
 
-      .layer-name-input,
-      .layer-height-input {
-        @include mixin.font-urbanist;
-        color: white;
+      .input-label {
         font-weight: 700;
+        display: inline-block;
+        width: 20%;
+      }
+
+      .layer-name-input,
+      .layer-height-input,
+      .layer-z-Index-input {
+        @include mixin.font-urbanist;
+        display: inline-block;
+        color: white;
         font-size: 14px;
-        width: 60%;
+        width: 48%;
         border: 0;
         border-bottom: solid 1px white;
         padding: 2px;
         margin: 2px 4px 2px 0;
         background-color: rgba(0, 0, 0, 0);
       }
+
+      .units {
+        font-size: 12px;
+      }
     }
   }
 
   .layer-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .layer-icon-copy,
-    .layer-icon-delete {
-      border: 0;
-      background-color: rgba(0, 0, 0, 0);
+    .layer-icon-box {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 0 5px;
       color: white;
-      font-size: 20px;
-    }
+      text-align: center;
 
-    .layer-icon-delete {
-      font-size: 22px;
-    }
+      .layer-fill-input {
+        width: 25px;
+        height: 25px;
+        border: 0;
+        padding: 0;
+        background-color: rgba(0, 0, 0, 0);
+      }
 
-    .layer-icon-copy:hover,
-    .layer-icon-delete:hover {
-      cursor: pointer;
-      padding: 5px;
-      background-color: white;
-      color: var(--primary);
-      border-radius: 8px;
+      .layer-fill-input::-webkit-color-swatch {
+        border: solid 1px white;
+      }
+
+      .layer-fill-label {
+        font-size: 14px;
+        margin: 0 4px;
+      }
+
+      .layer-icon-save,
+      .layer-icon-copy,
+      .layer-icon-delete {
+        border: 0;
+        background-color: rgba(0, 0, 0, 0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        color: white;
+        font-size: 20px;
+      }
+
+      .layer-icon-delete {
+        font-size: 22px;
+      }
+
+      .layer-icon-save:hover,
+      .layer-icon-copy:hover,
+      .layer-icon-delete:hover {
+        cursor: pointer;
+        padding: 5px;
+        background-color: white;
+        color: var(--primary);
+        border-radius: 8px;
+      }
     }
   }
 }
@@ -292,7 +366,7 @@
 
   .canvas-2d,
   .canvas-3d {
-    flex: 5;
+    flex: 4;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -350,6 +424,9 @@
         }
       }
     }
+  }
+  .canvas-3d {
+    flex: 6;
   }
 
   .canvas-2d,
