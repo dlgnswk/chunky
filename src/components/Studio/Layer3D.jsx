@@ -1,9 +1,12 @@
 import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+
 import createModels from '../../models/createModels';
+
+import useStore from '../../store/store';
 
 function Layer3D({ layer, zPosition, thickness }) {
   const groupRef = useRef();
+  const { canvasSize } = useStore();
 
   useEffect(() => {
     if (layer && layer.path && layer.path.length > 0 && groupRef.current) {
@@ -11,23 +14,21 @@ function Layer3D({ layer, zPosition, thickness }) {
         groupRef.current.remove(groupRef.current.children[0]);
       }
 
-      layer.path.forEach((path, index) => {
-        const result = createModels(path, layer.height);
+      layer.path.forEach((path) => {
+        const result = createModels(
+          path,
+          layer.height,
+          canvasSize,
+          false,
+          layer.fill,
+        );
 
-        if (result && result.isBufferGeometry) {
-          const mesh = new THREE.Mesh(
-            result,
-            new THREE.MeshPhongMaterial({
-              color: layer.fill || '#FF6347',
-            }),
-          );
+        if (result && result.mesh) {
+          result.mesh.position.z = zPosition;
+          result.mesh.castShadow = true;
+          result.mesh.receiveShadow = true;
 
-          if (mesh.geometry.computeBoundingSphere) {
-            mesh.geometry.computeBoundingSphere();
-          }
-          mesh.position.z = zPosition;
-
-          groupRef.current.add(mesh);
+          groupRef.current.add(result.mesh);
         }
       });
 
@@ -35,7 +36,7 @@ function Layer3D({ layer, zPosition, thickness }) {
     } else if (groupRef.current) {
       groupRef.current.visible = false;
     }
-  }, [layer, zPosition, thickness]);
+  }, [layer, zPosition, thickness, canvasSize]);
 
   if (!layer || !layer.path || layer.path.length === 0) {
     return null;
