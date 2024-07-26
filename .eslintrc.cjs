@@ -54,6 +54,9 @@ module.exports = {
         ignore: [
           'attach',
           'object',
+          'rotation',
+          'transparent',
+          'side',
           'attachObject',
           'count',
           'array',
@@ -61,6 +64,8 @@ module.exports = {
           'args',
           'position',
           'intensity',
+          'castShadow',
+          'lookAt',
         ],
       },
     ],
