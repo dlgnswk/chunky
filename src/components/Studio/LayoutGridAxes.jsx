@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
+
 import * as THREE from 'three';
+
 import useStore from '../../store/store';
 
 function LayoutGridAxes() {
@@ -18,9 +20,8 @@ function LayoutGridAxes() {
     for (let i = 0; i <= divisions; i += 1) {
       const position = i * step - size / 2;
 
-      // X axis lines
       points.push(-size / 2, position, 0, size / 2, position, 0);
-      // Y axis lines
+
       points.push(position, -size / 2, 0, position, size / 2, 0);
 
       const alpha = i === 0 || i === divisions ? 1 : 0.5;
@@ -55,45 +56,22 @@ function LayoutGridAxes() {
       0,
       size,
       0,
-      0, // X axis (red)
+      0,
       0,
       0,
       0,
       0,
       size,
-      0, // Y axis (green)
       0,
       0,
       0,
       0,
       0,
-      size, // Z axis (blue)
+      0,
+      size,
     ];
     const colors = [
-      1,
-      0,
-      0,
-      1,
-      1,
-      0,
-      0,
-      1, // Red for X
-      0,
-      1,
-      0,
-      1,
-      0,
-      1,
-      0,
-      1, // Green for Y
-      0,
-      0,
-      1,
-      1,
-      0,
-      0,
-      1,
-      1, // Blue for Z
+      1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1,
     ];
 
     const geometry = new THREE.BufferGeometry();
@@ -121,7 +99,7 @@ function LayoutGridAxes() {
       opacity: 0.1,
     });
     const mesh = new THREE.Mesh(geometry, material);
-    // 평면이 XY 평면에 놓이도록 회전하지 않음
+
     return mesh;
   }, [canvasSize]);
 

@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { IoSquareOutline } from 'react-icons/io5';
-import ToolBox from './ToolBox';
 
-import useStore from '../../store/store';
+import useCanvasSetup from '../../hooks/useCanvasSetup';
+import useMouseHandlers from '../../hooks/useMouseHandlers';
 
 import drawGrid from '../../utils/drawGrid';
 import handleKeyDown from '../../utils/handleKeyDown';
 import getCursorStyle from '../../utils/getCursorStyle';
 
-import useMouseHandlers from '../../hooks/useMouseHandlers';
-import useCanvasSetup from '../../hooks/useCanvasSetup';
+import useStore from '../../store/store';
+
+import ToolBox from './ToolBox';
 
 function Canvas2D() {
   const {

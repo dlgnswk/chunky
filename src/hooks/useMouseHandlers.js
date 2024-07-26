@@ -12,10 +12,12 @@ const autoClosePath = (path, threshold = 5) => {
       (pathStartPoint.x - pathEndPoint.x) ** 2 +
         (pathStartPoint.y - pathEndPoint.y) ** 2,
     );
+
     if (distance <= threshold) {
       return { ...path, closed: true };
     }
   }
+
   return path;
 };
 
@@ -141,6 +143,7 @@ const useMouseHandlers = (
   useEffect(() => {
     const updateCanvas = () => {
       const canvas = canvasRef.current;
+
       if (canvas) {
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -163,16 +166,20 @@ const useMouseHandlers = (
             } else if (path.type === 'polyline') {
               ctx.beginPath();
               ctx.moveTo(path.points[0].x, path.points[0].y);
+
               for (let i = 1; i < path.points.length; i += 1) {
                 ctx.lineTo(path.points[i].x, path.points[i].y);
               }
+
               if (path.closed) {
                 ctx.closePath();
               }
+
               if (path.fill && path.fill !== 'none') {
                 ctx.fillStyle = path.fill;
                 ctx.fill();
               }
+
               ctx.stroke();
 
               path.points.forEach((point) => {
@@ -186,17 +193,21 @@ const useMouseHandlers = (
               ctx.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
             } else if (path.type === 'triangle') {
               ctx.moveTo(path.points[0].x, path.points[0].y);
+
               path.points.forEach((point, index) => {
                 if (index > 0) {
                   ctx.lineTo(point.x, point.y);
                 }
               });
+
               ctx.closePath();
             }
+
             if (path.fill && path.fill !== 'none') {
               ctx.fillStyle = path.fill;
               ctx.fill();
             }
+
             ctx.stroke();
           });
         });
@@ -209,6 +220,7 @@ const useMouseHandlers = (
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
+
       eraserCanvasRef.current = document.createElement('canvas');
       eraserCanvasRef.current.width = canvas.width;
       eraserCanvasRef.current.height = canvas.height;
@@ -265,6 +277,7 @@ const useMouseHandlers = (
     ];
 
     const intersections = [];
+
     rectLines.forEach((rectLine) => {
       const intersection = getLineLineIntersection(rectLine, line);
       if (intersection) intersections.push(intersection);
@@ -282,6 +295,7 @@ const useMouseHandlers = (
     ];
 
     const intersections = [];
+
     rect1Lines.forEach((line) => {
       const lineIntersections = getRectangleLineIntersections(rect2, line);
       intersections.push(...lineIntersections);
@@ -300,18 +314,21 @@ const useMouseHandlers = (
             layer.path.slice(j + 1).forEach((path2) => {
               if (path1.type === 'line' && path2.type === 'line') {
                 const intersection = getLineLineIntersection(path1, path2);
+
                 if (intersection) intersections.push(intersection);
               } else if (path1.type === 'rectangle' && path2.type === 'line') {
                 const newIntersections = getRectangleLineIntersections(
                   path1,
                   path2,
                 );
+
                 intersections.push(...newIntersections);
               } else if (path1.type === 'line' && path2.type === 'rectangle') {
                 const newIntersections = getRectangleLineIntersections(
                   path2,
                   path1,
                 );
+
                 intersections.push(...newIntersections);
               }
             });
@@ -330,6 +347,7 @@ const useMouseHandlers = (
                       path1,
                       path2,
                     );
+
                     intersections.push(...newIntersections);
                   } else if (
                     path1.type === 'line' &&
@@ -339,6 +357,7 @@ const useMouseHandlers = (
                       path2,
                       path1,
                     );
+
                     intersections.push(...newIntersections);
                   } else if (
                     path1.type === 'rectangle' &&
@@ -348,6 +367,7 @@ const useMouseHandlers = (
                       path1,
                       path2,
                     );
+
                     intersections.push(...newIntersections);
                   }
                 });
@@ -369,6 +389,7 @@ const useMouseHandlers = (
 
       const checkPoint = (point) => {
         const distance = Math.sqrt((x - point.x) ** 2 + (y - point.y) ** 2);
+
         if (distance < minDistance && distance < SNAP_THRESHOLD / scale) {
           minDistance = distance;
           nearest = point;
@@ -379,6 +400,7 @@ const useMouseHandlers = (
         if (layer.visible && Array.isArray(layer.path)) {
           layer.path.forEach((path) => {
             let points = [];
+
             if (path.type === 'rectangle') {
               points = [
                 { x: path.x, y: path.y },
@@ -404,6 +426,7 @@ const useMouseHandlers = (
             } else if (path.type === 'circle') {
               points = [{ x: path.center.x, y: path.center.y }];
             }
+
             points.forEach(checkPoint);
           });
         }
@@ -555,6 +578,7 @@ const useMouseHandlers = (
 
   const getMousePosition = (event) => {
     const rect = canvasRef.current.getBoundingClientRect();
+
     return {
       x: (event.clientX - rect.left) / scale,
       y: (event.clientY - rect.top) / scale,
@@ -566,6 +590,7 @@ const useMouseHandlers = (
       if (!canvasRef.current) {
         return;
       }
+
       const rect = canvasRef.current.getBoundingClientRect();
       let mouseX = (event.clientX - rect.left) / scale;
       let mouseY = (event.clientY - rect.top) / scale;
@@ -574,6 +599,7 @@ const useMouseHandlers = (
       mouseY = Math.round(mouseY * 100) / 100;
 
       const nearestPoint = findNearestPoint(mouseX, mouseY);
+
       if (nearestPoint) {
         mouseX = nearestPoint.x;
         mouseY = nearestPoint.y;
@@ -695,6 +721,7 @@ const useMouseHandlers = (
     };
 
     window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -717,6 +744,7 @@ const useMouseHandlers = (
     };
 
     window.addEventListener('keydown', handleKeyDown);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -915,6 +943,7 @@ const useMouseHandlers = (
       handlePaintBucket(event);
       return;
     }
+
     if (selectedTool === 'rectangle') return;
 
     const rect = canvasRef.current.getBoundingClientRect();
@@ -922,12 +951,15 @@ const useMouseHandlers = (
     let mouseY = (event.clientY - rect.top) / scale;
 
     const nearestPoint = findNearestPoint(mouseX, mouseY);
+
     if (nearestPoint) {
       mouseX = nearestPoint.x;
       mouseY = nearestPoint.y;
     }
+
     if (selectedTool === 'line') {
       const newPoint = { x: mouseX, y: mouseY };
+
       if (!isDrawingPolyline) {
         setIsDrawingPolyline(true);
         setCurrentPolyline([newPoint]);
@@ -985,13 +1017,16 @@ const useMouseHandlers = (
         const currentLayer = layerList.find(
           (layer) => layer.id === selectedLayer.id,
         );
+
         if (!currentLayer) return;
 
         let updatedPaths = [...currentLayer.path];
+
         if (updatedPaths.length === 0) {
           updatedPaths.push(newPath);
         } else {
           const prevLine = updatedPaths[updatedPaths.length - 1];
+
           if (prevLine.x2 === newPath.x1 && prevLine.y2 === newPath.y1) {
             const firstLine = updatedPaths[0];
             const distance = Math.sqrt(
@@ -1007,6 +1042,7 @@ const useMouseHandlers = (
                   .concat({ x: firstLine.x1, y: firstLine.y1 }),
                 closed: true,
               };
+
               updatedPaths = [closedPath];
             } else {
               updatedPaths.push(newPath);
@@ -1131,6 +1167,7 @@ const useMouseHandlers = (
     let mouseY = (event.clientY - rect.top) / scale;
 
     const nearestPoint = findNearestPoint(mouseX, mouseY);
+
     if (nearestPoint) {
       mouseX = nearestPoint.x;
       mouseY = nearestPoint.y;
@@ -1191,7 +1228,9 @@ const useMouseHandlers = (
       }
     } else if (selectedTool === 'eraser') {
       setIsErasing(true);
+
       const mousePos = getMousePosition(event);
+
       setEraserStart(mousePos);
       setEraserEnd(mousePos);
     } else if (selectedTool === 'paintBucket') {

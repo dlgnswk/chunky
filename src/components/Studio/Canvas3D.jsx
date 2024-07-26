@@ -1,6 +1,4 @@
-import { IoCubeOutline } from 'react-icons/io5';
 import { useRef, useState } from 'react';
-
 import {
   OrbitControls,
   Environment,
@@ -13,16 +11,17 @@ import {
   Bloom,
   ToneMapping,
 } from '@react-three/postprocessing';
+import { IoCubeOutline } from 'react-icons/io5';
 
 import * as THREE from 'three';
 import { GridHelper, AxesHelper } from 'three';
-
-import useStore from '../../store/store';
 
 import ToolBox from './ToolBox';
 import Layer3D from './Layer3D';
 import LayoutGridAxes from './LayoutGridAxes';
 import useCameraControl from '../../r3f-utils/useCameraControl';
+
+import useStore from '../../store/store';
 
 extend({ GridHelper, AxesHelper, EffectComposer, SSAO, Bloom, ToneMapping });
 
@@ -64,7 +63,7 @@ function Canvas3D() {
               canvasSize.height * 1.5,
               canvasSize.depth * 1.5,
             ],
-            up: [0, 0, 1], // Z축을 위로 설정
+            up: [0, 0, 1],
             fov: 45,
             near: 0.1,
             far:
@@ -73,7 +72,7 @@ function Canvas3D() {
           }}
           ref={canvasRef}
           style={{ height: '100%', width: '100%' }}
-          background="#ffffff" // 배경색을 흰색으로 변경
+          background="#ffffff"
         >
           <EffectComposer multisampling={0} enableNormalPass>
             <Bloom
@@ -97,8 +96,8 @@ function Canvas3D() {
             makeDefault
             enableDamping={false}
             zoomSpeed={2}
-            target={[0, 0, 0]} // 카메라가 바라보는 지점을 원점으로 설정
-            up={[0, 0, 1]} // Z축을 위로 설정
+            target={[0, 0, 0]}
+            up={[0, 0, 1]}
           />
           <group ref={sceneRef}>
             <LayoutGridAxes />

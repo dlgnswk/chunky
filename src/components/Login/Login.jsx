@@ -1,14 +1,17 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+
 import { noop } from 'lodash';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '../../services/firebase-config';
-import useStore from '../../store/store';
+
 import MainButton from '../shared/Button/MainButton';
 import Container from '../shared/Container/Container';
 import Logo from '../shared/Logo/Logo';
 import LoginInput from './LoginInput';
+
+import useStore from '../../store/store';
+
 import './style.scss';
 
 function Login() {
@@ -25,6 +28,7 @@ function Login() {
   const onSubmit = async (data) => {
     const { id, password } = data;
     await login(id, password);
+
     navigate('/studio');
   };
 

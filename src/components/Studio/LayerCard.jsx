@@ -198,7 +198,7 @@ function LayerCard({
         const success = await updateLayerInFirestore(updatedLayer);
         if (!success) {
           setAlertState({ id: Date.now(), message: 'update-failed' });
-          // 업데이트 실패 시 원래 값으로 되돌림
+
           setNewName(name);
           setNewHeight(height);
           setNewZIndex(zIndex);
@@ -206,13 +206,13 @@ function LayerCard({
         }
       } catch (error) {
         setAlertState({ id: Date.now(), message: 'update-failed' });
-        // 에러 발생 시 원래 값으로 되돌림
+
         setNewName(name);
         setNewHeight(height);
         setNewZIndex(zIndex);
         setNewFill(fill);
       }
-    }, 500), // 500ms 디바운스
+    }, 500),
     [updateLayerInFirestore, setAlertState, name, height, zIndex, fill],
   );
 

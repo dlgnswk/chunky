@@ -32,6 +32,7 @@ function useCanvasSetup(canvasSize, screenRef, canvasRef) {
 
   const handleWheel = useCallback((event) => {
     event.preventDefault();
+
     const scaleFactor = 0.1;
     const { clientX, clientY } = event;
     const rect = canvasRef.current.getBoundingClientRect();
@@ -45,15 +46,18 @@ function useCanvasSetup(canvasSize, screenRef, canvasRef) {
           x: prevOffset.x - (mouseX * (newScale - prevScale)) / newScale,
           y: prevOffset.y - (mouseY * (newScale - prevScale)) / newScale,
         }));
+
         return newScale;
       });
     } else {
       setScale((prevScale) => {
         const newScale = Math.max(prevScale - scaleFactor, 0.1);
+
         setOffset((prevOffset) => ({
           x: prevOffset.x - (mouseX * (newScale - prevScale)) / newScale,
           y: prevOffset.y - (mouseY * (newScale - prevScale)) / newScale,
         }));
+
         return newScale;
       });
     }

@@ -1,10 +1,13 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+
 import { signOut } from 'firebase/auth';
+import { auth } from '../../services/firebase-config';
+
 import useStore from '../../store/store';
+
 import ModalButton from '../shared/Button/ModalButton';
 import Logo from '../shared/Logo/Logo';
-import { auth } from '../../services/firebase-config';
 
 const LAYOUT_OPTIONS = {
   option1: { width: 827, height: 827, depth: 827 },
