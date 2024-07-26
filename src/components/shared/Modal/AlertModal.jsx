@@ -2,13 +2,21 @@ import { useEffect } from 'react';
 
 function AlertModal({ id, message, onClose }) {
   let displayMessage;
-
   switch (message) {
+    case 'no-layer-name':
+      displayMessage = '레이어 이름을 설정해 주세요.';
+      break;
     case 'layer-name':
       displayMessage = '레이어 이름은 중복될 수 없어요.';
       break;
     case 'no-layer':
       displayMessage = '레이어를 생성해 주세요.';
+      break;
+    case 'no-layer-height':
+      displayMessage = '레이어를 높이를 설정해 주세요.';
+      break;
+    case 'no-number-height':
+      displayMessage = '높이는 숫자로 입력해 주세요.';
       break;
     case 'invalid-height':
       displayMessage =
