@@ -57,7 +57,6 @@ const useMouseHandlers = (
   const [eraserEnd, setEraserEnd] = useState(null);
   const [currentPolyline, setCurrentPolyline] = useState([]);
   const [isDrawingPolyline, setIsDrawingPolyline] = useState(false);
-  const [polylineStartIndex, setPolylineStartIndex] = useState(null);
 
   useEffect(() => {
     renderCanvas();
@@ -661,10 +660,14 @@ const useMouseHandlers = (
         setCurrentPolyline([]);
         setLineStart(null);
         setLineEnd(null);
+
+        return true;
       } catch (error) {
-        console.error('Error updating layer:', error);
+        return false;
       }
     }
+
+    return false;
   }, [
     selectedLayer,
     layerList,
