@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
-
 import * as THREE from 'three';
-
 import useStore from '../../store/store';
 
 function LayoutGridAxes() {
@@ -20,8 +18,8 @@ function LayoutGridAxes() {
     for (let i = 0; i <= divisions; i += 1) {
       const position = i * step - size / 2;
 
+      // XY 평면에 그리드 유지
       points.push(-size / 2, position, 0, size / 2, position, 0);
-
       points.push(position, -size / 2, 0, position, size / 2, 0);
 
       const alpha = i === 0 || i === divisions ? 1 : 0.5;
@@ -56,22 +54,45 @@ function LayoutGridAxes() {
       0,
       size,
       0,
+      0, // X축 (빨간색) - 이제 원래 Y축 위치
+      0,
+      0,
+      0,
+      0,
+      -size,
+      0, // Y축 (초록색) - 이제 원래 -X축 위치
       0,
       0,
       0,
       0,
       0,
-      size,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      size,
+      size, // Z축 (파란색) - 변경 없음
     ];
     const colors = [
-      1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1, // 빨간색 (X축)
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1, // 초록색 (Y축)
+      0,
+      0,
+      1,
+      1,
+      0,
+      0,
+      1,
+      1, // 파란색 (Z축)
     ];
 
     const geometry = new THREE.BufferGeometry();
@@ -89,25 +110,10 @@ function LayoutGridAxes() {
     return new THREE.LineSegments(geometry, material);
   }, [canvasSize]);
 
-  const layout = useMemo(() => {
-    const { width, depth } = canvasSize;
-    const geometry = new THREE.PlaneGeometry(width, depth);
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xcccccc,
-      side: THREE.DoubleSide,
-      transparent: true,
-      opacity: 0.1,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-
-    return mesh;
-  }, [canvasSize]);
-
   return (
-    <group position={[0, 0, 0]}>
+    <group rotation={[0, 0, Math.PI / 2]}>
       <primitive object={grid} />
       <primitive object={axes} />
-      <primitive object={layout} />
     </group>
   );
 }
