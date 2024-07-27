@@ -58,11 +58,7 @@ function Canvas3D() {
             toneMappingExposure: 1,
           }}
           camera={{
-            position: [
-              canvasSize.width * 1.5,
-              canvasSize.height * 1.5,
-              canvasSize.depth * 1.5,
-            ],
+            position: [0, -canvasSize.height * 1.5, canvasSize.depth * 1.5],
             up: [0, 0, 1],
             fov: 45,
             near: 0.1,
@@ -80,15 +76,9 @@ function Canvas3D() {
               luminanceThreshold={0.3}
               luminanceSmoothing={0.9}
             />
-            {/* <SSAO
-              radius={0.5}
-              intensity={150}
-              luminanceInfluence={0.1}
-              color="black"
-            /> */}
           </EffectComposer>
-          <ambientLight intensity={0.8} />
-          <directionalLight position={[2, 3, 5]} intensity={0.8} castShadow />
+          <ambientLight intensity={1} />
+          <directionalLight position={[2, 3, 5]} intensity={1} castShadow />
           <Environment preset="city" />
           <AccumulativeShadows />
           <OrbitControls
