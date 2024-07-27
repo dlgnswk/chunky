@@ -5,6 +5,7 @@ import {
 } from 'react-icons/ai';
 import { PiResize } from 'react-icons/pi';
 
+import { useState } from 'react';
 import useStore from '../../store/store';
 
 function LayerImage({ layer, index, name, visible }) {
@@ -12,6 +13,17 @@ function LayerImage({ layer, index, name, visible }) {
     updateLayer: state.updateLayer,
     removeLayer: state.removeLayer,
   }));
+
+  const [localOpacity, setLocalOpacity] = useState(layer.opacity);
+
+  const handleOpacityChange = (e) => {
+    const newOpacity = parseFloat(e.target.value);
+    setLocalOpacity(newOpacity);
+  };
+
+  const handleOpacityChangeEnd = () => {
+    updateLayer(index, { opacity: localOpacity });
+  };
 
   const handleVisibleClick = (e) => {
     e.stopPropagation();
@@ -23,11 +35,6 @@ function LayerImage({ layer, index, name, visible }) {
   };
 
   const handleImageResize = () => {};
-
-  const handleOpacityChange = (e) => {
-    const newOpacity = parseFloat(e.target.value);
-    updateLayer(index, { opacity: newOpacity });
-  };
 
   return (
     <div className="layer-card ">
@@ -75,8 +82,10 @@ function LayerImage({ layer, index, name, visible }) {
               min="0"
               max="1"
               step="0.01"
-              value={layer.opacity}
+              value={localOpacity}
               onChange={handleOpacityChange}
+              onMouseUp={handleOpacityChangeEnd}
+              onTouchEnd={handleOpacityChangeEnd}
             />
             <span>{Math.round(layer.opacity * 100)}%</span>
           </div>
