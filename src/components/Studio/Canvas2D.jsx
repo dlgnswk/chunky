@@ -95,63 +95,99 @@ function Canvas2D() {
   }, []);
 
   const renderLayersRef = useRef(null);
+  const imageCache = useRef({});
+
+  const drawImageLayer = (ctx, img, layer) => {
+    ctx.save();
+    ctx.globalAlpha = layer.opacity;
+    ctx.drawImage(img, layer.x || 0, layer.y || 0, layer.width, layer.height);
+    ctx.restore();
+  };
+
+  useEffect(() => {
+    return () => {
+      Object.values(imageCache.current).forEach((img) => {
+        img.onload = null;
+      });
+      imageCache.current = {};
+    };
+  }, []);
 
   const renderLayers = useCallback(() => {
     const ctx = canvasRef.current?.getContext('2d');
+    if (!ctx) return;
+
     layerList.forEach((layer) => {
-      if (layer && layer.visible && Array.isArray(layer.path)) {
-        layer.path.forEach((path) => {
-          ctx.beginPath();
+      if (layer && layer.visible) {
+        if (layer.type === 'draw' && Array.isArray(layer.path)) {
+          layer.path.forEach((path) => {
+            ctx.beginPath();
 
-          switch (path.type) {
-            case 'bezier':
-              ctx.moveTo(path.x1, path.y1);
-              ctx.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
-              break;
-            case 'rectangle':
-              ctx.rect(path.x, path.y, path.width, path.height);
-              break;
-            case 'triangle':
-              ctx.moveTo(path.points[0].x, path.points[0].y);
-              ctx.lineTo(path.points[1].x, path.points[1].y);
-              ctx.lineTo(path.points[2].x, path.points[2].y);
-              ctx.closePath();
-              break;
-            case 'line':
-              ctx.moveTo(path.x1, path.y1);
-              ctx.lineTo(path.x2, path.y2);
-              break;
-            case 'circle':
-              ctx.arc(
-                path.center.x,
-                path.center.y,
-                path.radius,
-                0,
-                2 * Math.PI,
-              );
-              break;
-            case 'polyline':
-              ctx.moveTo(path.points[0].x, path.points[0].y);
-              for (let i = 1; i < path.points.length; i += 1) {
-                ctx.lineTo(path.points[i].x, path.points[i].y);
-              }
-              if (path.closed) {
+            switch (path.type) {
+              case 'bezier':
+                ctx.moveTo(path.x1, path.y1);
+                ctx.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
+                break;
+              case 'rectangle':
+                ctx.rect(path.x, path.y, path.width, path.height);
+                break;
+              case 'triangle':
+                ctx.moveTo(path.points[0].x, path.points[0].y);
+                ctx.lineTo(path.points[1].x, path.points[1].y);
+                ctx.lineTo(path.points[2].x, path.points[2].y);
                 ctx.closePath();
-              }
-              break;
-            default:
-              break;
-          }
+                break;
+              case 'line':
+                ctx.moveTo(path.x1, path.y1);
+                ctx.lineTo(path.x2, path.y2);
+                break;
+              case 'circle':
+                ctx.arc(
+                  path.center.x,
+                  path.center.y,
+                  path.radius,
+                  0,
+                  2 * Math.PI,
+                );
+                break;
+              case 'polyline':
+                ctx.moveTo(path.points[0].x, path.points[0].y);
+                for (let i = 1; i < path.points.length; i += 1) {
+                  ctx.lineTo(path.points[i].x, path.points[i].y);
+                }
+                if (path.closed) {
+                  ctx.closePath();
+                }
+                break;
+              default:
+                break;
+            }
 
-          if (path.fill && path.fill !== 'none') {
-            ctx.fillStyle = path.fill;
-            ctx.fill();
-          }
+            if (path.fill && path.fill !== 'none') {
+              ctx.fillStyle = path.fill;
+              ctx.fill();
+            }
 
-          ctx.strokeStyle = '#0068ff';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        });
+            ctx.strokeStyle = '#0068ff';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          });
+        } else if (layer.type === 'image') {
+          const imageData = localStorage.getItem(layer.name);
+
+          if (imageData) {
+            if (!imageCache.current[layer.name]) {
+              const img = new Image();
+              img.onload = () => {
+                imageCache.current[layer.name] = img;
+                drawImageLayer(ctx, img, layer);
+              };
+              img.src = imageData;
+            } else {
+              drawImageLayer(ctx, imageCache.current[layer.name], layer);
+            }
+          }
+        }
       }
     });
   }, [layerList, canvasRef]);

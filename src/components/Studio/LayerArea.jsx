@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import useStore from '../../store/store';
 
 import LayerCard from './LayerCard';
+import LayerImage from './LayerImage';
 
 function LayerArea() {
   const {
@@ -54,21 +55,34 @@ function LayerArea() {
           safeLayers
             .slice()
             .reverse()
-            .map((layer) => (
-              <LayerCard
-                key={uuidv4()}
-                layer={layer}
-                id={uuidv4()}
-                index={layer.index}
-                name={layer.name}
-                zIndex={layer.zIndex}
-                height={layer.height}
-                visible={layer.visible}
-                fill={layer.fill}
-                selectLayer={selectedLayer}
-                handleSelectClick={() => handleSelectClick(layer)}
-              />
-            ))
+            .map((layer) => {
+              if (layer.type === 'draw') {
+                return (
+                  <LayerCard
+                    key={uuidv4()}
+                    layer={layer}
+                    id={uuidv4()}
+                    index={layer.index}
+                    name={layer.name}
+                    zIndex={layer.zIndex}
+                    height={layer.height}
+                    visible={layer.visible}
+                    fill={layer.fill}
+                    selectLayer={selectedLayer}
+                    handleSelectClick={() => handleSelectClick(layer)}
+                  />
+                );
+              }
+              return (
+                <LayerImage
+                  key={uuidv4()}
+                  layer={layer}
+                  index={layer.index}
+                  name={layer.name}
+                  visible={layer.visible}
+                ></LayerImage>
+              );
+            })
         )}
       </div>
     </div>
