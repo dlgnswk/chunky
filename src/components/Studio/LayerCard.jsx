@@ -14,7 +14,6 @@ import useStore from '../../store/store';
 
 function LayerCard({
   layer,
-  id,
   name,
   index,
   height,
@@ -24,13 +23,8 @@ function LayerCard({
   selectLayer,
   handleSelectClick,
 }) {
-  const {
-    updateLayer,
-    removeLayer,
-    setAlertState,
-    layerList,
-    updateLayerInFirestore,
-  } = useStore();
+  const { updateLayer, removeLayer, setAlertState, updateLayerInFirestore } =
+    useStore();
 
   const [newName, setNewName] = useState(name);
   const [newHeight, setNewHeight] = useState(height);
@@ -57,140 +51,17 @@ function LayerCard({
     setNewName(e.target.value);
   };
 
-  const handleNameBlur = useCallback(async () => {
-    let finalName = newName;
-
-    if (finalName.trim() === '') {
-      finalName = name;
-      setAlertState('no-layer-name');
-      setNewName(finalName);
-      return;
-    }
-
-    if (
-      layerList.some(
-        (anyLayer) => anyLayer.name === finalName && anyLayer.id !== id,
-      )
-    ) {
-      finalName = name;
-      setAlertState('layer-name');
-      setNewName(finalName);
-      return;
-    }
-
-    try {
-      const updatedLayer = { ...layer, name: finalName };
-      const success = await updateLayerInFirestore(updatedLayer);
-
-      if (!success) {
-        finalName = name;
-        setAlertState({ id: Date.now(), message: 'update-failed' });
-      }
-    } catch (error) {
-      finalName = name;
-      setAlertState({ id: Date.now(), message: 'update-failed' });
-    }
-
-    setNewName(finalName);
-  }, [
-    newName,
-    name,
-    id,
-    layer,
-    updateLayerInFirestore,
-    setAlertState,
-    layerList,
-  ]);
-
   const handleHeightChange = (e) => {
     setNewHeight(e.target.value);
   };
-
-  const handleHeightBlur = useCallback(async () => {
-    let finalHeight = Number(newHeight);
-    try {
-      const updatedLayer = { ...layer, height: finalHeight };
-      const success = await updateLayerInFirestore(updatedLayer);
-
-      if (!success) {
-        finalHeight = name;
-        setAlertState({ id: Date.now(), message: 'update-failed' });
-      }
-    } catch (error) {
-      finalHeight = height;
-      setAlertState({ id: Date.now(), message: 'update-failed' });
-    }
-
-    setNewHeight(finalHeight);
-  }, [
-    newHeight,
-    height,
-    id,
-    layer,
-    updateLayerInFirestore,
-    setAlertState,
-    layerList,
-  ]);
 
   const handleZIndexChange = (e) => {
     setNewZIndex(e.target.value);
   };
 
-  const handleZIndexBlur = useCallback(async () => {
-    let finalZIndex = Number(newZIndex);
-    try {
-      const updatedLayer = { ...layer, zIndex: finalZIndex };
-      const success = await updateLayerInFirestore(updatedLayer);
-
-      if (!success) {
-        finalZIndex = name;
-        setAlertState({ id: Date.now(), message: 'update-failed' });
-      }
-    } catch (error) {
-      finalZIndex = zIndex;
-      setAlertState({ id: Date.now(), message: 'update-failed' });
-    }
-
-    setNewZIndex(finalZIndex);
-  }, [
-    newZIndex,
-    zIndex,
-    id,
-    layer,
-    updateLayerInFirestore,
-    setAlertState,
-    layerList,
-  ]);
-
   const handleFillChange = (e) => {
     setNewFill(e.target.value);
   };
-
-  const handleFillBlur = useCallback(async () => {
-    let finalFill = newFill;
-    try {
-      const updatedLayer = { ...layer, fill: finalFill };
-      const success = await updateLayerInFirestore(updatedLayer);
-
-      if (!success) {
-        finalFill = name;
-        setAlertState({ id: Date.now(), message: 'update-failed' });
-      }
-    } catch (error) {
-      finalFill = fill;
-      setAlertState({ id: Date.now(), message: 'update-failed' });
-    }
-
-    setNewFill(finalFill);
-  }, [
-    newFill,
-    fill,
-    id,
-    layer,
-    updateLayerInFirestore,
-    setAlertState,
-    layerList,
-  ]);
 
   const debouncedUpdateLayer = useCallback(
     debounce(async (updatedLayer) => {
