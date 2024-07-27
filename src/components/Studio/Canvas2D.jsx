@@ -38,9 +38,15 @@ function Canvas2D() {
     setStartPoint,
     updateInitialOffset,
   } = useCanvasSetup(canvasSize, screenRef, canvasRef);
+
   const [wasLayerListEmpty, setWasLayerListEmpty] = useState(true);
   const [selectedTool, setSelectedTool] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeHandle, setResizeHandle] = useState(null);
+
+  const imageCache = useRef(new Map());
 
   useEffect(() => {
     let unsubscribe;
@@ -95,7 +101,6 @@ function Canvas2D() {
   }, []);
 
   const renderLayersRef = useRef(null);
-  const imageCache = useRef({});
 
   const drawImageLayer = (ctx, img, layer) => {
     ctx.save();
@@ -105,13 +110,75 @@ function Canvas2D() {
   };
 
   useEffect(() => {
+    imageCache.current = new Map();
+
+    // 컴포넌트가 언마운트될 때 정리
     return () => {
-      Object.values(imageCache.current).forEach((img) => {
-        img.onload = null;
-      });
-      imageCache.current = {};
+      if (imageCache.current) {
+        imageCache.current.forEach((img) => {
+          if (img && typeof img.onload === 'function') {
+            img.onload = null;
+          }
+        });
+        imageCache.current.clear();
+      }
     };
   }, []);
+
+  const drawResizeHandles = useCallback((ctx, image) => {
+    const handleSize = 8;
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#0068ff';
+    ctx.lineWidth = 2;
+
+    const handles = [
+      { x: image.x, y: image.y },
+      { x: image.x + image.width, y: image.y },
+      { x: image.x, y: image.y + image.height },
+      { x: image.x + image.width, y: image.y + image.height },
+      { x: image.x + image.width / 2, y: image.y },
+      { x: image.x + image.width, y: image.y + image.height / 2 },
+      { x: image.x + image.width / 2, y: image.y + image.height },
+      { x: image.x, y: image.y + image.height / 2 },
+    ];
+
+    handles.forEach((handle) => {
+      ctx.beginPath();
+      ctx.rect(
+        handle.x - handleSize / 2,
+        handle.y - handleSize / 2,
+        handleSize,
+        handleSize,
+      );
+      ctx.fill();
+      ctx.stroke();
+    });
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      // 컴포넌트 언마운트 시 현재 레이어에 없는 이미지만 캐시에서 제거
+      const currentImageNames = new Set(
+        layerList
+          .filter((layer) => layer.type === 'image')
+          .map((layer) => layer.name),
+      );
+
+      if (
+        imageCache.current &&
+        typeof imageCache.current.entries === 'function'
+      ) {
+        Array.from(imageCache.current.entries()).forEach(([name, img]) => {
+          if (!currentImageNames.has(name)) {
+            if (img && typeof img.onload === 'function') {
+              img.onload = null;
+            }
+            imageCache.current.delete(name);
+          }
+        });
+      }
+    };
+  }, [layerList]);
 
   const renderLayers = useCallback(() => {
     const ctx = canvasRef.current?.getContext('2d');
@@ -176,21 +243,32 @@ function Canvas2D() {
           const imageData = localStorage.getItem(layer.name);
 
           if (imageData) {
-            if (!imageCache.current[layer.name]) {
+            if (imageCache.current && !imageCache.current.has(layer.name)) {
               const img = new Image();
               img.onload = () => {
-                imageCache.current[layer.name] = img;
-                drawImageLayer(ctx, img, layer);
+                if (imageCache.current) {
+                  imageCache.current.set(layer.name, img);
+                  drawImageLayer(ctx, img, layer);
+                  if (selectedImage && selectedImage.id === layer.id) {
+                    drawResizeHandles(ctx, layer);
+                  }
+                }
               };
               img.src = imageData;
-            } else {
-              drawImageLayer(ctx, imageCache.current[layer.name], layer);
+            } else if (imageCache.current) {
+              const cachedImg = imageCache.current.get(layer.name);
+              if (cachedImg) {
+                drawImageLayer(ctx, cachedImg, layer);
+                if (selectedImage && selectedImage.id === layer.id) {
+                  drawResizeHandles(ctx, layer);
+                }
+              }
             }
           }
         }
       }
     });
-  }, [layerList, canvasRef]);
+  }, [layerList, canvasRef, selectedImage, drawResizeHandles]);
 
   const updateLayerInFirestore = useStore(
     (state) => state.updateLayerInFirestore,
@@ -245,6 +323,12 @@ function Canvas2D() {
     updateLayerInFirestore,
     refreshLayerState,
     selectedLayer,
+    selectedImage,
+    setSelectedImage,
+    isResizing,
+    setIsResizing,
+    resizeHandle,
+    setResizeHandle,
   );
 
   const selectTool = (tool) => {
