@@ -18,7 +18,6 @@ function LayoutGridAxes() {
     for (let i = 0; i <= divisions; i += 1) {
       const position = i * step - size / 2;
 
-      // XY 평면에 그리드 유지
       points.push(-size / 2, position, 0, size / 2, position, 0);
       points.push(position, -size / 2, 0, position, size / 2, 0);
 
@@ -54,45 +53,22 @@ function LayoutGridAxes() {
       0,
       size,
       0,
-      0, // X축 (빨간색) - 이제 원래 Y축 위치
+      0,
       0,
       0,
       0,
       0,
       -size,
-      0, // Y축 (초록색) - 이제 원래 -X축 위치
       0,
       0,
       0,
       0,
       0,
-      size, // Z축 (파란색) - 변경 없음
+      0,
+      size,
     ];
     const colors = [
-      1,
-      0,
-      0,
-      1,
-      1,
-      0,
-      0,
-      1, // 빨간색 (X축)
-      0,
-      1,
-      0,
-      1,
-      0,
-      1,
-      0,
-      1, // 초록색 (Y축)
-      0,
-      0,
-      1,
-      1,
-      0,
-      0,
-      1,
-      1, // 파란색 (Z축)
+      1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1,
     ];
 
     const geometry = new THREE.BufferGeometry();

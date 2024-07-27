@@ -22,9 +22,7 @@ function LayerImage({ layer, index, name, visible }) {
     removeLayer(index);
   };
 
-  const handleImageResize = () => {
-    // 리사이징 로직 (아직 구현되지 않음)
-  };
+  const handleImageResize = () => {};
 
   const handleOpacityChange = (e) => {
     const newOpacity = parseFloat(e.target.value);
