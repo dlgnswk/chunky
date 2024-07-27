@@ -18,6 +18,9 @@ function AlertModal({ id, message, onClose }) {
     case 'no-number-height':
       displayMessage = '높이는 숫자로 입력해 주세요.';
       break;
+    case 'failed-image-import':
+      displayMessage = '이미지를 불러오는데 실패했어요.';
+      break;
     case 'invalid-height':
       displayMessage =
         '레이어 전체의 높이는 레이아웃의 최대 높이보다 클 수 없어요.';
