@@ -25,7 +25,7 @@ function createModels(
     case 'triangle':
       result = triangleModel(path, depth, canvasSize, fill);
       break;
-    case 'polyLine':
+    case 'polyline':
       result = polygonModel(path, depth, canvasSize, fill);
       break;
     case 'bezier':
