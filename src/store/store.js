@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
+
 import {
   PiHandWaving,
   PiLineSegment,
@@ -14,8 +16,8 @@ import {
   PiCircle,
   PiPaintBucket,
   PiEraser,
-  PiImage,
 } from 'react-icons/pi';
+
 import handleAuthError from '../utils/authError';
 import { auth, onAuthStateChanged } from '../services/firebase-config';
 import firestore from '../services/firestore';
@@ -36,7 +38,6 @@ const DRAWING_ICON_LIST = [
   { id: 'circle', icon: PiCircle },
   { id: 'paintBucket', icon: PiPaintBucket },
   { id: 'eraser', icon: PiEraser },
-  { id: 'image', icon: PiImage },
 ];
 
 const VIEW_ICON_LIST = [
@@ -198,7 +199,7 @@ const useStore = create((set, get) => ({
     set({ layerList: layers });
   },
 
-  async addLayer() {
+  async addLayer(layerData = null) {
     const { uid } = useStore.getState().user;
     const currentLayers = useStore.getState().layerList;
     const maxIndex =
@@ -206,15 +207,26 @@ const useStore = create((set, get) => ({
         ? Math.max(...currentLayers.map((layer) => layer.index))
         : 0;
     const newIndex = maxIndex + 1;
-    const newLayer = {
+
+    let newLayer = {
+      type: 'draw',
       index: newIndex,
-      name: `layer${newIndex}`,
+      name: `Layer ${newIndex}`,
       height: 1,
-      zIndex: 1,
+      zIndex: currentLayers.length,
       visible: true,
       path: [],
       fill: '#0068ff',
     };
+
+    if (layerData !== null) {
+      newLayer = {
+        ...newLayer,
+        ...layerData,
+        index: newIndex,
+      };
+    }
+
     const id = await firestore.addLayerToFirestore(uid, newLayer);
     if (id) {
       newLayer.id = id;
