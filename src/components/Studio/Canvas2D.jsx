@@ -112,7 +112,6 @@ function Canvas2D() {
   useEffect(() => {
     imageCache.current = new Map();
 
-    // 컴포넌트가 언마운트될 때 정리
     return () => {
       if (imageCache.current) {
         imageCache.current.forEach((img) => {
@@ -157,7 +156,6 @@ function Canvas2D() {
 
   useEffect(() => {
     return () => {
-      // 컴포넌트 언마운트 시 현재 레이어에 없는 이미지만 캐시에서 제거
       const currentImageNames = new Set(
         layerList
           .filter((layer) => layer.type === 'image')
