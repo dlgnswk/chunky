@@ -1005,55 +1005,8 @@ const useMouseHandlers = (
     } else if (selectedTool === 'move') {
       setDragging(false);
     } else if (selectedTool === 'line' && isDrawingPolyline) {
-      if (selectedLayer && lineStart && lineEnd) {
-        const newPath = {
-          type: 'line',
-          x1: lineStart.x,
-          y1: lineStart.y,
-          x2: lineEnd.x,
-          y2: lineEnd.y,
-        };
-
-        const currentLayer = layerList.find(
-          (layer) => layer.id === selectedLayer.id,
-        );
-
-        if (!currentLayer) return;
-
-        let updatedPaths = [...currentLayer.path];
-
-        if (updatedPaths.length === 0) {
-          updatedPaths.push(newPath);
-        } else {
-          const prevLine = updatedPaths[updatedPaths.length - 1];
-
-          if (prevLine.x2 === newPath.x1 && prevLine.y2 === newPath.y1) {
-            const firstLine = updatedPaths[0];
-            const distance = Math.sqrt(
-              (newPath.x2 - firstLine.x1) ** 2 +
-                (newPath.y2 - firstLine.y1) ** 2,
-            );
-
-            if (distance <= 5) {
-              const closedPath = {
-                type: 'polyline',
-                points: updatedPaths
-                  .map((line) => ({ x: line.x1, y: line.y1 }))
-                  .concat({ x: firstLine.x1, y: firstLine.y1 }),
-                closed: true,
-              };
-
-              updatedPaths = [closedPath];
-            } else {
-              updatedPaths.push(newPath);
-            }
-          } else {
-            updatedPaths.push(newPath);
-          }
-        }
-
-        const updatedLayer = { ...currentLayer, path: updatedPaths };
-        await updateLayerInFirestore(updatedLayer);
+      if (selectedLayer && lineEnd) {
+        setCurrentPolyline((prev) => [...prev, lineEnd]);
         setLineStart(lineEnd);
       }
     } else if (
@@ -1143,11 +1096,7 @@ const useMouseHandlers = (
     eraserStart,
     eraserEnd,
     selectedLayer,
-    updateLayerInFirestore,
-    isPathInEraserArea,
-    renderCanvas,
-    layerList,
-    lineStart,
+    isDrawingPolyline,
     lineEnd,
     bezierStart,
     bezierEnd,
@@ -1156,7 +1105,6 @@ const useMouseHandlers = (
     rectEnd,
     circleCenter,
     circleRadius,
-    autoClosePath,
     refreshLayerState,
     renderCanvas,
   ]);
