@@ -1,4 +1,5 @@
 import {
+  AiOutlineCheck,
   AiOutlineDelete,
   AiOutlineEye,
   AiOutlineEyeInvisible,
@@ -15,6 +16,9 @@ function LayerImage({ layer, index, name, visible }) {
   }));
 
   const [localOpacity, setLocalOpacity] = useState(layer.opacity);
+  const [isResizing, setIsResizing] = useState(false);
+  const [localWidth, setLocalWidth] = useState(layer.width);
+  const [localHeight, setLocalHeight] = useState(layer.height);
 
   const handleOpacityChange = (e) => {
     const newOpacity = parseFloat(e.target.value);
@@ -34,7 +38,22 @@ function LayerImage({ layer, index, name, visible }) {
     removeLayer(index);
   };
 
-  const handleImageResize = () => {};
+  const handleImageResize = () => {
+    setIsResizing(!isResizing);
+  };
+
+  const handleWidthChange = (e) => {
+    setLocalWidth(Number(e.target.value));
+  };
+
+  const handleHeightChange = (e) => {
+    setLocalHeight(Number(e.target.value));
+  };
+
+  const handleResizeConfirm = () => {
+    updateLayer(index, { width: localWidth, height: localHeight });
+    setIsResizing(false);
+  };
 
   return (
     <div className="layer-card ">
@@ -49,22 +68,48 @@ function LayerImage({ layer, index, name, visible }) {
               <div className="layer-image-setting">
                 <div className="layer-image-size">
                   <span className="input-label">h : </span>
-                  <input value={layer.height} readOnly />
+                  {isResizing ? (
+                    <input
+                      value={localHeight}
+                      onChange={handleHeightChange}
+                      type="number"
+                    />
+                  ) : (
+                    <input value={layer.height} readOnly />
+                  )}
                 </div>
                 <div className="layer-image-size">
                   <span className="input-label">w :</span>
-                  <input value={layer.width} readOnly />
+                  {isResizing ? (
+                    <input
+                      value={localWidth}
+                      onChange={handleWidthChange}
+                      type="number"
+                    />
+                  ) : (
+                    <input value={layer.width} readOnly />
+                  )}
                 </div>
               </div>
             </div>
             <div className="layer-icon">
-              <button
-                className="layer-resize"
-                aria-label="layer image resizing button"
-                onClick={handleImageResize}
-              >
-                <PiResize />
-              </button>
+              {isResizing ? (
+                <button
+                  className="layer-resize-confirm"
+                  aria-label="confirm image resizing"
+                  onClick={handleResizeConfirm}
+                >
+                  <AiOutlineCheck />
+                </button>
+              ) : (
+                <button
+                  className="layer-resize"
+                  aria-label="layer image resizing button"
+                  onClick={handleImageResize}
+                >
+                  <PiResize />
+                </button>
+              )}
               <button
                 className="layer-delete"
                 aria-label="layer remove button"

@@ -177,7 +177,8 @@
     .layer-icon {
       display: flex;
 
-      .layer-resize {
+      .layer-resize,
+      .layer-resize-confirm {
         margin: 0 0 0 auto;
         border: 0;
         background-color: rgba(0, 0, 0, 0);
@@ -189,7 +190,8 @@
         font-size: 20px;
       }
 
-      .layer-resize:hover {
+      .layer-resize:hover,
+      .layer-resize-confirm:hover {
         cursor: pointer;
         padding: 5px;
         background-color: lightgray;
@@ -228,7 +230,7 @@
         input {
           @include mixin.font-urbanist;
           display: inline-block;
-          width: 50%;
+          width: 57%;
           border: 0;
           font-size: 14px;
           margin: 2px 2px 2px 0;
