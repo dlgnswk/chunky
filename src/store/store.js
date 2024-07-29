@@ -18,8 +18,9 @@ import {
   PiEraser,
 } from 'react-icons/pi';
 
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import handleAuthError from '../utils/authError';
-import { auth, onAuthStateChanged } from '../services/firebase-config';
+import { auth, db, onAuthStateChanged } from '../services/firebase-config';
 import firestore from '../services/firestore';
 
 import ViewBackIcon from '../components/shared/Icon/ViewBackIcon';
@@ -66,7 +67,24 @@ const useStore = create((set, get) => ({
   exportToSTL: null,
   layerTitle: 'Layer Title',
 
-  setLayerTitle: (title) => set({ layerTitle: title }),
+  setLayerTitle: async (title) => {
+    set({ layerTitle: title });
+    const { user } = get();
+    if (user) {
+      await updateDoc(doc(db, 'users', user.uid), { layerTitle: title });
+    }
+  },
+
+  loadLayerTitle: async () => {
+    const { user } = get();
+    if (user) {
+      const docSnap = await getDoc(doc(db, 'users', user.uid));
+      if (docSnap.exists()) {
+        set({ layerTitle: docSnap.data().layerTitle || 'Untitled' });
+      }
+    }
+  },
+
   setExportToSTL: (func) => set({ exportToSTL: func }),
 
   saveCurrentWork: async () => {
@@ -96,7 +114,7 @@ const useStore = create((set, get) => ({
         throw new Error('LayerSet already exists');
       }
 
-      await firestore.addSaveToFirestore(user.uid, saveData);
+      await firestore.addHistoryToFirestore(user.uid, saveData);
       set((state) => ({
         alertState: [
           ...state.alertState,
@@ -128,22 +146,22 @@ const useStore = create((set, get) => ({
     if (!user) return;
 
     try {
-      const saves = await firestore.getSavesFromFirestore(user.uid);
-      const selectedSave = saves.find((save) => save.id === saveId);
+      const history = await firestore.getHistoryFromFirestore(user.uid);
+      const selectedHistory = history.find((save) => save.id === saveId);
 
-      if (selectedSave) {
+      if (selectedHistory) {
         set({
-          layerList: selectedSave.layers,
-          layerTitle: selectedSave.layerTitle,
+          layerList: selectedHistory.layers,
+          layerTitle: selectedHistory.layerTitle,
         });
 
         await Promise.all(
-          selectedSave.layers.map((layer) =>
+          selectedHistory.layers.map((layer) =>
             firestore.addLayerToFirestore(user.uid, layer),
           ),
         );
 
-        set({ layerList: selectedSave.layers });
+        set({ layerList: selectedHistory.layers });
         set((state) => ({
           alertState: [
             ...state.alertState,
@@ -244,6 +262,9 @@ const useStore = create((set, get) => ({
       );
       const { user } = userCredential;
       await updateProfile(user, { displayName: userName });
+      await setDoc(doc(db, 'users', user.uid), {
+        layerTitle: 'Untitled',
+      });
       localStorage.setItem('user', JSON.stringify(user));
       set({ user });
     } catch (error) {
@@ -448,6 +469,7 @@ const useStore = create((set, get) => ({
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
+    useStore.getState().loadLayerTitle();
     localStorage.setItem('user', JSON.stringify(user));
     useStore.setState({ user });
   } else {
