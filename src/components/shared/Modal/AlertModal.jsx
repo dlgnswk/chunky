@@ -58,6 +58,15 @@ function AlertModal({ id, message, onClose }) {
     case 'failed-export':
       displayMessage = '내보내기에 실패했어요.';
       break;
+    case 'success-save':
+      displayMessage = '저장에 성공했어요.';
+      break;
+    case 'layer-set-exists':
+      displayMessage = '이미 저장된 레이어 세트에요.';
+      break;
+    case 'failed-save':
+      displayMessage = '저장에 실패했어요.';
+      break;
     default:
       displayMessage = '알 수 없는 오류가 발생했어요.';
       break;
