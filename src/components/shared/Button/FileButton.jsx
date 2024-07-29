@@ -1,10 +1,11 @@
+import React from 'react';
 import { CiExport, CiImport } from 'react-icons/ci';
 import useStore from '../../../store/store';
 
 function FileButton({ text }) {
-  const { setAlertState, layerList, exportToSTL } = useStore();
+  const { setAlertState, layerList, exportToSTL, saveCurrentWork } = useStore();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (text === 'Export') {
       try {
         exportToSTL();
@@ -13,7 +14,16 @@ function FileButton({ text }) {
         setAlertState('failed-export');
       }
     } else if (text === 'Save') {
-      console.log('Save functionality not implemented yet');
+      try {
+        await saveCurrentWork();
+        setAlertState('success-save');
+      } catch (error) {
+        if (error.message === 'LayerSet already exists') {
+          setAlertState('layer-set-exists');
+        } else {
+          setAlertState('failed-save');
+        }
+      }
     }
   };
 
@@ -29,7 +39,7 @@ function FileButton({ text }) {
         layerList.length === 0 ? 'file-container' : 'able-file-container'
       }
       onClick={handleClick}
-      onKeyPress={handleKeyPress}
+      onKeyDown={handleKeyPress}
       role="button"
       tabIndex={0}
     >

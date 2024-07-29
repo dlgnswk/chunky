@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { HiOutlinePlus } from 'react-icons/hi2';
+import { HiOutlinePencilAlt } from 'react-icons/hi';
+
 import { v4 as uuidv4 } from 'uuid';
 
 import useStore from '../../store/store';
@@ -13,12 +15,15 @@ function LayerArea() {
     addLayer,
     selectedLayer,
     setSelectedLayer,
-    loadLayers,
+    layerTitle,
+    setLayerTitle,
   } = useStore();
 
   useEffect(() => {
-    loadLayers();
-  }, [loadLayers]);
+    if (layerList.length > 0 && !selectedLayer) {
+      setSelectedLayer(layerList[layerList.length - 1]);
+    }
+  }, [layerList, selectedLayer, setSelectedLayer]);
 
   useEffect(() => {
     if (layerList.length > 0 && !selectedLayer) {
@@ -39,7 +44,15 @@ function LayerArea() {
   return (
     <div className="layer-area">
       <div className="layer-header">
-        <div className="title">Layer</div>
+        <div className="layer-icon-title">
+          <HiOutlinePencilAlt />
+          <input
+            type="text"
+            value={layerTitle}
+            onChange={(e) => setLayerTitle(e.target.value)}
+            className="layer-title-input"
+          />
+        </div>
         <button
           className="layer-add-button"
           aria-label="add layer"

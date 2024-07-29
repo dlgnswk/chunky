@@ -3,16 +3,20 @@ import useStore from '../../store/store';
 import FileButton from '../shared/Button/FileButton';
 
 function ButtonArea() {
-  const { exportLayersToSTL } = useStore();
+  const { exportLayersToSTL, saveCurrentWork } = useStore();
 
   const handleExportClick = () => {
     exportLayersToSTL();
   };
 
+  const handleSaveClick = async () => {
+    await saveCurrentWork();
+  };
+
   return (
     <div className="button-area">
-      <FileButton text="Save" onClick={() => console.log('Save clicked')} />
       <FileButton text="Export" onClick={handleExportClick} />
+      <FileButton text="Save" onClick={handleSaveClick} />
     </div>
   );
 }

@@ -28,7 +28,6 @@ import ViewLeftIcon from '../components/shared/Icon/ViewLeftIcon';
 import ViewRightIcon from '../components/shared/Icon/ViewRightIcon';
 import ViewUpIcon from '../components/shared/Icon/ViewUpIcon';
 import ViewPerspectiveIcon from '../components/shared/Icon/ViewPerspectiveIcon';
-import { exportToSTL } from '../r3f-utils/exportSTL';
 
 const DRAWING_ICON_LIST = [
   { id: 'move', icon: PiHandWaving },
@@ -65,15 +64,108 @@ const useStore = create((set, get) => ({
   canvasSize: INITIAL_CANVAS_SIZE,
   layerList: [],
   exportToSTL: null,
+  layerTitle: 'Layer Title',
 
+  setLayerTitle: (title) => set({ layerTitle: title }),
   setExportToSTL: (func) => set({ exportToSTL: func }),
+
+  saveCurrentWork: async () => {
+    const { user, layerList, layerTitle } = get();
+    if (!user) {
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: 'failed-save-no-user' },
+        ],
+      }));
+      return;
+    }
+
+    const saveData = {
+      layerTitle,
+      layers: layerList,
+      timestamp: new Date().toISOString(),
+    };
+
+    try {
+      const existingSet = await firestore.checkLayerSetExists(
+        user.uid,
+        layerTitle,
+      );
+      if (existingSet) {
+        throw new Error('LayerSet already exists');
+      }
+
+      await firestore.addSaveToFirestore(user.uid, saveData);
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: 'success-save' },
+        ],
+      }));
+    } catch (error) {
+      if (error.message === 'LayerSet already exists') {
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'layer-set-exists' },
+          ],
+        }));
+      } else {
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'failed-save' },
+          ],
+        }));
+      }
+      throw error;
+    }
+  },
+
+  loadSavedWork: async (saveId) => {
+    const { user } = get();
+    if (!user) return;
+
+    try {
+      const saves = await firestore.getSavesFromFirestore(user.uid);
+      const selectedSave = saves.find((save) => save.id === saveId);
+
+      if (selectedSave) {
+        set({
+          layerList: selectedSave.layers,
+          layerTitle: selectedSave.layerTitle,
+        });
+
+        await Promise.all(
+          selectedSave.layers.map((layer) =>
+            firestore.addLayerToFirestore(user.uid, layer),
+          ),
+        );
+
+        set({ layerList: selectedSave.layers });
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'Saved work loaded successfully' },
+          ],
+        }));
+      }
+    } catch (error) {
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: 'Failed to load saved work' },
+        ],
+      }));
+    }
+  },
 
   exportLayersToSTL: () => {
     const exportFunc = get().exportToSTL;
+
     if (exportFunc) {
       exportFunc();
-    } else {
-      console.error('Export function is not set');
     }
   },
 

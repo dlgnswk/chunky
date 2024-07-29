@@ -80,10 +80,23 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
+    align-items: center;
 
-    .title {
+    .layer-icon-title {
+      color: #aeaeae;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .layer-title-input {
+      margin-left: 5px;
       font-weight: 700;
       font-size: 20px;
+      width: 60%;
+      text-overflow: ellipsis;
+      border: 0;
     }
 
     .layer-add-button {

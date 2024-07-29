@@ -6,6 +6,8 @@ import {
   updateDoc,
   doc as firestoreDoc,
   onSnapshot,
+  query,
+  where,
 } from 'firebase/firestore';
 import { db } from './firebase-config';
 
@@ -24,28 +26,23 @@ const subscribeToLayers = (userId, callback) => {
 async function addLayerToFirestore(uid, layer) {
   const layerCollectionRef = collection(db, 'users', uid, 'layers');
 
-  try {
-    const updatedPath = layer.path.map((path) => ({
-      ...path,
-      fill: path.fill || 'none',
-    }));
+  const updatedPath = layer.path.map((path) => ({
+    ...path,
+    fill: path.fill || 'none',
+  }));
 
-    const layerWithUpdatedPath = {
-      ...layer,
-      path: updatedPath,
-    };
-    console.log(layerWithUpdatedPath);
-    if ('id' in layerWithUpdatedPath) {
-      delete layerWithUpdatedPath.id;
-    }
+  const layerWithUpdatedPath = {
+    ...layer,
+    path: updatedPath,
+  };
 
-    const docRef = await addDoc(layerCollectionRef, layerWithUpdatedPath);
-
-    return docRef.id;
-  } catch (error) {
-    console.error('Error adding document: ', error);
-    throw error;
+  if ('id' in layerWithUpdatedPath) {
+    delete layerWithUpdatedPath.id;
   }
+
+  const docRef = await addDoc(layerCollectionRef, layerWithUpdatedPath);
+
+  return docRef.id;
 }
 
 async function getLayersFromFirestore(uid) {
@@ -123,6 +120,30 @@ async function updateLayerHeight(uid, layerIndex, newHeight) {
   }
 }
 
+async function addSaveToFirestore(uid, saveData) {
+  const saveCollectionRef = collection(db, 'users', uid, 'saves');
+
+  const docRef = await addDoc(saveCollectionRef, saveData);
+  return docRef.id;
+}
+
+async function getSavesFromFirestore(uid) {
+  const saveCollectionRef = collection(db, 'users', uid, 'saves');
+  try {
+    const querySnapshot = await getDocs(saveCollectionRef);
+    return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  } catch (e) {
+    return [];
+  }
+}
+
+async function checkLayerSetExists(uid, layerTitle) {
+  const saveCollectionRef = collection(db, 'users', uid, 'saves');
+  const q = query(saveCollectionRef, where('layerTitle', '==', layerTitle));
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
+}
+
 export default {
   addLayerToFirestore,
   getLayersFromFirestore,
@@ -130,4 +151,7 @@ export default {
   updateLayerInFirestoreDB,
   subscribeToLayers,
   updateLayerHeight,
+  addSaveToFirestore,
+  getSavesFromFirestore,
+  checkLayerSetExists,
 };
