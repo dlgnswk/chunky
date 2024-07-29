@@ -86,7 +86,7 @@ function SettingArea() {
         setModalType={setModalType}
       />
       <ModalButton
-        text="Chunky"
+        text="History"
         isModalOpened={isModalOpened}
         setIsModalOpened={setIsModalOpened}
         modalType={modalType}

@@ -1,6 +1,10 @@
+import { useState, useEffect } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
+
+import useStore from '../../../store/store';
+import firestore from '../../../services/firestore';
+
 import './style.scss';
-import { useState } from 'react';
 
 function Modal({ text, setIsModalOpened }) {
   const presetList = [
@@ -10,45 +14,22 @@ function Modal({ text, setIsModalOpened }) {
     { title: '건물 모형', src: 'src/assets/images/presetDefault01.png' },
   ];
 
-  const chunkyList = [
-    {
-      title: '작업중1',
-      src: 'src/assets/images/chunkyDefault.png',
-      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
-    },
-    {
-      title: '중간 수정본',
-      src: 'src/assets/images/chunkyDefault.png',
-      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
-    },
-    {
-      title: '최초최최종수정',
-      src: 'src/assets/images/chunkyDefault.png',
-      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
-    },
-    {
-      title: '작업중123123',
-      src: 'src/assets/images/chunkyDefault.png',
-      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
-    },
-    {
-      title: '최종본',
-      src: 'src/assets/images/chunkyDefault.png',
-      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
-    },
-    {
-      title: '최종수정본',
-      src: 'src/assets/images/chunkyDefault.png',
-      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
-    },
-    {
-      title: '최종의최종수정본2',
-      src: 'src/assets/images/chunkyDefault.png',
-      hoverSrc: 'src/assets/images/chunkyHoverDefault.png',
-    },
-  ];
-
+  const [history, setHistory] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const { user } = useStore();
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (user && text === 'History') {
+        const fetchedHistory = await firestore.getHistoryFromFirestore(
+          user.uid,
+        );
+        setHistory(fetchedHistory);
+      }
+    };
+
+    fetchHistory();
+  }, [user, text, firestore.getHistoryFromFirestore]);
 
   const handleCloseClick = () => {
     setIsModalOpened(false);
@@ -78,22 +59,26 @@ function Modal({ text, setIsModalOpened }) {
               </div>
             );
           })}
-        {text === 'Chunky' &&
-          chunkyList.map((chunky, index) => {
+        {text === 'History' &&
+          history.map((save, index) => {
             return (
               <div
                 className="card"
-                key={chunky.title}
+                key={save.id}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 <div className="card-image">
                   <img
-                    src={hoveredIndex === index ? chunky.hoverSrc : chunky.src}
+                    src={
+                      hoveredIndex === index
+                        ? 'src/assets/images/chunkyHoverDefault.png'
+                        : 'src/assets/images/chunkyDefault.png'
+                    }
                     alt="chunky"
                   />
                 </div>
-                <p className="card-title">{chunky.title}</p>
+                <p className="card-title">{save.layerTitle}</p>
               </div>
             );
           })}
