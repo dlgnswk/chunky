@@ -44,7 +44,7 @@ function useCanvasSetup(canvasSize, screenRef, canvasRef) {
 
       if (event.deltaY < 0) {
         setScale((prevScale) => {
-          const newScale = Math.min(prevScale + scaleFactor, maxScale); // maxScale 사용
+          const newScale = Math.min(prevScale + scaleFactor, maxScale);
           setOffset((prevOffset) => ({
             x: prevOffset.x - (mouseX * (newScale - prevScale)) / newScale,
             y: prevOffset.y - (mouseY * (newScale - prevScale)) / newScale,

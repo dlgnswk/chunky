@@ -54,7 +54,7 @@ function LayerArea() {
         ) : (
           safeLayers
             .slice()
-            .sort((a, b) => b.index - a.index) // index를 기준으로 내림차순 정렬
+            .sort((a, b) => b.index - a.index)
             .map((layer) => {
               if (layer.type === 'draw') {
                 return (
