@@ -29,15 +29,22 @@ async function addLayerToFirestore(uid, layer) {
       ...path,
       fill: path.fill || 'none',
     }));
+
     const layerWithUpdatedPath = {
       ...layer,
       path: updatedPath,
     };
+    console.log(layerWithUpdatedPath);
+    if ('id' in layerWithUpdatedPath) {
+      delete layerWithUpdatedPath.id;
+    }
+
     const docRef = await addDoc(layerCollectionRef, layerWithUpdatedPath);
 
     return docRef.id;
-  } catch (e) {
-    return null;
+  } catch (error) {
+    console.error('Error adding document: ', error);
+    throw error;
   }
 }
 

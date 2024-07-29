@@ -23,8 +23,13 @@ function LayerCard({
   selectLayer,
   handleSelectClick,
 }) {
-  const { updateLayer, removeLayer, setAlertState, updateLayerInFirestore } =
-    useStore();
+  const {
+    updateLayer,
+    removeLayer,
+    setAlertState,
+    updateLayerInFirestore,
+    copyLayer,
+  } = useStore();
 
   const [newName, setNewName] = useState(name);
   const [newHeight, setNewHeight] = useState(height);
@@ -37,6 +42,11 @@ function LayerCard({
     setNewZIndex(zIndex);
     setNewFill(fill);
   }, [name, height, zIndex, fill]);
+
+  const handleCopyClick = (e) => {
+    e.stopPropagation();
+    copyLayer(layer.id);
+  };
 
   const handleVisibleClick = (e) => {
     e.stopPropagation();
@@ -199,9 +209,7 @@ function LayerCard({
           <button
             className="layer-icon-copy"
             aria-label="layer copy button"
-            onClick={() => {
-              /* 복사 로직 */
-            }}
+            onClick={handleCopyClick}
           >
             <AiOutlineCopy />
           </button>

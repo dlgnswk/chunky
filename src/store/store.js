@@ -241,6 +241,7 @@ const useStore = create((set, get) => ({
     }
 
     const id = await firestore.addLayerToFirestore(uid, newLayer);
+
     if (id) {
       newLayer.id = id;
       set((state) => ({
@@ -293,6 +294,29 @@ const useStore = create((set, get) => ({
     } catch (error) {
       return false;
     }
+  },
+
+  copyLayer: async (layerId) => {
+    const { layerList, addLayer } = get();
+    const layerToCopy = layerList.find((layer) => layer.id === layerId);
+
+    if (!layerToCopy) {
+      return;
+    }
+
+    const newLayerIndex =
+      Math.max(...layerList.map((layer) => layer.index)) + 1;
+    const newLayer = {
+      ...layerToCopy,
+      id: null,
+      index: newLayerIndex,
+      name: `${layerToCopy.name} (Copy)`,
+      zIndex: layerToCopy.zIndex,
+    };
+
+    delete newLayer.id;
+
+    await addLayer(newLayer);
   },
 
   async removeLayer(index) {
