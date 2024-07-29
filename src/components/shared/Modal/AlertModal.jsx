@@ -52,6 +52,12 @@ function AlertModal({ id, message, onClose }) {
     case 'failed-logout':
       displayMessage = '로그아웃에 실패했어요.';
       break;
+    case 'success-export':
+      displayMessage = '내보내기에 성공했어요.';
+      break;
+    case 'failed-export':
+      displayMessage = '내보내기에 실패했어요.';
+      break;
     default:
       displayMessage = '알 수 없는 오류가 발생했어요.';
       break;
