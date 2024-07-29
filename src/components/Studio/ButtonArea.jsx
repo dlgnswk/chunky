@@ -1,28 +1,18 @@
+import React from 'react';
+import useStore from '../../store/store';
 import FileButton from '../shared/Button/FileButton';
 
 function ButtonArea() {
-  // const exportSTL = () => {
-  //   if (sceneRef.current) {
-  //     const exporter = new STLExporter();
-  //     const stlString = exporter.parse(sceneRef.current);
-  //     const blob = new Blob([stlString], { type: 'text/plain' });
+  const { exportLayersToSTL } = useStore();
 
-  //     const link = document.createElement('a');
-  //     link.style.display = 'none';
-  //     document.body.appendChild(link);
-
-  //     link.href = URL.createObjectURL(blob);
-  //     link.download = 'model.stl';
-  //     link.click();
-
-  //     document.body.removeChild(link);
-  //   }
-  // };
+  const handleExportClick = () => {
+    exportLayersToSTL();
+  };
 
   return (
     <div className="button-area">
-      <FileButton text="Save" />
-      <FileButton text="Export" />
+      <FileButton text="Save" onClick={() => console.log('Save clicked')} />
+      <FileButton text="Export" onClick={handleExportClick} />
     </div>
   );
 }
