@@ -1,7 +1,5 @@
 import { useEffect, useRef } from 'react';
-
 import createModels from '../../models/createModels';
-
 import useStore from '../../store/store';
 
 function Layer3D({ layer, zPosition, thickness }) {
