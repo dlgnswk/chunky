@@ -31,8 +31,6 @@ function polygonModel(path, depth, canvasSize, fill) {
   const material = new THREE.MeshPhongMaterial({
     color: new THREE.Color(fill),
     side: THREE.DoubleSide,
-    linewidth: 1,
-    sizeAttenuation: false,
   });
 
   const mesh = new THREE.Mesh(geometry, material);
