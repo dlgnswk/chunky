@@ -9,6 +9,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
+
 import { db } from './firebase-config';
 
 const subscribeToLayers = (userId, callback) => {
@@ -120,17 +121,17 @@ async function updateLayerHeight(uid, layerIndex, newHeight) {
   }
 }
 
-async function addSaveToFirestore(uid, saveData) {
-  const saveCollectionRef = collection(db, 'users', uid, 'saves');
+async function addHistoryToFirestore(uid, saveData) {
+  const historyCollectionRef = collection(db, 'users', uid, 'history');
 
-  const docRef = await addDoc(saveCollectionRef, saveData);
+  const docRef = await addDoc(historyCollectionRef, saveData);
   return docRef.id;
 }
 
-async function getSavesFromFirestore(uid) {
-  const saveCollectionRef = collection(db, 'users', uid, 'saves');
+async function getHistoryFromFirestore(uid) {
+  const historyCollectionRef = collection(db, 'users', uid, 'history');
   try {
-    const querySnapshot = await getDocs(saveCollectionRef);
+    const querySnapshot = await getDocs(historyCollectionRef);
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (e) {
     return [];
@@ -138,8 +139,8 @@ async function getSavesFromFirestore(uid) {
 }
 
 async function checkLayerSetExists(uid, layerTitle) {
-  const saveCollectionRef = collection(db, 'users', uid, 'saves');
-  const q = query(saveCollectionRef, where('layerTitle', '==', layerTitle));
+  const historyCollectionRef = collection(db, 'users', uid, 'history');
+  const q = query(historyCollectionRef, where('layerTitle', '==', layerTitle));
   const querySnapshot = await getDocs(q);
   return !querySnapshot.empty;
 }
@@ -151,7 +152,7 @@ export default {
   updateLayerInFirestoreDB,
   subscribeToLayers,
   updateLayerHeight,
-  addSaveToFirestore,
-  getSavesFromFirestore,
+  addHistoryToFirestore,
+  getHistoryFromFirestore,
   checkLayerSetExists,
 };
