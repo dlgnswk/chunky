@@ -10,10 +10,13 @@ import { useState } from 'react';
 import useStore from '../../store/store';
 
 function LayerImage({ layer, index, name, visible }) {
-  const { updateLayer, removeLayer } = useStore((state) => ({
-    updateLayer: state.updateLayer,
-    removeLayer: state.removeLayer,
-  }));
+  const { updateLayer, removeLayer, updateLayerInFirestore } = useStore(
+    (state) => ({
+      updateLayer: state.updateLayer,
+      removeLayer: state.removeLayer,
+      updateLayerInFirestore: state.updateLayerInFirestore,
+    }),
+  );
 
   const [localOpacity, setLocalOpacity] = useState(layer.opacity);
   const [isResizing, setIsResizing] = useState(false);
@@ -51,7 +54,9 @@ function LayerImage({ layer, index, name, visible }) {
   };
 
   const handleResizeConfirm = () => {
+    const updatedLayer = { ...layer, width: localWidth, height: localHeight };
     updateLayer(index, { width: localWidth, height: localHeight });
+    updateLayerInFirestore(updatedLayer);
     setIsResizing(false);
   };
 
