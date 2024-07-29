@@ -28,6 +28,7 @@ import ViewLeftIcon from '../components/shared/Icon/ViewLeftIcon';
 import ViewRightIcon from '../components/shared/Icon/ViewRightIcon';
 import ViewUpIcon from '../components/shared/Icon/ViewUpIcon';
 import ViewPerspectiveIcon from '../components/shared/Icon/ViewPerspectiveIcon';
+import { exportToSTL } from '../r3f-utils/exportSTL';
 
 const DRAWING_ICON_LIST = [
   { id: 'move', icon: PiHandWaving },
@@ -50,7 +51,7 @@ const VIEW_ICON_LIST = [
 ];
 
 const INITIAL_LAYER_LIST = [];
-const INITIAL_CANVAS_SIZE = { width: 827, height: 827, depth: 827 };
+const INITIAL_CANVAS_SIZE = { width: 180, height: 180, depth: 180 };
 
 const useStore = create((set, get) => ({
   user: JSON.parse(localStorage.getItem('user')) || null,
@@ -63,6 +64,18 @@ const useStore = create((set, get) => ({
   viewToolList: VIEW_ICON_LIST,
   canvasSize: INITIAL_CANVAS_SIZE,
   layerList: [],
+  exportToSTL: null,
+
+  setExportToSTL: (func) => set({ exportToSTL: func }),
+
+  exportLayersToSTL: () => {
+    const exportFunc = get().exportToSTL;
+    if (exportFunc) {
+      exportFunc();
+    } else {
+      console.error('Export function is not set');
+    }
+  },
 
   setSelectedLayer(layer) {
     set({ selectedLayer: layer });

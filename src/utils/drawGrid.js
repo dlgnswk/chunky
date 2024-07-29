@@ -1,5 +1,5 @@
 function drawGrid(ctx, width, height) {
-  const gridSpacing = 20;
+  const gridSpacing = 9;
 
   ctx.clearRect(0, 0, width, height);
 

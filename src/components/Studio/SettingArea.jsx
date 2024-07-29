@@ -10,10 +10,11 @@ import ModalButton from '../shared/Button/ModalButton';
 import Logo from '../shared/Logo/Logo';
 
 const LAYOUT_OPTIONS = {
-  option1: { width: 827, height: 827, depth: 827 },
-  option2: { width: 866, height: 866, depth: 984 },
-  option3: { width: 1181, height: 1181, depth: 1181 },
-  option4: { width: 1575, height: 1575, depth: 1772 },
+  option1: { width: 180, height: 180, depth: 180 },
+  option2: { width: 210, height: 210, depth: 210 },
+  option3: { width: 220, height: 220, depth: 250 },
+  option4: { width: 300, height: 300, depth: 300 },
+  option5: { width: 400, height: 400, depth: 450 },
 };
 
 function SettingArea() {
@@ -70,10 +71,11 @@ function SettingArea() {
       <div className="layout-setting">
         <span>Layout</span>
         <select className="layout-select" onChange={handleLayoutChange}>
-          <option value="option1">210 x 210 x 210</option>
-          <option value="option2">220 x 220 x 250</option>
-          <option value="option3">300 x 300 x 300</option>
-          <option value="option4">400 x 400 x 450</option>
+          <option value="option1">180 x 180 x 180</option>
+          <option value="option2">210 x 210 x 210</option>
+          <option value="option3">220 x 220 x 250</option>
+          <option value="option4">300 x 300 x 300</option>
+          <option value="option5">400 x 400 x 450</option>
         </select>
       </div>
       <ModalButton
