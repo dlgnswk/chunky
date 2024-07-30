@@ -22,6 +22,19 @@ function Modal({ text, setIsModalOpened }) {
     { title: '건물 모형', src: 'src/assets/images/presetDefault01.png' },
   ];
 
+  const getImgPath = (presetName) => {
+    switch (presetName) {
+      case 'Chunky':
+        return 'src/assets/images/presetDefault01.png';
+      case '남산타워':
+        return 'src/assets/images/presetDefault02.png';
+      case '키링':
+        return 'src/assets/images/presetDefault03.png';
+      default:
+        return '';
+    }
+  };
+
   const [presets, setPresets] = useState([]);
   const [history, setHistory] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -112,7 +125,7 @@ function Modal({ text, setIsModalOpened }) {
               onClick={() => handlePresetClick(preset)}
             >
               <div className="card-image">
-                <img src="src/assets/images/presetDefault.png" alt="preset" />
+                <img src={getImgPath(preset.name)} alt="preset" />
               </div>
               <p className="card-title">{preset.name}</p>
             </button>
