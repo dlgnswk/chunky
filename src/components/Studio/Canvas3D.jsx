@@ -90,9 +90,9 @@ function Canvas3D() {
             toneMappingExposure: 1,
           }}
           camera={{
-            position: [0, -canvasSize.height * 1.5, canvasSize.depth * 1.5],
+            position: [0, -canvasSize.height * 1.1, canvasSize.depth * 1.1],
             up: [0, 0, 1],
-            fov: 45,
+            fov: 50,
             near: 0.1,
             far:
               Math.max(canvasSize.width, canvasSize.height, canvasSize.depth) *
