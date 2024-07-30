@@ -57,6 +57,20 @@ function SceneContent() {
   return null;
 }
 
+function CameraController() {
+  const { camera, gl } = useThree();
+  const controls = useRef();
+  const { cameraPosition, cameraTarget } = useStore();
+
+  useEffect(() => {
+    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+    controls.current.target.set(cameraTarget.x, cameraTarget.y, cameraTarget.z);
+    controls.current.update();
+  }, [camera, cameraPosition, cameraTarget]);
+
+  return <OrbitControls ref={controls} args={[camera, gl.domElement]} />;
+}
+
 function Canvas3D() {
   const canvasRef = useRef();
   const sceneRef = useRef();
@@ -102,6 +116,7 @@ function Canvas3D() {
           style={{ height: '100%', width: '100%' }}
           background="#ffffff"
         >
+          <CameraController />
           <SceneContent />
           <EffectComposer multisampling={0} enableNormalPass>
             <Bloom

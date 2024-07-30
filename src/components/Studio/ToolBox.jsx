@@ -5,11 +5,45 @@ import { PiImage } from 'react-icons/pi';
 import useStore from '../../store/store';
 
 function ToolBox({ type, iconList, selectTool, selectedTool }) {
+  const { setCameraView, canvasSize } = useStore();
   const fileInputRef = useRef(null);
   const { addLayer, setAlertState } = useStore();
 
   const handleImageImport = () => {
     fileInputRef.current.click();
+  };
+
+  const handleViewChange = (viewId) => {
+    selectTool(viewId);
+
+    const { width, height, depth } = canvasSize;
+    const distance = Math.max(width, height, depth) * 1.5;
+
+    switch (viewId) {
+      case 'viewPerspective':
+        setCameraView(
+          { x: distance, y: -distance, z: distance },
+          { x: 0, y: 0, z: 0 },
+        );
+        break;
+      case 'viewFront':
+        setCameraView({ x: 0, y: -distance, z: 0 }, { x: 0, y: 0, z: 0 });
+        break;
+      case 'viewBack':
+        setCameraView({ x: 0, y: distance, z: 0 }, { x: 0, y: 0, z: 0 });
+        break;
+      case 'viewLeft':
+        setCameraView({ x: -distance, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
+        break;
+      case 'viewRight':
+        setCameraView({ x: distance, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
+        break;
+      case 'viewUp':
+        setCameraView({ x: 0, y: 0, z: distance }, { x: 0, y: 0, z: 0 });
+        break;
+      default:
+        break;
+    }
   };
 
   const handleFileChange = (event) => {
@@ -92,7 +126,7 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
             className={`tool-button ${selectedTool === id ? 'selected' : ''}`}
             key={id}
             aria-label={id}
-            onClick={() => selectTool(id)}
+            onClick={() => handleViewChange(id)}
           >
             <IconComponent />
           </button>

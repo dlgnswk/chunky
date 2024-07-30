@@ -19,16 +19,12 @@ import {
 } from 'react-icons/pi';
 
 import {
-  addDoc,
   collection,
   doc,
   getDoc,
-  getDocs,
-  query,
   serverTimestamp,
   setDoc,
   updateDoc,
-  where,
 } from 'firebase/firestore';
 import handleAuthError from '../utils/authError';
 import { auth, db, onAuthStateChanged } from '../services/firebase-config';
@@ -77,6 +73,11 @@ const useStore = create((set, get) => ({
   layerList: [],
   exportToSTL: null,
   layerTitle: 'Layer Title',
+  cameraPosition: { x: 0, y: -180 * 1.1, z: 180 * 1.1 },
+  cameraTarget: { x: 0, y: 0, z: 0 },
+
+  setCameraView: (position, target) =>
+    set({ cameraPosition: position, cameraTarget: target }),
 
   setLayerTitle: async (title) => {
     set({ layerTitle: title });
