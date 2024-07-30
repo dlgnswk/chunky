@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import MainButton from '../shared/Button/MainButton';
@@ -11,6 +12,15 @@ function Welcome() {
     navigate('/');
   };
 
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    if (userData && userData.displayName) {
+      setUserName(userData.displayName);
+    }
+  }, []);
+
   return (
     <div className="container">
       <div className="welcome-image-container">
@@ -20,7 +30,7 @@ function Welcome() {
           alt="welcome chunky"
         />
       </div>
-      <p className="welcome-message">dlgnswk 님, 환영해요!</p>
+      <p className="welcome-message">{userName} 님, 환영해요!</p>
       <div className="intro-message">
         <div className="intro-logo horizon-text">
           <Logo />
