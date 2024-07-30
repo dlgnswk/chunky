@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
 import { IoCloseOutline } from 'react-icons/io5';
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  writeBatch,
+} from 'firebase/firestore';
+import { db } from '../../../services/firebase-config';
 
 import useStore from '../../../store/store';
-import firestore from '../../../services/firestore';
 
+import firestore from '../../../services/firestore';
 import './style.scss';
 
 function Modal({ text, setIsModalOpened }) {
@@ -16,7 +24,7 @@ function Modal({ text, setIsModalOpened }) {
 
   const [history, setHistory] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const { user } = useStore();
+  const { user, setLayers, setAlertState, setLayerTitle } = useStore();
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -27,12 +35,46 @@ function Modal({ text, setIsModalOpened }) {
         setHistory(fetchedHistory);
       }
     };
-
     fetchHistory();
-  }, [user, text, firestore.getHistoryFromFirestore]);
+  }, [user, text]);
 
   const handleCloseClick = () => {
     setIsModalOpened(false);
+  };
+
+  const handleHistoryClick = async (prevWork) => {
+    try {
+      const historyDocRef = doc(db, 'users', user.uid, 'history', prevWork.id);
+      const historyDocSnap = await getDoc(historyDocRef);
+
+      if (historyDocSnap.exists()) {
+        const historyData = historyDocSnap.data();
+        const layersToLoad = historyData.layers;
+
+        const layersRef = collection(db, 'users', user.uid, 'layers');
+        const currentLayersSnap = await getDocs(layersRef);
+
+        const batch = writeBatch(db);
+        currentLayersSnap.forEach((docSnapshot) => {
+          batch.delete(docSnapshot.ref);
+        });
+
+        layersToLoad.forEach((layer) => {
+          const newLayerRef = doc(collection(db, 'users', user.uid, 'layers'));
+          batch.set(newLayerRef, layer);
+        });
+
+        await batch.commit();
+
+        setLayers(layersToLoad);
+        setIsModalOpened(false);
+        setLayerTitle(prevWork.layerTitle);
+      } else {
+        setAlertState('faild-load-history');
+      }
+    } catch (error) {
+      setAlertState('faild-load-history');
+    }
   };
 
   return (
@@ -49,39 +91,41 @@ function Modal({ text, setIsModalOpened }) {
       </div>
       <div className="modal-content">
         {text === 'Preset' &&
-          presetList.map((preset) => {
-            return (
-              <div className="card" key={preset.title}>
-                <div className="card-image">
-                  <img src={preset.src} alt="preset" />
-                </div>
-                <p className="card-title">{preset.title}</p>
+          presetList.map((preset) => (
+            <div className="card" key={preset.title}>
+              <div className="card-image">
+                <img src={preset.src} alt="preset" />
               </div>
-            );
-          })}
+              <p className="card-title">{preset.title}</p>
+            </div>
+          ))}
         {text === 'History' &&
-          history.map((save, index) => {
-            return (
-              <div
-                className="card"
-                key={save.id}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                <div className="card-image">
-                  <img
-                    src={
-                      hoveredIndex === index
-                        ? 'src/assets/images/chunkyHoverDefault.png'
-                        : 'src/assets/images/chunkyDefault.png'
-                    }
-                    alt="chunky"
-                  />
-                </div>
-                <p className="card-title">{save.layerTitle}</p>
+          history.map((prevWork, index) => (
+            <button
+              className="card"
+              key={prevWork.id}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => handleHistoryClick(prevWork)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleHistoryClick(prevWork);
+                }
+              }}
+            >
+              <div className="card-image">
+                <img
+                  src={
+                    hoveredIndex === index
+                      ? 'src/assets/images/chunkyHoverDefault.png'
+                      : 'src/assets/images/chunkyDefault.png'
+                  }
+                  alt="chunky"
+                />
               </div>
-            );
-          })}
+              <p className="card-title">{prevWork.layerTitle}</p>
+            </button>
+          ))}
       </div>
     </div>
   );

@@ -18,7 +18,18 @@ import {
   PiEraser,
 } from 'react-icons/pi';
 
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import handleAuthError from '../utils/authError';
 import { auth, db, onAuthStateChanged } from '../services/firebase-config';
 import firestore from '../services/firestore';
@@ -114,6 +125,8 @@ const useStore = create((set, get) => ({
         throw new Error('LayerSet already exists');
       }
 
+      await updateDoc(doc(db, 'users', user.uid), { layerTitle });
+
       await firestore.addHistoryToFirestore(user.uid, saveData);
       set((state) => ({
         alertState: [
@@ -138,6 +151,38 @@ const useStore = create((set, get) => ({
         }));
       }
       throw error;
+    }
+  },
+
+  saveAsPreset: async () => {
+    const { layerList, layerTitle } = get();
+
+    const presetData = {
+      name: layerTitle,
+      layers: layerList,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    try {
+      const presetsCollectionRef = collection(db, 'presets');
+      const newPresetDocRef = doc(presetsCollectionRef);
+
+      await setDoc(newPresetDocRef, presetData);
+
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: 'success-save-preset' },
+        ],
+      }));
+    } catch (error) {
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: 'failed-save-preset' },
+        ],
+      }));
     }
   },
 
@@ -234,6 +279,10 @@ const useStore = create((set, get) => ({
     set(() => {
       return { layerList: newLayerList };
     });
+  },
+
+  setLayers: (layers) => {
+    set({ layerList: layers });
   },
 
   setUser(user) {

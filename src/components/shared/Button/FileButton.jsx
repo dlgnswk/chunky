@@ -1,9 +1,15 @@
 import React from 'react';
-import { CiExport, CiImport } from 'react-icons/ci';
+import { CiExport, CiImport, CiSaveDown2 } from 'react-icons/ci';
 import useStore from '../../../store/store';
 
 function FileButton({ text }) {
-  const { setAlertState, layerList, exportToSTL, saveCurrentWork } = useStore();
+  const {
+    setAlertState,
+    layerList,
+    exportToSTL,
+    saveCurrentWork,
+    saveAsPreset,
+  } = useStore();
 
   const handleClick = async () => {
     if (text === 'Export') {
@@ -24,12 +30,36 @@ function FileButton({ text }) {
           setAlertState('failed-save');
         }
       }
+    } else if (text === 'Preset') {
+      try {
+        await saveAsPreset();
+        setAlertState('success-save-preset');
+      } catch (error) {
+        if (error.message === 'Preset already exists') {
+          setAlertState('failed-save-preset');
+        } else {
+          setAlertState('failed-save-preset');
+        }
+      }
     }
   };
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       handleClick();
+    }
+  };
+
+  const getIcon = () => {
+    switch (text) {
+      case 'Save':
+        return <CiImport />;
+      case 'Export':
+        return <CiExport />;
+      case 'Preset':
+        return <CiSaveDown2 />;
+      default:
+        return null;
     }
   };
 
@@ -43,9 +73,7 @@ function FileButton({ text }) {
       role="button"
       tabIndex={0}
     >
-      <div className="file-icon">
-        {text === 'Save' ? <CiImport /> : <CiExport />}
-      </div>
+      <div className="file-icon">{getIcon()}</div>
       <div className="file-action">{text}</div>
     </div>
   );
