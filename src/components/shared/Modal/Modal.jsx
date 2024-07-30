@@ -22,24 +22,38 @@ function Modal({ text, setIsModalOpened }) {
     { title: '건물 모형', src: 'src/assets/images/presetDefault01.png' },
   ];
 
+  const [presets, setPresets] = useState([]);
   const [history, setHistory] = useState([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const { user, setLayers, setAlertState, setLayerTitle } = useStore();
 
   useEffect(() => {
-    const fetchHistory = async () => {
-      if (user && text === 'History') {
+    const fetchData = async () => {
+      if (text === 'Preset') {
+        const fetchedPresets = await firestore.getPresetsFromFirestore();
+        setPresets(fetchedPresets);
+      } else if (user && text === 'History') {
         const fetchedHistory = await firestore.getHistoryFromFirestore(
           user.uid,
         );
         setHistory(fetchedHistory);
       }
     };
-    fetchHistory();
+    fetchData();
   }, [user, text]);
 
   const handleCloseClick = () => {
     setIsModalOpened(false);
+  };
+
+  const handlePresetClick = async (preset) => {
+    try {
+      setLayers(preset.layers);
+      setIsModalOpened(false);
+      setLayerTitle(preset.name);
+    } catch (error) {
+      setAlertState('failed-load-preset');
+    }
   };
 
   const handleHistoryClick = async (prevWork) => {
@@ -91,13 +105,17 @@ function Modal({ text, setIsModalOpened }) {
       </div>
       <div className="modal-content">
         {text === 'Preset' &&
-          presetList.map((preset) => (
-            <div className="card" key={preset.title}>
+          presets.map((preset) => (
+            <button
+              className="card"
+              key={preset.id}
+              onClick={() => handlePresetClick(preset)}
+            >
               <div className="card-image">
-                <img src={preset.src} alt="preset" />
+                <img src="src/assets/images/presetDefault.png" alt="preset" />
               </div>
-              <p className="card-title">{preset.title}</p>
-            </div>
+              <p className="card-title">{preset.name}</p>
+            </button>
           ))}
         {text === 'History' &&
           history.map((prevWork, index) => (

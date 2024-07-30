@@ -145,6 +145,49 @@ async function checkLayerSetExists(uid, layerTitle) {
   return !querySnapshot.empty;
 }
 
+async function getPresetsFromFirestore() {
+  const presetCollectionRef = collection(db, 'presets');
+  try {
+    const querySnapshot = await getDocs(presetCollectionRef);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (e) {
+    return [];
+  }
+}
+
+async function addPresetToFirestore(presetData) {
+  const presetCollectionRef = collection(db, 'presets');
+  try {
+    const docRef = await addDoc(presetCollectionRef, presetData);
+    return docRef.id;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function updatePresetInFirestore(presetId, updatedData) {
+  const presetDocRef = firestoreDoc(db, 'presets', presetId);
+  try {
+    await updateDoc(presetDocRef, updatedData);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function deletePresetFromFirestore(presetId) {
+  const presetDocRef = firestoreDoc(db, 'presets', presetId);
+  try {
+    await deleteDoc(presetDocRef);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 export default {
   addLayerToFirestore,
   getLayersFromFirestore,
@@ -155,4 +198,8 @@ export default {
   addHistoryToFirestore,
   getHistoryFromFirestore,
   checkLayerSetExists,
+  getPresetsFromFirestore,
+  addPresetToFirestore,
+  updatePresetInFirestore,
+  deletePresetFromFirestore,
 };
