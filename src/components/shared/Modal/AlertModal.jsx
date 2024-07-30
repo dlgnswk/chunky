@@ -67,6 +67,15 @@ function AlertModal({ id, message, onClose }) {
     case 'failed-save':
       displayMessage = '저장에 실패했어요.';
       break;
+    case 'faild-load-history':
+      displayMessage = '히스토리를 불러올 수 없어요.';
+      break;
+    case 'success-save-preset':
+      displayMessage = '프리셋을 저장했어요.';
+      break;
+    case 'failed-save-preset':
+      displayMessage = '프리셋 저장에 실패했어요.';
+      break;
     default:
       displayMessage = '알 수 없는 오류가 발생했어요.';
       break;
