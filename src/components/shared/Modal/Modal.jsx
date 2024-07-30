@@ -117,33 +117,36 @@ function Modal({ text, setIsModalOpened }) {
               <p className="card-title">{preset.name}</p>
             </button>
           ))}
-        {text === 'History' &&
-          history.map((prevWork, index) => (
-            <button
-              className="card"
-              key={prevWork.id}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              onClick={() => handleHistoryClick(prevWork)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleHistoryClick(prevWork);
-                }
-              }}
-            >
-              <div className="card-image">
-                <img
-                  src={
-                    hoveredIndex === index
-                      ? 'src/assets/images/chunkyHoverDefault.png'
-                      : 'src/assets/images/chunkyDefault.png'
+        {text === 'History' && history.length > 0
+          ? history.map((prevWork, index) => (
+              <button
+                className="card"
+                key={prevWork.id}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                onClick={() => handleHistoryClick(prevWork)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleHistoryClick(prevWork);
                   }
-                  alt="chunky"
-                />
-              </div>
-              <p className="card-title">{prevWork.layerTitle}</p>
-            </button>
-          ))}
+                }}
+              >
+                <div className="card-image">
+                  <img
+                    src={
+                      hoveredIndex === index
+                        ? 'src/assets/images/chunkyHoverDefault.png'
+                        : 'src/assets/images/chunkyDefault.png'
+                    }
+                    alt="history"
+                  />
+                </div>
+                <p className="card-title">{prevWork.layerTitle}</p>
+              </button>
+            ))
+          : text === 'History' && (
+              <p className="no-history-message">저장된 히스토리가 없습니다.</p>
+            )}
       </div>
     </div>
   );
