@@ -443,6 +443,11 @@
         background-color: rgba(0, 0, 0, 0);
       }
 
+      .layer-name-input {
+        width: 60%;
+        text-overflow: ellipsis;
+      }
+
       .units {
         font-size: 12px;
       }
