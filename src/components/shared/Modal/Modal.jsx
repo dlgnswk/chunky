@@ -15,16 +15,9 @@ import firestore from '../../../services/firestore';
 import './style.scss';
 
 function Modal({ text, setIsModalOpened }) {
-  const presetList = [
-    { title: '에어팟 케이스', src: 'src/assets/images/presetDefault02.png' },
-    { title: '카라비너', src: 'src/assets/images/presetDefault03.png' },
-    { title: '키링', src: 'src/assets/images/presetDefault04.png' },
-    { title: '건물 모형', src: 'src/assets/images/presetDefault01.png' },
-  ];
-
   const getImgPath = (presetName) => {
     switch (presetName) {
-      case 'Chunky':
+      case '로고':
         return 'src/assets/images/presetDefault01.png';
       case '남산타워':
         return 'src/assets/images/presetDefault02.png';
