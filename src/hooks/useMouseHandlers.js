@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import useStore from '../store/store';
 
-const SNAP_THRESHOLD = 10;
+const SNAP_THRESHOLD = 4;
 const ERASER_SIZE = 5;
 
 const autoClosePath = (path, threshold = 5) => {
