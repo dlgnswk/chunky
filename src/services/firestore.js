@@ -53,19 +53,29 @@ async function getLayersFromFirestore(uid) {
 
     return querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      const updatedPath = data.path.map((path) => ({
-        ...path,
-        fill: path.fill || 'none',
-      }));
-
       return {
         ...data,
         id: doc.id,
-        path: updatedPath,
+        path:
+          data.path?.map((path) => ({
+            ...path,
+            fill: path.fill || 'none',
+          })) || [],
+        imageUrl: data.imageUrl || null,
       };
     });
   } catch (e) {
     return [];
+  }
+}
+
+async function updateLayerImageUrl(uid, layerId, imageUrl) {
+  const layerDocRef = firestoreDoc(db, 'users', uid, 'layers', layerId);
+  try {
+    await updateDoc(layerDocRef, { imageUrl });
+    return true;
+  } catch (e) {
+    return false;
   }
 }
 
@@ -88,13 +98,13 @@ async function updateLayerInFirestoreDB(uid, layer) {
 
   const layerDocRef = firestoreDoc(db, 'users', uid, 'layers', layer.id);
   try {
-    const updatedLayer = {
-      ...layer,
-      path: layer.path.map((path) => ({
+    const updatedLayer = { ...layer };
+    if (layer.type === 'draw') {
+      updatedLayer.path = layer.path.map((path) => ({
         ...path,
         fill: path.fill || 'none',
-      })),
-    };
+      }));
+    }
 
     await updateDoc(layerDocRef, updatedLayer);
 
@@ -202,4 +212,5 @@ export default {
   addPresetToFirestore,
   updatePresetInFirestore,
   deletePresetFromFirestore,
+  updateLayerImageUrl,
 };

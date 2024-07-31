@@ -2,6 +2,9 @@ import { useRef } from 'react';
 
 import { PiImage } from 'react-icons/pi';
 
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../services/firebase-config';
+
 import useStore from '../../store/store';
 
 function ToolBox({ type, iconList, selectTool, selectedTool }) {
@@ -46,45 +49,32 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
     }
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const layerData = {
-            type: 'image',
-            name: file.name,
-            width: img.width,
-            height: img.height,
-            x: 0,
-            y: 0,
-            rotation: 0,
-            visible: true,
-            opacity: 1,
-          };
+      try {
+        const storageRef = ref(storage, `images/${file.name}`);
+        await uploadBytes(storageRef, file);
 
-          addLayer(layerData);
+        const downloadURL = await getDownloadURL(storageRef);
 
-          setTimeout(() => {
-            const updatedLayers = useStore.getState().layerList;
-            const newLayer = updatedLayers[updatedLayers.length - 1];
-
-            if (newLayer && newLayer.id) {
-              try {
-                localStorage.setItem(file.name, e.target.result);
-              } catch (error) {
-                setAlertState('failed-image-import');
-              }
-            } else {
-              setAlertState('failed-image-import');
-            }
-          }, 0);
+        const newLayer = {
+          type: 'image',
+          name: file.name,
+          imageUrl: downloadURL,
+          width: 100,
+          height: 100,
+          x: 0,
+          y: 0,
+          rotation: 0,
+          visible: true,
+          opacity: 1,
         };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+
+        addLayer(newLayer);
+      } catch (error) {
+        setAlertState('failed-image-import');
+      }
     }
   };
 

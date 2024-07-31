@@ -289,6 +289,7 @@ const useStore = create((set, get) => ({
   setUser(user) {
     set({ user });
   },
+
   async login(email, password) {
     try {
       const userCredential = await signInWithEmailAndPassword(
@@ -297,12 +298,12 @@ const useStore = create((set, get) => ({
         password,
       );
       const { user } = userCredential;
-      localStorage.setItem('user', JSON.stringify(user));
       set({ user });
     } catch (error) {
       handleAuthError(error, set);
     }
   },
+
   async registerUser(email, password, userName) {
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -315,17 +316,16 @@ const useStore = create((set, get) => ({
       await setDoc(doc(db, 'users', user.uid), {
         layerTitle: 'Untitled',
       });
-      localStorage.setItem('user', JSON.stringify(user));
       set({ user });
     } catch (error) {
       handleAuthError(error, set);
       throw error;
     }
   },
+
   async logout() {
     try {
       await auth.signOut();
-      localStorage.removeItem('user');
       set({ user: null });
     } catch (error) {
       set((state) => ({
@@ -415,7 +415,7 @@ const useStore = create((set, get) => ({
     }
   },
 
-  updateLayer(index, updatedProperties) {
+  updateLayer: (index, updatedProperties) => {
     set((state) => {
       const updatedLayerList = state.layerList.map((layer) =>
         layer.index === index ? { ...layer, ...updatedProperties } : layer,
@@ -520,10 +520,8 @@ const useStore = create((set, get) => ({
 onAuthStateChanged(auth, (user) => {
   if (user) {
     useStore.getState().loadLayerTitle();
-    localStorage.setItem('user', JSON.stringify(user));
     useStore.setState({ user });
   } else {
-    localStorage.removeItem('user');
     useStore.setState({ user: null });
   }
 });

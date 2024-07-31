@@ -26,10 +26,13 @@ function LayerImage({ layer, index, name, visible }) {
   const handleOpacityChange = (e) => {
     const newOpacity = parseFloat(e.target.value);
     setLocalOpacity(newOpacity);
+    updateLayer(index, { opacity: newOpacity });
   };
 
-  const handleOpacityChangeEnd = () => {
+  const handleOpacityChangeEnd = async () => {
+    const updatedLayer = { ...layer, opacity: localOpacity };
     updateLayer(index, { opacity: localOpacity });
+    await updateLayerInFirestore(updatedLayer);
   };
 
   const handleVisibleClick = (e) => {
@@ -137,7 +140,7 @@ function LayerImage({ layer, index, name, visible }) {
               onMouseUp={handleOpacityChangeEnd}
               onTouchEnd={handleOpacityChangeEnd}
             />
-            <span>{Math.round(layer.opacity * 100)}%</span>
+            <span>{Math.round(localOpacity * 100)}%</span>
           </div>
         </div>
       </div>
