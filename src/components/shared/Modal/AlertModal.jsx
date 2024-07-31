@@ -76,6 +76,9 @@ function AlertModal({ id, message, onClose }) {
     case 'failed-save-preset':
       displayMessage = '프리셋 저장에 실패했어요.';
       break;
+    case 'failed-load-image':
+      displayMessage = '이미지 로드에 실패했어요.';
+      break;
     default:
       displayMessage = '알 수 없는 오류가 발생했어요.';
       break;
