@@ -102,13 +102,6 @@ function Canvas2D() {
 
   const renderLayersRef = useRef(null);
 
-  const drawImageLayer = (ctx, img, layer) => {
-    ctx.save();
-    ctx.globalAlpha = layer.opacity;
-    ctx.drawImage(img, layer.x || 0, layer.y || 0, layer.width, layer.height);
-    ctx.restore();
-  };
-
   useEffect(() => {
     imageCache.current = new Map();
 
@@ -122,36 +115,6 @@ function Canvas2D() {
         imageCache.current.clear();
       }
     };
-  }, []);
-
-  const drawResizeHandles = useCallback((ctx, image) => {
-    const handleSize = 8;
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#0068ff';
-    ctx.lineWidth = 2;
-
-    const handles = [
-      { x: image.x, y: image.y },
-      { x: image.x + image.width, y: image.y },
-      { x: image.x, y: image.y + image.height },
-      { x: image.x + image.width, y: image.y + image.height },
-      { x: image.x + image.width / 2, y: image.y },
-      { x: image.x + image.width, y: image.y + image.height / 2 },
-      { x: image.x + image.width / 2, y: image.y + image.height },
-      { x: image.x, y: image.y + image.height / 2 },
-    ];
-
-    handles.forEach((handle) => {
-      ctx.beginPath();
-      ctx.rect(
-        handle.x - handleSize / 2,
-        handle.y - handleSize / 2,
-        handleSize,
-        handleSize,
-      );
-      ctx.fill();
-      ctx.stroke();
-    });
   }, []);
 
   useEffect(() => {
@@ -237,36 +200,37 @@ function Canvas2D() {
             ctx.lineWidth = 1;
             ctx.stroke();
           });
-        } else if (layer.type === 'image') {
-          const imageData = localStorage.getItem(layer.name);
+        } else if (layer.type === 'image' && layer.imageUrl) {
+          if (!imageCache.current.has(layer.imageUrl)) {
+            const img = new Image();
 
-          if (imageData) {
-            if (imageCache.current && !imageCache.current.has(layer.name)) {
-              const img = new Image();
-              img.onload = () => {
-                if (imageCache.current) {
-                  imageCache.current.set(layer.name, img);
-                  drawImageLayer(ctx, img, layer);
-                  if (selectedImage && selectedImage.id === layer.id) {
-                    drawResizeHandles(ctx, layer);
-                  }
-                }
-              };
-              img.src = imageData;
-            } else if (imageCache.current) {
-              const cachedImg = imageCache.current.get(layer.name);
-              if (cachedImg) {
-                drawImageLayer(ctx, cachedImg, layer);
-                if (selectedImage && selectedImage.id === layer.id) {
-                  drawResizeHandles(ctx, layer);
-                }
-              }
-            }
+            img.onload = () => {
+              imageCache.current.set(layer.imageUrl, img);
+              ctx.save();
+              ctx.globalAlpha = layer.opacity !== undefined ? layer.opacity : 1;
+              ctx.drawImage(img, layer.x, layer.y, layer.width, layer.height);
+              ctx.restore();
+            };
+
+            img.src = layer.imageUrl;
+          } else {
+            const cachedImg = imageCache.current.get(layer.imageUrl);
+
+            ctx.save();
+            ctx.globalAlpha = layer.opacity !== undefined ? layer.opacity : 1;
+            ctx.drawImage(
+              cachedImg,
+              layer.x,
+              layer.y,
+              layer.width,
+              layer.height,
+            );
+            ctx.restore();
           }
         }
       }
     });
-  }, [layerList, canvasRef, selectedImage, drawResizeHandles]);
+  }, [layerList, canvasRef]);
 
   const updateLayerInFirestore = useStore(
     (state) => state.updateLayerInFirestore,
