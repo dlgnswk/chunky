@@ -75,9 +75,14 @@ const useStore = create((set, get) => ({
   layerTitle: 'Layer Title',
   cameraPosition: { x: 0, y: -180 * 1.1, z: 180 * 1.1 },
   cameraTarget: { x: 0, y: 0, z: 0 },
+  cameraUp: { x: 0, y: 0, z: 1 },
 
-  setCameraView: (position, target) =>
-    set({ cameraPosition: position, cameraTarget: target }),
+  setCameraView: (position, target, up) =>
+    set({
+      cameraPosition: position,
+      cameraTarget: target,
+      cameraUp: up,
+    }),
 
   setLayerTitle: async (title) => {
     set({ layerTitle: title });

@@ -60,15 +60,28 @@ function SceneContent() {
 function CameraController() {
   const { camera, gl } = useThree();
   const controls = useRef();
-  const { cameraPosition, cameraTarget } = useStore();
+  const { cameraPosition, cameraTarget, cameraUp } = useStore();
 
   useEffect(() => {
     camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
+    camera.up.set(cameraUp.x, cameraUp.y, cameraUp.z);
     controls.current.target.set(cameraTarget.x, cameraTarget.y, cameraTarget.z);
     controls.current.update();
-  }, [camera, cameraPosition, cameraTarget]);
+  }, [camera, cameraPosition, cameraTarget, cameraUp]);
 
-  return <OrbitControls ref={controls} args={[camera, gl.domElement]} />;
+  return (
+    <OrbitControls
+      ref={controls}
+      args={[camera, gl.domElement]}
+      enableRotate={false}
+      enablePan
+      mouseButtons={{
+        LEFT: THREE.MOUSE.ROTATE,
+        MIDDLE: THREE.MOUSE.DOLLY,
+        RIGHT: THREE.MOUSE.PAN,
+      }}
+    />
+  );
 }
 
 function Canvas3D() {

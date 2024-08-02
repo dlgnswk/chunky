@@ -20,29 +20,50 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
     selectTool(viewId);
 
     const { width, height, depth } = canvasSize;
-    const distance = Math.max(width, height, depth) * 1.5;
+    const distance = Math.max(width, height, depth) * 1.1;
 
     switch (viewId) {
       case 'viewPerspective':
         setCameraView(
-          { x: distance, y: -distance, z: distance },
+          { x: -distance, y: -distance, z: distance },
           { x: 0, y: 0, z: 0 },
+          { x: 0, y: 0, z: 1 },
         );
         break;
       case 'viewFront':
-        setCameraView({ x: 0, y: -distance, z: 0 }, { x: 0, y: 0, z: 0 });
+        setCameraView(
+          { x: 0, y: -distance, z: 0 },
+          { x: 0, y: 0, z: 0 },
+          { x: 0, y: 0, z: 1 },
+        );
         break;
       case 'viewBack':
-        setCameraView({ x: 0, y: distance, z: 0 }, { x: 0, y: 0, z: 0 });
+        setCameraView(
+          { x: 0, y: distance, z: 0 },
+          { x: 0, y: 0, z: 0 },
+          { x: 0, y: 0, z: 1 },
+        );
         break;
       case 'viewLeft':
-        setCameraView({ x: -distance, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
+        setCameraView(
+          { x: -distance, y: 0, z: 0 },
+          { x: 0, y: 0, z: 0 },
+          { x: 0, y: 0, z: 1 },
+        );
         break;
       case 'viewRight':
-        setCameraView({ x: distance, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
+        setCameraView(
+          { x: distance, y: 0, z: 0 },
+          { x: 0, y: 0, z: 0 },
+          { x: 0, y: 0, z: 1 },
+        );
         break;
       case 'viewUp':
-        setCameraView({ x: 0, y: 0, z: distance }, { x: 0, y: 0, z: 0 });
+        setCameraView(
+          { x: 0, y: 0, z: distance }, // z를 음수로 변경
+          { x: 0, y: 0, z: 0 },
+          { x: 0, y: 1, z: 0 }, // up 벡터를 y 축 방향으로 설정
+        );
         break;
       default:
         break;
@@ -58,12 +79,30 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
 
         const downloadURL = await getDownloadURL(storageRef);
 
+        const img = new Image();
+        img.src = downloadURL;
+        await new Promise((resolve) => {
+          img.onload = resolve;
+        });
+
+        const maxSize = 300;
+        let { width } = img;
+        let { height } = img;
+
+        if (width > height && width > maxSize) {
+          height *= maxSize / width;
+          width = maxSize;
+        } else if (height > maxSize) {
+          width *= maxSize / height;
+          height = maxSize;
+        }
+
         const newLayer = {
           type: 'image',
           name: file.name,
           imageUrl: downloadURL,
-          width: 100,
-          height: 100,
+          width: Math.round(width),
+          height: Math.round(height),
           x: 0,
           y: 0,
           rotation: 0,
@@ -73,6 +112,7 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
 
         addLayer(newLayer);
       } catch (error) {
+        console.error('Error importing image:', error);
         setAlertState('failed-image-import');
       }
     }
