@@ -112,7 +112,6 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
 
         addLayer(newLayer);
       } catch (error) {
-        console.error('Error importing image:', error);
         setAlertState('failed-image-import');
       }
     }
