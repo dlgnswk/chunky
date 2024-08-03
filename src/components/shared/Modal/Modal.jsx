@@ -18,11 +18,11 @@ function Modal({ text, setIsModalOpened }) {
   const getImgPath = (presetName) => {
     switch (presetName) {
       case '로고':
-        return '/images/presetDefault01.png';
+        return 'src/assets/images/presetDefault01.png';
       case '남산타워':
-        return '/images/presetDefault02.png';
+        return 'src/assets/images/presetDefault02.png';
       case '키링':
-        return '/images/presetDefault03.png';
+        return 'src/assets/images/presetDefault03.png';
       default:
         return '';
     }
@@ -141,8 +141,8 @@ function Modal({ text, setIsModalOpened }) {
                   <img
                     src={
                       hoveredIndex === index
-                        ? '/images/chunkyHoverDefault.png'
-                        : '/images/chunkyDefault.png'
+                        ? 'src/assets/images/chunkyHoverDefault.png'
+                        : 'src/assets/images/chunkyDefault.png'
                     }
                     alt="history"
                   />
