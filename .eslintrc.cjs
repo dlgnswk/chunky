@@ -30,6 +30,16 @@ module.exports = {
   plugins: ['react', 'prettier', 'react-hooks'],
   rules: {
     semi: 'warn',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
     'no-unused-vars': 'warn',
     'import/no-extraneous-dependencies': 'off',
     'react/prop-types': 'off',
