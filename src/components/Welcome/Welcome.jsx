@@ -26,7 +26,7 @@ function Welcome() {
       <div className="welcome-image-container">
         <img
           className="welcome-image"
-          src="/src/assets/images/welcomeChunky.png"
+          src="images/welcomeChunky.png"
           alt="welcome chunky"
         />
       </div>

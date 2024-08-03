@@ -42,12 +42,12 @@ const DRAWING_ICON_LIST = [
 ];
 
 const VIEW_ICON_LIST = [
-  { id: 'viewPerspective', icon: 'src/assets/images/viewPerspective.svg' },
-  { id: 'viewBack', icon: 'src/assets/images/viewBack.svg' },
-  { id: 'viewFront', icon: 'src/assets/images/viewFront.svg' },
-  { id: 'viewLeft', icon: 'src/assets/images/viewLeft.svg' },
-  { id: 'viewRight', icon: 'src/assets/images/viewRight.svg' },
-  { id: 'viewUp', icon: 'src/assets/images/viewUp.svg' },
+  { id: 'viewPerspective', icon: 'images/viewPerspective.svg' },
+  { id: 'viewBack', icon: 'images/viewBack.svg' },
+  { id: 'viewFront', icon: 'images/viewFront.svg' },
+  { id: 'viewLeft', icon: 'images/viewLeft.svg' },
+  { id: 'viewRight', icon: 'images/viewRight.svg' },
+  { id: 'viewUp', icon: 'images/viewUp.svg' },
 ];
 
 const INITIAL_LAYER_LIST = [];
