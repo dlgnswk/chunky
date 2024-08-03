@@ -30,12 +30,12 @@ import handleAuthError from '../utils/authError';
 import { auth, db, onAuthStateChanged } from '../services/firebase-config';
 import firestore from '../services/firestore';
 
+import ViewPerspectiveIcon from '../components/shared/Icon/ViewPerspectiveIcon';
 import ViewBackIcon from '../components/shared/Icon/ViewBackIcon';
 import ViewFrontIcon from '../components/shared/Icon/ViewFrontIcon';
 import ViewLeftIcon from '../components/shared/Icon/ViewLeftIcon';
 import ViewRightIcon from '../components/shared/Icon/ViewRightIcon';
 import ViewUpIcon from '../components/shared/Icon/ViewUpIcon';
-import ViewPerspectiveIcon from '../components/shared/Icon/ViewPerspectiveIcon';
 
 const DRAWING_ICON_LIST = [
   { id: 'move', icon: PiHandWaving },
