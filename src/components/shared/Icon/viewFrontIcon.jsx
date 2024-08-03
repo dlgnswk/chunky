@@ -1,4 +1,4 @@
-function ViewFrontIcon() {
+function viewFrontIcon() {
   return (
     <svg
       width="20"
@@ -18,4 +18,4 @@ function ViewFrontIcon() {
   );
 }
 
-export default ViewFrontIcon;
+export default viewFrontIcon;
