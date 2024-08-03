@@ -89,7 +89,7 @@ function Login() {
           >
             <img
               alt="google login"
-              src="/google.png"
+              src="/images/google.png"
               className="social-login-icon"
             />
             <span className="social-login-text">Google로 로그인</span>

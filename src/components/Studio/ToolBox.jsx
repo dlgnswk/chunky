@@ -112,7 +112,6 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
 
         addLayer(newLayer);
       } catch (error) {
-        console.error('Error importing image:', error);
         setAlertState('failed-image-import');
       }
     }
@@ -151,14 +150,14 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
         </>
       )}
       {type === '3d' &&
-        iconList.map(({ id, icon: IconComponent }) => (
+        iconList.map(({ id, icon }) => (
           <button
             className={`tool-button ${selectedTool === id ? 'selected' : ''}`}
             key={id}
             aria-label={id}
             onClick={() => handleViewChange(id)}
           >
-            <IconComponent />
+            <img src={icon} alt="view icon" />
           </button>
         ))}
     </div>
