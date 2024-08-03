@@ -30,13 +30,6 @@ import handleAuthError from '../utils/authError';
 import { auth, db, onAuthStateChanged } from '../services/firebase-config';
 import firestore from '../services/firestore';
 
-import ViewPerspectiveIcon from '../components/shared/Icon/ViewPerspectiveIcon';
-import ViewBackIcon from '../components/shared/Icon/ViewBackIcon';
-import ViewFrontIcon from '../components/shared/Icon/ViewFrontIcon';
-import ViewLeftIcon from '../components/shared/Icon/ViewLeftIcon';
-import ViewRightIcon from '../components/shared/Icon/ViewRightIcon';
-import ViewUpIcon from '../components/shared/Icon/ViewUpIcon';
-
 const DRAWING_ICON_LIST = [
   { id: 'move', icon: PiHandWaving },
   { id: 'line', icon: PiLineSegment },
@@ -49,12 +42,12 @@ const DRAWING_ICON_LIST = [
 ];
 
 const VIEW_ICON_LIST = [
-  { id: 'viewPerspective', icon: ViewPerspectiveIcon },
-  { id: 'viewBack', icon: ViewBackIcon },
-  { id: 'viewFront', icon: ViewFrontIcon },
-  { id: 'viewLeft', icon: ViewLeftIcon },
-  { id: 'viewRight', icon: ViewRightIcon },
-  { id: 'viewUp', icon: ViewUpIcon },
+  // { id: 'viewPerspective', icon: ViewPerspectiveIcon },
+  // { id: 'viewBack', icon: ViewBackIcon },
+  // { id: 'viewFront', icon: ViewFrontIcon },
+  // { id: 'viewLeft', icon: ViewLeftIcon },
+  // { id: 'viewRight', icon: ViewRightIcon },
+  // { id: 'viewUp', icon: ViewUpIcon },
 ];
 
 const INITIAL_LAYER_LIST = [];
