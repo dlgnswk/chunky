@@ -1,9 +1,13 @@
 [[headers]]
-  for = "/*.js"
+  for = "/*"
   [headers.values]
-    Content-Type = "text/javascript"
+    "Content-Type" = "text/javascript"
 
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Content-Type = "text/css"
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
