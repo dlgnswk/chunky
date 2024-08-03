@@ -1,4 +1,4 @@
-function viewLeftIcon() {
+function ViewLeftIcon() {
   return (
     <svg
       width="20"
@@ -18,4 +18,4 @@ function viewLeftIcon() {
   );
 }
 
-export default viewLeftIcon;
+export default ViewLeftIcon;

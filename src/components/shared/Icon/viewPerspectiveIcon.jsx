@@ -1,4 +1,4 @@
-function viewPerspectiveIcon() {
+function ViewPerspectiveIcon() {
   return (
     <svg
       width="20"
@@ -17,4 +17,4 @@ function viewPerspectiveIcon() {
   );
 }
 
-export default viewPerspectiveIcon;
+export default ViewPerspectiveIcon;

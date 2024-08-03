@@ -1,4 +1,4 @@
-function viewUpIcon() {
+function ViewUpIcon() {
   return (
     <svg
       width="20"
@@ -18,4 +18,4 @@ function viewUpIcon() {
   );
 }
 
-export default viewUpIcon;
+export default ViewUpIcon;
