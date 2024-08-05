@@ -60,9 +60,9 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
         break;
       case 'viewUp':
         setCameraView(
-          { x: 0, y: 0, z: distance }, // z를 음수로 변경
+          { x: 0, y: 0, z: distance },
           { x: 0, y: 0, z: 0 },
-          { x: 0, y: 1, z: 0 }, // up 벡터를 y 축 방향으로 설정
+          { x: 0, y: 1, z: 0 },
         );
         break;
       default:
