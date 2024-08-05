@@ -141,8 +141,8 @@ function Modal({ text, setIsModalOpened }) {
                   <img
                     src={
                       hoveredIndex === index
-                        ? 'src/assets/images/chunkyHoverDefault.png'
-                        : 'src/assets/images/chunkyDefault.png'
+                        ? 'images/chunkyHoverDefault.png'
+                        : 'images/chunkyDefault.png'
                     }
                     alt="history"
                   />
