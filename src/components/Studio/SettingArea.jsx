@@ -25,12 +25,13 @@ function SettingArea() {
     setModalType,
     setCanvasSize,
     setAlertState,
+    user,
   } = useStore();
 
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user'));
+    const userData = user;
     if (userData && userData.displayName) {
       setUserName(userData.displayName);
     }

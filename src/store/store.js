@@ -54,7 +54,7 @@ const INITIAL_LAYER_LIST = [];
 const INITIAL_CANVAS_SIZE = { width: 180, height: 180, depth: 180 };
 
 const useStore = create((set, get) => ({
-  user: JSON.parse(localStorage.getItem('user')) || null,
+  user: null,
   isModalOpened: false,
   alertState: [],
   modalType: '',

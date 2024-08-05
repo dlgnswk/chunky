@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import useStore from '../../store/store';
+
 import MainButton from '../shared/Button/MainButton';
 import Logo from '../shared/Logo/Logo';
 
@@ -12,14 +14,15 @@ function Welcome() {
     navigate('/');
   };
 
+  const user = useStore((state) => state.user);
+
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user'));
-    if (userData && userData.displayName) {
-      setUserName(userData.displayName);
+    if (user && user.displayName) {
+      setUserName(user.displayName);
     }
-  }, []);
+  }, [user]);
 
   return (
     <div className="container">
