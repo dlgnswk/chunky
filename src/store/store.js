@@ -99,6 +99,7 @@ const useStore = create((set, get) => ({
 
   saveCurrentWork: async () => {
     const { user, layerList, layerTitle } = get();
+
     if (!user) {
       set((state) => ({
         alertState: [
@@ -123,10 +124,8 @@ const useStore = create((set, get) => ({
       if (existingSet) {
         throw new Error('LayerSet already exists');
       }
-
-      await updateDoc(doc(db, 'users', user.uid), { layerTitle });
-
       await firestore.addHistoryToFirestore(user.uid, saveData);
+
       set((state) => ({
         alertState: [
           ...state.alertState,
@@ -134,22 +133,12 @@ const useStore = create((set, get) => ({
         ],
       }));
     } catch (error) {
-      if (error.message === 'LayerSet already exists') {
-        set((state) => ({
-          alertState: [
-            ...state.alertState,
-            { id: uuidv4(), message: 'layer-set-exists' },
-          ],
-        }));
-      } else {
-        set((state) => ({
-          alertState: [
-            ...state.alertState,
-            { id: uuidv4(), message: 'failed-save' },
-          ],
-        }));
-      }
-      throw error;
+      set((state) => ({
+        alertState: [
+          ...state.alertState,
+          { id: uuidv4(), message: `failed-save: ${error.message}` },
+        ],
+      }));
     }
   },
 
@@ -313,6 +302,8 @@ const useStore = create((set, get) => ({
       await updateProfile(user, { displayName: userName });
       await setDoc(doc(db, 'users', user.uid), {
         layerTitle: 'Untitled',
+        email: user.email,
+        displayName: userName,
       });
       set({ user });
     } catch (error) {
