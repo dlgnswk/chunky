@@ -25,12 +25,6 @@ function LayerArea() {
     }
   }, [layerList, selectedLayer, setSelectedLayer]);
 
-  useEffect(() => {
-    if (layerList.length > 0 && !selectedLayer) {
-      setSelectedLayer(layerList[layerList.length - 1]);
-    }
-  }, [layerList, selectedLayer, setSelectedLayer]);
-
   const handleSelectClick = (layer) => {
     setSelectedLayer(layer);
   };
