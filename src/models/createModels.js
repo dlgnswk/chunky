@@ -29,6 +29,7 @@ function createModels(
       result = polygonModel(path, depth, canvasSize, fill);
       break;
     case 'bezier':
+    case 'closedBezier':
       result = bezierModel(path, depth, canvasSize, fill);
       break;
     default: {

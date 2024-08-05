@@ -152,6 +152,24 @@ function Canvas2D() {
             ctx.beginPath();
 
             switch (path.type) {
+              case 'closedBezier':
+                path.curves.forEach((curve, index) => {
+                  if (index === 0) {
+                    ctx.moveTo(curve.x1, curve.y1);
+                  }
+                  if (curve.type === 'bezier') {
+                    ctx.quadraticCurveTo(
+                      curve.cx,
+                      curve.cy,
+                      curve.x2,
+                      curve.y2,
+                    );
+                  } else if (curve.type === 'line') {
+                    ctx.lineTo(curve.x2, curve.y2);
+                  }
+                });
+                ctx.closePath();
+                break;
               case 'bezier':
                 ctx.moveTo(path.x1, path.y1);
                 ctx.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);

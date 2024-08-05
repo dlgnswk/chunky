@@ -1,25 +1,8 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import useStore from '../store/store';
 
-const SNAP_THRESHOLD = 4;
+const SNAP_THRESHOLD = 5;
 const ERASER_SIZE = 5;
-
-const autoClosePath = (path, threshold = 5) => {
-  if (path.type === 'line' || path.type === 'bezier') {
-    const pathStartPoint = { x: path.x1, y: path.y1 };
-    const pathEndPoint = { x: path.x2, y: path.y2 };
-    const distance = Math.sqrt(
-      (pathStartPoint.x - pathEndPoint.x) ** 2 +
-        (pathStartPoint.y - pathEndPoint.y) ** 2,
-    );
-
-    if (distance <= threshold) {
-      return { ...path, closed: true };
-    }
-  }
-
-  return path;
-};
 
 const useMouseHandlers = (
   selectedTool,
@@ -401,30 +384,55 @@ const useMouseHandlers = (
           layer.path.forEach((path) => {
             let points = [];
 
-            if (path.type === 'rectangle') {
-              points = [
-                { x: path.x, y: path.y },
-                { x: path.x + path.width, y: path.y },
-                { x: path.x, y: path.y + path.height },
-                { x: path.x + path.width, y: path.y + path.height },
-              ];
-            } else if (path.type === 'line') {
-              points = [
-                { x: path.x1, y: path.y1 },
-                { x: path.x2, y: path.y2 },
-              ];
-            } else if (path.type === 'polyline') {
-              points = path.points;
-            } else if (path.type === 'triangle') {
-              points = path.points;
-            } else if (path.type === 'bezier') {
-              points = [
-                { x: path.x1, y: path.y1 },
-                { x: path.x2, y: path.y2 },
-                { x: path.cx, y: path.cy },
-              ];
-            } else if (path.type === 'circle') {
-              points = [{ x: path.center.x, y: path.center.y }];
+            switch (path.type) {
+              case 'rectangle':
+                points = [
+                  { x: path.x, y: path.y },
+                  { x: path.x + path.width, y: path.y },
+                  { x: path.x, y: path.y + path.height },
+                  { x: path.x + path.width, y: path.y + path.height },
+                ];
+                break;
+              case 'line':
+                points = [
+                  { x: path.x1, y: path.y1 },
+                  { x: path.x2, y: path.y2 },
+                ];
+                break;
+              case 'polyline':
+                points = path.points;
+                break;
+              case 'triangle':
+                points = path.points;
+                break;
+              case 'bezier':
+                points = [
+                  { x: path.x1, y: path.y1 },
+                  { x: path.x2, y: path.y2 },
+                  { x: path.cx, y: path.cy },
+                ];
+                break;
+              case 'closedBezier':
+                path.curves.forEach((curve) => {
+                  if (curve.type === 'bezier') {
+                    points.push(
+                      { x: curve.x1, y: curve.y1 },
+                      { x: curve.x2, y: curve.y2 },
+                      { x: curve.cx, y: curve.cy },
+                    );
+                  } else if (curve.type === 'line') {
+                    points.push(
+                      { x: curve.x1, y: curve.y1 },
+                      { x: curve.x2, y: curve.y2 },
+                    );
+                  }
+                });
+                break;
+              case 'circle':
+                points = [{ x: path.center.x, y: path.center.y }];
+                break;
+              default:
+                break;
             }
 
             points.forEach(checkPoint);
@@ -437,7 +445,7 @@ const useMouseHandlers = (
 
       return nearest;
     },
-    [layerList, findAllIntersections],
+    [layerList, findAllIntersections, scale],
   );
 
   const updateLayerInFirestore = useStore(
@@ -571,6 +579,38 @@ const useMouseHandlers = (
             point.y >= minY &&
             point.y <= maxY,
         );
+      case 'closedBezier':
+        return path.curves.some((curve) => {
+          if (curve.type === 'bezier') {
+            return (
+              (curve.x1 >= minX &&
+                curve.x1 <= maxX &&
+                curve.y1 >= minY &&
+                curve.y1 <= maxY) ||
+              (curve.x2 >= minX &&
+                curve.x2 <= maxX &&
+                curve.y2 >= minY &&
+                curve.y2 <= maxY) ||
+              (curve.cx >= minX &&
+                curve.cx <= maxX &&
+                curve.cy >= minY &&
+                curve.cy <= maxY)
+            );
+          }
+          if (curve.type === 'line') {
+            return (
+              (curve.x1 >= minX &&
+                curve.x1 <= maxX &&
+                curve.y1 >= minY &&
+                curve.y1 <= maxY) ||
+              (curve.x2 >= minX &&
+                curve.x2 <= maxX &&
+                curve.y2 >= minY &&
+                curve.y2 <= maxY)
+            );
+          }
+          return false;
+        });
       default:
         return false;
     }
@@ -1016,15 +1056,28 @@ const useMouseHandlers = (
       bezierControl
     ) {
       if (selectedLayer) {
-        const newPath = autoClosePath({
-          type: 'bezier',
-          x1: bezierStart.x,
-          y1: bezierStart.y,
-          x2: bezierEnd.x,
-          y2: bezierEnd.y,
-          cx: bezierControl.x,
-          cy: bezierControl.y,
-        });
+        const newPath = {
+          type: 'closedBezier',
+          curves: [
+            {
+              type: 'bezier',
+              x1: bezierStart.x,
+              y1: bezierStart.y,
+              x2: bezierEnd.x,
+              y2: bezierEnd.y,
+              cx: bezierControl.x,
+              cy: bezierControl.y,
+            },
+            {
+              type: 'line',
+              x1: bezierEnd.x,
+              y1: bezierEnd.y,
+              x2: bezierStart.x,
+              y2: bezierStart.y,
+            },
+          ],
+          fill: 'none',
+        };
 
         const currentLayer = layerList.find(
           (layer) => layer.id === selectedLayer.id,
@@ -1040,7 +1093,6 @@ const useMouseHandlers = (
       setBezierStart(null);
       setBezierEnd(null);
       setBezierControl(null);
-      setIsBezierDrawing(false);
     } else if (selectedTool === 'rectangle' && rectStart && rectEnd) {
       const currentLayer = layerList.find(
         (layer) => layer.id === selectedLayer.id,
