@@ -133,12 +133,22 @@ const useStore = create((set, get) => ({
         ],
       }));
     } catch (error) {
-      set((state) => ({
-        alertState: [
-          ...state.alertState,
-          { id: uuidv4(), message: `failed-save: ${error.message}` },
-        ],
-      }));
+      if (error.message === 'LayerSet already exists') {
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'layer-set-exists' },
+          ],
+        }));
+      } else {
+        set((state) => ({
+          alertState: [
+            ...state.alertState,
+            { id: uuidv4(), message: 'failed-save' },
+          ],
+        }));
+      }
+      throw error;
     }
   },
 
