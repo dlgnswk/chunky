@@ -124,9 +124,10 @@
 <details>
   <summary>🖥️ 미리보기</summary>
 
-  <img alt="회원가입 웹 화면" src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" width="600">
+  <br/>
+  <span style="color: gray">웹사이트 회원가입 페이지</span>
 
-<span style="color: gray">웹사이트 회원가입 페이지</span>
+  <img alt="회원가입 웹 화면" src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" width="720">
 
 </details>
 
@@ -137,15 +138,15 @@
 <details>
   <summary>🖥️ 미리보기</summary>
 
-  <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="600">
+  <br/>
+  <span style="color: gray">일반 로그인</span>
 
-<span style="color: gray">일반 로그인</span>
+  <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="720">
 
   <br/>
+  <span style="color: gray">구글 로그인</span>
 
-  <img alt="구글 로그인" src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" width="600" />
-
-<span style="color: gray">구글 로그인</span>
+  <img alt="구글 로그인" src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" width="720" />
 
 </details>
 
@@ -157,9 +158,10 @@
 <details>
   <summary>🖥️ 미리보기</summary>
 
-  <img alt="로그아웃" src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" width="600">
+  <br/>
+  <span style="color: gray">로그아웃</span>
 
-<span style="color: gray">로그아웃</span>
+  <img alt="로그아웃" src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" width="720">
 
 </details>
 
@@ -173,52 +175,45 @@
 
 <details>
   <summary>🖥️ 미리보기</summary>
+  <br>
+  <span style="color: gray">1. 폴리라인 도구</span>
 
-  <img alt="폴리라인 도구" src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" width="600" />
-
-<span style="color: gray">폴리라인 도구</span>
-
-  <br/>
-
-  <img alt="베지어 곡선 도구" src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" width="600" />
-
-<span style="color: gray">베지어 곡선 도구</span>
+  <img alt="폴리라인 도구" src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" width="720" />
 
   <br/>
+  <span style="color: gray">2. 베지어 곡선 도구</span>
 
-  <img alt="사각형 도구" src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" width="600" />
-
-<span style="color: gray">사각형 도구</span>
-
-  <br/>
-
-  <img alt="삼각형 도구" src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" width="600" />
-
-<span style="color: gray">삼각형 도구</span>
+  <img alt="베지어 곡선 도구" src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" width="720" />
 
   <br/>
+  <span style="color: gray">3. 사각형 도구</span>
 
-  <img alt="원형 도구" src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" width="600" />
-
-<span style="color: gray">원형 도구</span>
-
-  <br/>
-
-  <img alt="페인트 도구" src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" width="600" />
-
-<span style="color: gray">페인트 도구</span>
+  <img alt="사각형 도구" src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" width="720" />
 
   <br/>
+  <span style="color: gray">3. 삼각형 도구</span>
 
-  <img alt="지우개 도구" src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" width="600" />
-
-<span style="color: gray">지우개 도구</span>
+  <img alt="삼각형 도구" src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" width="720" />
 
   <br/>
+  <span style="color: gray">4. 원형 도구</span>
 
-  <img alt="이미지 가져오기 도구" src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" width="600" />
+  <img alt="원형 도구" src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" width="720" />
 
-<span style="color: gray">이미지 가져오기 도구</span>
+  <br/>
+  <span style="color: gray">5. 페인트 도구</span>
+
+  <img alt="페인트 도구" src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" width="720" />
+
+  <br/>
+  <span style="color: gray">6. 지우개 도구</span>
+
+  <img alt="지우개 도구" src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" width="720" />
+
+  <br/>
+  <span style="color: gray">7. 이미지 가져오기 도구</span>
+
+  <img alt="이미지 가져오기 도구" src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" width="720" />
 
 </details>
 
