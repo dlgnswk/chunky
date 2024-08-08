@@ -229,15 +229,15 @@
   <br/>
   <img alt="레이어 생성" src="https://github.com/user-attachments/assets/52645456-12d6-4097-af3f-98181bb6ef83" width="600" />
 
-  <br/>
-  <span style="color: gray">2-2-1. 레이어 온오프</span>
-  <br/>
-  <img alt="레이어 온오프" src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" width="600" />
+<br/><br/>
+<span style="color: gray">2-2-1. 레이어 온오프</span>
+<br/>
+<img alt="레이어 온오프" src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" width="600" />
 
-  <br/>
-  <span style="color: gray">2-2-2. 레이어 색상 지정</span>
-  <br/>
-  <img alt="레이어 색상 지정" src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" width="600" />
+<br/><br/>
+<span style="color: gray">2-2-2. 레이어 색상 지정</span>
+<br/>
+<img alt="레이어 색상 지정" src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" width="600" />
 
 </details>
 
@@ -272,10 +272,10 @@
   <br/>
   <img alt="렌더링 시점 변경" src="https://github.com/user-attachments/assets/9a29fd18-1304-4c52-bf4e-7aff02c4e27f" width="600" />
 
-  <br/>
-  <span style="color: gray">3-2-2. 렌더링 카메라 변경</span>
-  <br/>
-  <img alt="렌더링 카메라 변경" src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" width="600" />
+<br/><br/>
+<span style="color: gray">3-2-2. 렌더링 카메라 변경</span>
+<br/>
+<img alt="렌더링 카메라 변경" src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" width="600" />
 
 </details>
 
@@ -592,6 +592,13 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>
 
 ### 2-2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구
+
+<div align="center">
+  <img alt="베지어 곡선 그리기" src="https://github.com/user-attachments/assets/8602f126-23c0-4666-97f2-0833dae4f000" width="300" />
+
+<span align="right" style="color: gray">베지어 곡선 그리기 도구</span>
+
+</div>
 
 베지어 곡선은 조절점을 사용해 곡선을 그릴 수 있는 도구입니다.
 
