@@ -700,36 +700,18 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 # 🗓 Schedule
 
-프로젝트 기간: 2023.09.01 ~ 2023.12.31 (4개월)
+프로젝트 기간: 2024.07.10 ~ 2024.07.31 (약 3주)
 
 <details>
-<summary>1주차: 기획 및 리서치</summary>
-- 프로젝트 아이디어 구체화
-- 기술 스택 선정 및 학습
-- 유사 서비스 분석
-- 사용자 요구사항 정의
+<summary>1주차: 기획 및 프로젝트 세팅</summary>
 </details>
 
 <details>
-<summary>2주차: MVP 개발</summary>
-- 기본적인 2D to 3D 변환 모델 구현
-- 웹 인터페이스 프로토타입 개발
-- 백엔드 API 기본 구조 설계
+<summary>2주차: 정적 UI 구현 및 2D 관련 기능 개발</summary>
 </details>
 
 <details>
-<summary>3주차: 고도화 및 최적화</summary>
-- ML 모델 성능 개선
-- 3D 모델 조작 기능 강화
-- 사용자 피드백 반영 및 UI/UX 개선
-</details>
-
-<details>
-<summary>4주차: 마무리 및 론칭 준비</summary>
-- 전체 시스템 통합 테스트
-- 성능 최적화 및 버그 수정
-- 배포 환경 구축
-- 사용자 매뉴얼 작성
+<summary>3주차: 3D 관련 기능 개발</summary>
 </details>
 
 <br/>
