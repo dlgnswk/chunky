@@ -143,8 +143,8 @@
 
   <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="720" />
 
-  <br/>
-  <span style="color: gray">1-2-2. 구글 로그인</span>
+<br/><br/>
+<span style="color: gray">1-2-2. 구글 로그인</span>
 
   <img alt="구글 로그인" src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" width="720" />
 
@@ -180,38 +180,38 @@
 
   <img alt="폴리라인 도구" src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" width="720" />
 
-  <br/>
-  <span style="color: gray">2-1-2. 베지어 곡선 도구</span>
+<br/><br/>
+<span style="color: gray">2-1-2. 베지어 곡선 도구</span>
 
   <img alt="베지어 곡선 도구" src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" width="720" />
 
-  <br/>
-  <span style="color: gray">2-1-3. 사각형 도구</span>
+<br/><br/>
+<span style="color: gray">2-1-3. 사각형 도구</span>
 
   <img alt="사각형 도구" src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" width="720" />
 
-  <br/>
-  <span style="color: gray">2-1-4. 삼각형 도구</span>
+<br/><br/>
+<span style="color: gray">2-1-4. 삼각형 도구</span>
 
   <img alt="삼각형 도구" src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" width="720" />
 
-  <br/>
-  <span style="color: gray">2-1-5. 원형 도구</span>
+<br/><br/>
+<span style="color: gray">2-1-5. 원형 도구</span>
 
   <img alt="원형 도구" src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" width="720" />
 
-  <br/>
-  <span style="color: gray">2-1-6. 페인트 도구</span>
+<br/><br/>
+<span style="color: gray">2-1-6. 페인트 도구</span>
 
   <img alt="페인트 도구" src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" width="720" />
 
-  <br/>
-  <span style="color: gray">2-1-7. 지우개 도구</span>
+<br/><br/>
+<span style="color: gray">2-1-7. 지우개 도구</span>
 
   <img alt="지우개 도구" src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" width="720" />
 
-  <br/>
-  <span style="color: gray">2-1-8. 이미지 가져오기 도구</span>
+<br/><br/>
+<span style="color: gray">2-1-8. 이미지 가져오기 도구</span>
 
   <img alt="이미지 가져오기 도구" src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" width="720" />
 
