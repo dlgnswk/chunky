@@ -125,9 +125,9 @@
   <summary>🖥️ 미리보기</summary>
 
   <br/>
-  <span style="color: gray">웹사이트 회원가입 페이지</span>
+  <span style="color: gray">1-1-1. 웹사이트 회원가입 페이지</span>
 
-  <img alt="회원가입 웹 화면" src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" width="720">
+  <img alt="회원가입 웹 화면" src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" width="720" />
 
 </details>
 
@@ -139,12 +139,12 @@
   <summary>🖥️ 미리보기</summary>
 
   <br/>
-  <span style="color: gray">일반 로그인</span>
+  <span style="color: gray">1-2-1. 일반 로그인</span>
 
-  <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="720">
+  <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="720" />
 
   <br/>
-  <span style="color: gray">구글 로그인</span>
+  <span style="color: gray">1-2-2. 구글 로그인</span>
 
   <img alt="구글 로그인" src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" width="720" />
 
@@ -159,9 +159,9 @@
   <summary>🖥️ 미리보기</summary>
 
   <br/>
-  <span style="color: gray">로그아웃</span>
+  <span style="color: gray">1-3-1. 로그아웃</span>
 
-  <img alt="로그아웃" src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" width="720">
+  <img alt="로그아웃" src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" width="720" />
 
 </details>
 
@@ -175,43 +175,43 @@
 
 <details>
   <summary>🖥️ 미리보기</summary>
-  <br>
-  <span style="color: gray">1. 폴리라인 도구</span>
+  <br/>
+  <span style="color: gray">2-1-1. 폴리라인 도구</span>
 
   <img alt="폴리라인 도구" src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" width="720" />
 
   <br/>
-  <span style="color: gray">2. 베지어 곡선 도구</span>
+  <span style="color: gray">2-1-2. 베지어 곡선 도구</span>
 
   <img alt="베지어 곡선 도구" src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" width="720" />
 
   <br/>
-  <span style="color: gray">3. 사각형 도구</span>
+  <span style="color: gray">2-1-3. 사각형 도구</span>
 
   <img alt="사각형 도구" src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" width="720" />
 
   <br/>
-  <span style="color: gray">3. 삼각형 도구</span>
+  <span style="color: gray">2-1-4. 삼각형 도구</span>
 
   <img alt="삼각형 도구" src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" width="720" />
 
   <br/>
-  <span style="color: gray">4. 원형 도구</span>
+  <span style="color: gray">2-1-5. 원형 도구</span>
 
   <img alt="원형 도구" src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" width="720" />
 
   <br/>
-  <span style="color: gray">5. 페인트 도구</span>
+  <span style="color: gray">2-1-6. 페인트 도구</span>
 
   <img alt="페인트 도구" src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" width="720" />
 
   <br/>
-  <span style="color: gray">6. 지우개 도구</span>
+  <span style="color: gray">2-1-7. 지우개 도구</span>
 
   <img alt="지우개 도구" src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" width="720" />
 
   <br/>
-  <span style="color: gray">7. 이미지 가져오기 도구</span>
+  <span style="color: gray">2-1-8. 이미지 가져오기 도구</span>
 
   <img alt="이미지 가져오기 도구" src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" width="720" />
 
@@ -230,16 +230,14 @@
 <span style="color: gray">레이어 생성, 복사, 삭제</span>
 
   <br/>
+  <span style="color: gray">2-2-1. 레이어 온오프</span>
 
   <img alt="레이어 온오프" src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" width="600" />
 
-<span style="color: gray">레이어 온오프</span>
-
   <br/>
+  <span style="color: gray">2-2-2. 레이어 색상 지정</span>
 
   <img alt="레이어 색상 지정" src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" width="600" />
-
-<span style="color: gray">레이어 색상 지정</span>
 
 </details>
 
@@ -255,9 +253,10 @@
 <details>
 <summary>🖥️ 미리보기</summary>
 
-  <img alt="렌더링 두께 및 높이 설정" src="https://github.com/user-attachments/assets/cf6ef116-1784-4402-bc13-f369cbc36b79" width="600" />
+  <br/>
+  <span style="color: gray">3-1-1. 렌더링 두께 및 높이 설정</span>
 
-<span style="color: gray">렌더링 두께 및 높이 설정</span>
+  <img alt="렌더링 두께 및 높이 설정" src="https://github.com/user-attachments/assets/cf6ef116-1784-4402-bc13-f369cbc36b79" width="600" />
 
 </details>
 
@@ -268,15 +267,15 @@
 <details>
 <summary>🖥️ 미리보기</summary>
 
+  <br/>
+  <span style="color: gray">3-2-1. 렌더링 시점 변경</span>
+
   <img alt="렌더링 시점 변경" src="https://github.com/user-attachments/assets/9a29fd18-1304-4c52-bf4e-7aff02c4e27f" width="600" />
 
-<span style="color: gray">렌더링 시점 변경</span>
-
   <br/>
+  <span style="color: gray">3-2-2. 렌더링 카메라 변경</span>
 
   <img alt="렌더링 카메라 변경" src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" width="600" />
-
-<span style="color: gray">렌더링 카메라 변경</span>
 
 </details>
 
@@ -517,7 +516,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 ### 2-1. 여러 직선을 이어 그리는 폴리라인 도구
 
 <div align="center">
-  <img alt="폴리라인 그리기" src="https://github.com/user-attachments/assets/68a3b979-4311-42ef-847f-cb6e9441d9fb" width="300">
+  <img alt="폴리라인 그리기" src="https://github.com/user-attachments/assets/68a3b979-4311-42ef-847f-cb6e9441d9fb" width="300" />
 
 <span align="right" style="color: gray">폴리라인 그리기 도구</span>
 
@@ -575,7 +574,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 3.  **`keydown` 이벤트 - `Escape`**
 
-    <img alt="폴리라인 keydown 이벤트(Escape)" src="https://github.com/user-attachments/assets/cc6d22b7-d184-468a-8c73-4f6b9e71cf4f" width="720">
+    <img alt="폴리라인 keydown 이벤트(Escape)" src="https://github.com/user-attachments/assets/cc6d22b7-d184-468a-8c73-4f6b9e71cf4f" width="720" />
 
     **#01)**<br/>
 
