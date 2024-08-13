@@ -5,7 +5,7 @@ import ButtonArea from './ButtonArea';
 
 import './style.scss';
 
-function Studio() {
+function Workspace() {
   return (
     <div className="work-space">
       <div className="side-panel">
@@ -20,4 +20,4 @@ function Studio() {
   );
 }
 
-export default Studio;
+export default Workspace;

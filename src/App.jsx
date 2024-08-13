@@ -8,7 +8,7 @@ import {
 import useStore from './store/store';
 
 import Login from './components/Login/Login';
-import Studio from './components/Studio/Studio';
+import Workspace from './components/Workspace/Workspace';
 import Register from './components/Register/Register';
 import Welcome from './components/Welcome/Welcome';
 import AlertModal from './components/shared/Modal/AlertModal';
@@ -39,15 +39,15 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Navigate to={user ? '/studio' : '/login'} />}
+            element={<Navigate to={user ? '/workspace' : '/login'} />}
           />
           <Route
             path="/login"
-            element={user ? <Navigate to="/studio" /> : <Login />}
+            element={user ? <Navigate to="/workspace" /> : <Login />}
           />
           <Route
-            path="/studio"
-            element={user ? <Studio /> : <Navigate to="/login" />}
+            path="/workspace"
+            element={user ? <Workspace /> : <Navigate to="/login" />}
           />
           <Route path="/register" element={<Register />} />
           <Route path="/welcome" element={<Welcome />} />

@@ -29,13 +29,13 @@ function Login() {
     const { id, password } = data;
     await login(id, password);
 
-    navigate('/studio');
+    navigate('/workspace');
   };
 
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
-      navigate('/studio');
+      navigate('/workspace');
     } catch (error) {
       setAlertState('failed-login');
     }
