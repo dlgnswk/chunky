@@ -41,10 +41,10 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 **_<a href="www.chunky.studio">"Chunky"</a>_** 는 사용자가 그린 스케치를 3D로 변환해주고,<br>3D 프린팅을 통해 스케치를 실제로 만들어 낼 수 있도록 도와줍니다.<br/>
 
-## <span style="font-size: 1.5rem; font-style:italic; font-weight:bold;">간단한 스케치로 당신의 상상을 현실로 만들어보세요!</span>
+### <span style="font-size: 1.5rem; font-style:italic; font-weight:bold;">간단한 스케치로 당신의 상상을 현실로 만들어보세요!</span>
 
   <div align="center">
-    <video controls src="/src/assets/readme/videos/chunky-preview.mov" width="800">
+    <video controls src="./src/assets/readme/videos/chunky-preview.mov" width="800">
   </div>
   <div align="center">
     <span>preview</span>
@@ -97,7 +97,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 ## <span id="main-feature-user">사용자 계정 추가 및 관리하기</span>
 
-### 회원가입
+### 1. 회원가입
 
 <table align="center">
   <tr>
@@ -111,7 +111,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <br/><br/>
 
-### 로그인 및 로그아웃
+### 2. 로그인 및 로그아웃
 
 <table style="width: 1000px;">
   <thead>
@@ -142,227 +142,144 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <br/>
 
-### <span id="main-feature-drawing" style="font-size:1.5rem;">그리기 도구 조작해서 그려보기</span>
+## <span id="main-feature-drawing">그리기 도구 조작해서 그려보기</span>
 
-### 스케치 기능
+### 1. 스케치 기능
 
-<table align="center">
-  <tr>
-    <th style="text-align: center;">폴리라인 도구 (단축키 P)</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" alt="폴리라인 도구">
-    </td>
-  </tr>
-  <tr>
-    <td style="text-align:center;">
-      시작점 설정 이후 클릭 할 때마다 새로운 선을 만들고, space 입력시 선을 닫아 도형을 만들 수 있습니다.
-    </td>
-  </tr>
+<table style="width: 1000px;">
+  <thead>
+    <tr>
+      <th style="text-align: center;">폴리라인 도구 (단축키 P)</th>
+      <th style="text-align: center;">베지어 곡선 도구 (단축키 A)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" alt="폴리라인 도구" style="max-width: 100%; height: auto;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" alt="베지어 곡선 도구" style="max-width: 100%; height: auto;">
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center;">
+        시작점 설정 이후 클릭 할 때마다 새로운 선을 만들고, space 입력시 선을 닫아 도형을 만들 수 있습니다.
+      </td>
+      <td style="text-align:center;">
+        시작점 클릭하고 종료점 클릭시 원하는 굴곡 방향으로 드래그 해 곡선을 그릴 수 있습니다.
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <br/><br/>
 
-<table align="center">
-  <tr>
-    <th style="text-align: center;">베지어 곡선 도구 (단축키 C)</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" alt="베지어 곡선 도구">
-    </td>
-  </tr>
-  <tr>
-    <td style="text-align:center;">
-      시작점 클릭하고 종료점 클릭시 원하는 굴곡 방향으로 드래그 해 곡선을 그릴 수 있습니다.
-    </td>
-  </tr>
+<table style="width: 1000px;">
+  <thead>
+    <tr>
+      <th style="text-align: center;">사각형 도구 (단축키 R)</th>
+      <th style="text-align: center;">삼각형 도구 (단축키 T)</th>
+      <th style="text-align: center;">원형 도구 (단축키 C)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center;">
+        <img src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" alt="사각형 도구" style="max-width: 100%; height: auto;">
+      </td>
+      <td style="text-align: center;">
+        <img src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" alt="삼각형 도구" style="max-width: 100%; height: auto;">
+      </td>
+      <td style="text-align: center;">
+        <img src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" alt="원형 도구" style="max-width: 100%; height: auto;">
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center;">
+        시작점 클릭하고 드래그를 시작해 종료점에서 종료하여 사각형을 그릴 수 있습니다.
+      </td>
+      <td style="text-align:center;">
+        클릭한 세 점을 꼭지점으로 하는 삼각형을 그릴 수 있습니다.
+      </td>
+      <td style="text-align:center;">
+        클릭한 점을 중심으로 하는 원을 그릴 수 있습니다.
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <br/><br/>
 
-<table align="center">
-  <tr>
-    <th style="text-align: center;">사각형 도구 (단축키 R)</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" alt="사각형 도구">
-    </td>
-  </tr>
-  <tr>
-    <td style="text-align:center;">
-      시작점 클릭하고 드래그를 시작해 종료점에서 종료하여 사각형을 그릴 수 있습니다.
-    </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">삼각형 도구 (단축키 T)</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" alt="삼각형 도구">
-    </td>
-  </tr>
-  <tr>
-    <td style="text-align:center;">
-      클릭한 세 점을 꼭지점으로 하는 삼각형을 그릴 수 있습니다.
-    </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">원형 도구 (단축키 C)</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" alt="원형 도구">
-    </td>
-  </tr>
-  <tr>
-    <td style="text-align:center;">
-      클릭한 점을 중심으로 하는 원을 그릴 수 있습니다.
-    </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
+<table style="width: 1000px;">
   <tr>
     <th style="text-align: center;">페인트 도구 (단축키 P)</th>
+    <th style="text-align: center;">지우개 도구 (단축키 E)</th>
+    <th style="text-align: center;">이미지 가져오기 도구</th>
   </tr>
   <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" alt="페인트 도구">
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" alt="페인트 도구" style="max-width: 100%; height: auto;">
+    </td>
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" alt="지우개 도구" style="max-width: 100%; height: auto;">
+    </td>
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" alt="이미지 가져오기 도구" style="max-width: 100%; height: auto;">
     </td>
   </tr>
   <tr>
     <td style="text-align:center;">
     레이어를 식별할 수 있도록 닫힌 스케치 내부에 색상을 채울 수 있습니다.
     </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">지우개 도구 (단축키 E)</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" alt="지우개 도구">
-    </td>
-  </tr>
-  <tr>
     <td style="text-align:center;">
     드래그를 통해 범위내에 들어오는 도형을 삭제 합니다.
     </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">이미지 가져오기 도구</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" alt="지우개 도구">
-    </td>
-  </tr>
-  <tr>
     <td style="text-align:center;">
       이미지를 가져와 캔버스에 띄워 볼 수 있습니다.
     </td>
   </tr>
 </table>
 
-### 레이어 기능
+<br/><br/>
 
-<table align="center">
+### 2. 레이어 기능
+
+<table style="width: 1000px;">
   <tr>
     <th style="text-align: center;">레이어 생성, 복사, 삭제</th>
+    <th style="text-align: center;">레이어 온오프</th>
+    <th style="text-align: center;">레이어 색상 지정</th>
   </tr>
   <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/52645456-12d6-4097-af3f-98181bb6ef83" alt="레이어 생성">
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/52645456-12d6-4097-af3f-98181bb6ef83" alt="레이어 생성, 복사, 삭제" style="max-width: 100%; height: auto;">
+    </td>
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" alt="레이어 온오프" style="max-width: 100%; height: auto;">
+    </td>
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" alt="레이어 색상 지정" style="max-width: 100%; height: auto;">
     </td>
   </tr>
   <tr>
     <td style="text-align:center;">
       레이어 버튼을 통해 생성, 복사, 삭제 기능을 사용할 수 있습니다.
     </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">레이어 온오프</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" alt="레이어 온오프">
-    </td>
-  </tr>
-  <tr>
     <td style="text-align:center;">
       레이어 온오프 버튼을 통해 중첩레이어를 비교해 볼 수 있습니다.
     </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">레이어 투명도 조절</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" alt="레이어 투명도 조절">
-    </td>
-  </tr>
-  <tr>
-    <td style="text-align:center;">
-      레이어 투명도 조절 슬라이드를 통해 중첩레이어를 비교해 볼 수 있습니다.
-    </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">레이어 색상 지정</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" alt="레이어 색상 지정">
-    </td>
-  </tr>
-  <tr>
     <td style="text-align:center;">
       레이어의 색상을 지정해 스케치 화면에서 레이어를 더 잘 식별할 수 있습니다.
     </td>
   </tr>
 </table>
 
-## 3. 3D 렌더링 인터페이스
+<br/><br/>
 
-### <span id="main-feature-rendering" style="font-size:1.5rem;">설정값 조절해 렌더링하기</span>
+## <span id="main-feature-rendering">설정값 조절해 렌더링하기</span>
+
+### 1. 렌더링 관련 설정
 
 <table align="center">
   <tr>
@@ -382,34 +299,25 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <br/><br/>
 
-<table align="center">
+### 2. 카메라 관련 설정
+
+<table style="width: 1000px;">
   <tr>
     <th style="text-align: center;">렌더링 시점 변경</th>
+    <th style="text-align: center;">렌더링 카메라 변경</th>
   </tr>
   <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/9a29fd18-1304-4c52-bf4e-7aff02c4e27f" alt="렌더링 시점 변경">
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/9a29fd18-1304-4c52-bf4e-7aff02c4e27f" alt="렌더링 시점 변경" style="max-width: 100%; height: auto;">
+    </td>
+    <td style="text-align: center;">
+      <img src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" alt="렌더링 카메라 변경" style="max-width: 100%; height: auto;">
     </td>
   </tr>
   <tr>
     <td style="text-align:center;">
       생성된 모델을 확대 및 축소, 회전하여 시점을 변경할 수 있습니다.
     </td>
-  </tr>
-</table>
-
-<br/><br/>
-
-<table align="center">
-  <tr>
-    <th style="text-align: center;">렌더링 카메라 변경</th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" alt="렌더링 시점 변경">
-    </td>
-  </tr>
-  <tr>
     <td style="text-align:center;">
       설정된 카메라 옵션을 클릭해 카메라를 변경할 수 있습니다.
     </td>
