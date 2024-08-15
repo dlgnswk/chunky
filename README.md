@@ -24,7 +24,7 @@
 
 <br/>
 
----
+<hr>
 
 <br/>
 
@@ -44,7 +44,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 ## <span style="font-size: 1.5rem; font-style:italic; font-weight:bold;">간단한 스케치로 당신의 상상을 현실로 만들어보세요!</span>
 
   <div align="center">
-    <video controls src="./src/assets/readme/videos/chunky-preview.mov" width="800">
+    <video controls src="/src/assets/readme/videos/chunky-preview.mov" width="800">
   </div>
   <div align="center">
     <span>preview</span>
