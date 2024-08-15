@@ -22,43 +22,36 @@
 ![Vitest](https://img.shields.io/badge/Vitest-black?style=for-the-badge&logo=vitest&logoColor=%2344A833.svg?)
 ![cypress](https://img.shields.io/badge/Cypress-black?style=for-the-badge&logo=cypress&logoColor=white)
 
-  <br/>
+<br/>
 
 ---
 
-  <br/>
+<br/>
 
 대부분의 사람들에게 3D 모델링은 어렵습니다.
 <br/>
 저는 이런 3D 모델링의 진입장벽을 낮추고 싶었습니다.
 
-  <br/>
-
-<span style="font-style:italic; font-weight:bold;">"만약 간단한 스케치로 3D 모델링을 할 수 있다면 어떨까?"</span>
 <br/>
-<span style="font-style:italic; font-weight:bold;">"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도록 실체화 할 수 있을까?"</span>
 
-  <br/>
-
-**_<a href="www.chunky.studio">"Chunky"</a>_** 는 사용자가 그린 스케치를 3D로 변환해주고,<br>3D 프린팅을 통해 스케치를 실제로 만들어 낼 수 있도록 도와줍니다.
-
-  <br/>
-
-<span style="font-size: 1.5rem; font-style:italic; font-weight:bold;">간단한 스케치로 당신의 상상을 현실로 만들어보세요!</span>
-
-</div>
+_**"만약 간단한 스케치로 3D 모델링을 할 수 있다면 어떨까?"**_<br/>
+_**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도록 실체화 할 수 있을까?"**_
 
 <br/>
 
-<div align="center">
-  <video controls src="./src/assets/readme/videos/chunky-preview.mov" width="800">
-</div>
-<div align="center">
-  <span>preview</span>
-  <span><a href="">(watch full video)</a></span>
-</div>
+**_<a href="www.chunky.studio">"Chunky"</a>_** 는 사용자가 그린 스케치를 3D로 변환해주고,<br>3D 프린팅을 통해 스케치를 실제로 만들어 낼 수 있도록 도와줍니다.<br/>
 
-<br/><br/>
+## <span style="font-size: 1.5rem; font-style:italic; font-weight:bold;">간단한 스케치로 당신의 상상을 현실로 만들어보세요!</span>
+
+  <div align="center">
+    <video controls src="./src/assets/readme/videos/chunky-preview.mov" width="800">
+  </div>
+  <div align="center">
+    <span>preview</span>
+    <span><a href="">(watch full video)</a></span>
+  </div><br/><br/>
+
+</div>
 
 # 목차
 
@@ -102,12 +95,11 @@
 
 # <span id="main-feature">첫번째, 주요 기능 소개</span>
 
-### <span id="main-feature-user" style="font-size:1.5rem;">사용자 계정 추가 및 관리하기</span>
+## <span id="main-feature-user">사용자 계정 추가 및 관리하기</span>
+
+### 회원가입
 
 <table align="center">
-  <tr>
-    <th style="text-align: center;">회원가입</th>
-  </tr>
   <tr>
     <td>
       <img src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" alt="Alt text 1">
@@ -119,11 +111,10 @@
 
 <br/><br/>
 
+### 로그인 및 로그아웃
+
 <table style="width: 1000px;">
   <thead>
-    <tr>
-      <th colspan="3" style="text-align: center;">로그인 및 로그아웃</th>
-    </tr>
     <tr>
       <th style="text-align: center;">구글 로그인</th>
       <th style="text-align: center;">일반 로그인</th>
