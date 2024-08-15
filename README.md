@@ -73,27 +73,27 @@
   </div>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="" style="font-size: 1.17rem;">두번째, 개발 과정 기록</a>
+    <a href="#develop-log" style="font-size: 1.17rem;">두번째, 개발 과정 기록</a>
     <ul style="padding-left: 48px;">
-      <li><a href="">사용자 입력 값을 통한 선 그리기 및 저장 구현하기</a></li>
-      <li><a href="">다중 선과 곡선을 사용한 복잡한 도형 그리기 및 저장 구현하기</a></li>
-      <li><a href="">그리기 도구에 사용자 경험을 고려한 기능 추가하기</a></li>
-      <li><a href="">완성된 스케치를 3D 모델로 렌더링하기</a></li>
-      <li><a href="">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</a></li>
-      <li><a href="">완성된 3D 모델을 내보내 3D 프린팅하기 </a></li>
+      <li><a href="#develop-log-draw">사용자 입력 값을 통한 선 그리기 및 저장 구현하기</a></li>
+      <li><a href="#develop-log-draw-complex">다중 선과 곡선을 사용한 복잡한 도형 그리기 및 저장 구현하기</a></li>
+      <li><a href="#develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</a></li>
+      <li><a href="#develop-log-render">완성된 스케치를 3D 모델로 렌더링하기</a></li>
+      <li><a href="#develop-log-render-user">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</a></li>
+      <li><a href="#develop-log-print">완성된 3D 모델을 내보내 3D 프린팅하기 </a></li>
     </ul>
   </div>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
     <a href="" style="font-size: 1.17rem;">세번째, 전체 개발 일정</a>
     <ul style="padding-left: 48px;">
-      <li><a href="">전체 일정 및 칸반</a></li>
-      <li><a href="">일정 변동사항</a></li>
+      <li><a href="#schedule-kanban">전체 일정 및 칸반</a></li>
+      <li><a href="#schedule-change">일정 변동사항</a></li>
     </ul>
   </div>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="" style="font-size: 1.17rem;">네번째, 회고</a>
+    <a href="#memoir" style="font-size: 1.17rem;">네번째, 회고</a>
   </div>
 </div>
 
@@ -102,161 +102,330 @@
 
 # <span id="main-feature">첫번째, 주요 기능 소개</span>
 
-## <span id="main-feature-user">사용자 계정 추가 및 관리하기</span>
+### <span id="main-feature-user" style="font-size:1.5rem;">사용자 계정 추가 및 관리하기</span>
 
-<details style="margin-bottom: 2rem;">
-  <summary style="font-size: 1.17rem; font-weight: bold; margin-bottom: 0.5rem;">회원가입</summary>
+<table align="center">
+  <tr>
+    <th style="text-align: center;">회원가입</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" alt="Alt text 1">
+    </td>
+  </tr>
+</table>
+<li>모든 입력필드에 대해 유효성 검사를 통과하는 경우 회원가입이 가능합니다.</li>
+<li>회원가입이 완료되면 회원정보는 firebase Authentication에 저장됩니다.</li>
 
-  <div style="padding-left: 48px;">
-    <table align="center">
+<br/><br/>
+
+<table style="width: 1000px;">
+  <thead>
     <tr>
-      <th width="500">회원가입</th>
+      <th colspan="3" style="text-align: center;">로그인 및 로그아웃</th>
     </tr>
     <tr>
-      <td>
-        <img src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" alt="Alt text 1">
+      <th style="text-align: center;">구글 로그인</th>
+      <th style="text-align: center;">일반 로그인</th>
+      <th style="text-align: center;">로그아웃</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" alt="구글 로그인" style="max-width: 100%; height: auto;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" alt="일반 로그인" style="max-width: 100%; height: auto;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" alt="로그아웃" style="max-width: 100%; height: auto;">
       </td>
     </tr>
-  </table>
-    <li>모든 입력필드에 대해 유효성 검사를 통과하는 경우 회원가입이 가능합니다.</li>
-    <li>회원가입이 완료되면 회원정보는 firebase Authentication에 저장됩니다.</li>
-  </div>
+  </tbody>
+</table>
 
-</details>
-
-<details style="margin-bottom: 2rem;">
-  <summary style="font-size: 1.17rem; font-weight: bold; margin-bottom: 0.5rem;">로그인 및 로그아웃</summary>
-
-  <div style="padding-left: 48px;">
-    <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="600" />
-    <p style="color: gray;">일반 로그인</p>
-    <img alt="구글 로그인" src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" width="600" />
-    <p style="color: gray;">구글 로그인</p>
-    <img alt="로그아웃" src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" width="600" />
-    <p style="color: gray;">로그아웃</p>
-    <li>일반 로그인 시 입력된 이메일과 비밀번호를 firebase에서 확인해 로그인합니다.</li>
-    <li>구글 로그인 시 로그인 되어있는 구글 계정으로 로그인합니다.</li>
-    <li>저장된 로그인 유저 정보를 제거합니다.</li>
-  </div>
-</details>
+<li>일반 로그인 시 입력된 이메일과 비밀번호를 firebase에서 확인해 로그인합니다.</li>
+<li>구글 로그인 시 로그인 되어있는 구글 계정으로 로그인합니다.</li>
+<li>저장된 로그인 유저 정보를 제거합니다.</li>
 
 <br/>
 
-## <span id="main-feature-drawing">그리기 도구 조작해서 그려보기</span>
+### <span id="main-feature-drawing" style="font-size:1.5rem;">그리기 도구 조작해서 그려보기</span>
 
-### 그리기 도구
+### 스케치 기능
 
-<details>
-  <summary>🖥️ 미리보기</summary>
-  <br/>
-  <span style="color: gray">2-1-1. 폴리라인 도구</span>
-  <br/>
-  <img alt="폴리라인 도구" src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" width="720" />
+<table align="center">
+  <tr>
+    <th style="text-align: center;">폴리라인 도구 (단축키 P)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" alt="폴리라인 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      시작점 설정 이후 클릭 할 때마다 새로운 선을 만들고, space 입력시 선을 닫아 도형을 만들 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-1-2. 베지어 곡선 도구</span>
-<br/>
-<img alt="베지어 곡선 도구" src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" width="720" />
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">베지어 곡선 도구 (단축키 C)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" alt="베지어 곡선 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      시작점 클릭하고 종료점 클릭시 원하는 굴곡 방향으로 드래그 해 곡선을 그릴 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-1-3. 사각형 도구</span>
-<br/>
-<img alt="사각형 도구" src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" width="720" />
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">사각형 도구 (단축키 R)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" alt="사각형 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      시작점 클릭하고 드래그를 시작해 종료점에서 종료하여 사각형을 그릴 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-1-4. 삼각형 도구</span>
-<br/>
-<img alt="삼각형 도구" src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" width="720" />
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">삼각형 도구 (단축키 T)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" alt="삼각형 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      클릭한 세 점을 꼭지점으로 하는 삼각형을 그릴 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-1-5. 원형 도구</span>
-<br/>
-<img alt="원형 도구" src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" width="720" />
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">원형 도구 (단축키 C)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" alt="원형 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      클릭한 점을 중심으로 하는 원을 그릴 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-1-6. 페인트 도구</span>
-<br/>
-<img alt="페인트 도구" src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" width="720" />
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">페인트 도구 (단축키 P)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" alt="페인트 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+    레이어를 식별할 수 있도록 닫힌 스케치 내부에 색상을 채울 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-1-7. 지우개 도구</span>
-<br/>
-<img alt="지우개 도구" src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" width="720" />
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">지우개 도구 (단축키 E)</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" alt="지우개 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+    드래그를 통해 범위내에 들어오는 도형을 삭제 합니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-1-8. 이미지 가져오기 도구</span>
-<br/>
-<img alt="이미지 가져오기 도구" src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" width="720" />
 
-</details>
+<table align="center">
+  <tr>
+    <th style="text-align: center;">이미지 가져오기 도구</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" alt="지우개 도구">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      이미지를 가져와 캔버스에 띄워 볼 수 있습니다.
+    </td>
+  </tr>
+</table>
 
-- 사용자가 사용하기 쉬운 방식의 그리기 도구를 제공합니다.
-- 사진 위에 스케치를 할 수 있도록 이미지 가져오기 기능을 지원합니다.
+### 레이어 기능
 
-### 2-2. 레이어 관련 기능
-
-<details>
-  <summary>🖥️ 미리보기</summary>
-  <br/>
-  <span style="color: gray">레이어 생성, 복사, 삭제</span>
-  <br/>
-  <img alt="레이어 생성" src="https://github.com/user-attachments/assets/52645456-12d6-4097-af3f-98181bb6ef83" width="600" />
+<table align="center">
+  <tr>
+    <th style="text-align: center;">레이어 생성, 복사, 삭제</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/52645456-12d6-4097-af3f-98181bb6ef83" alt="레이어 생성">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      레이어 버튼을 통해 생성, 복사, 삭제 기능을 사용할 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-2-1. 레이어 온오프</span>
-<br/>
-<img alt="레이어 온오프" src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" width="600" />
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">레이어 온오프</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" alt="레이어 온오프">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      레이어 온오프 버튼을 통해 중첩레이어를 비교해 볼 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">2-2-2. 레이어 색상 지정</span>
-<br/>
-<img alt="레이어 색상 지정" src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" width="600" />
 
-</details>
+<table align="center">
+  <tr>
+    <th style="text-align: center;">레이어 투명도 조절</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" alt="레이어 투명도 조절">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      레이어 투명도 조절 슬라이드를 통해 중첩레이어를 비교해 볼 수 있습니다.
+    </td>
+  </tr>
+</table>
 
-- 레이어를 생성한 뒤 캔버스에 그리기 도구로 스케치 할 수 있습니다.
-- 스케치 된 레이어를 복제하거나 삭제할 수 있습니다.
-- 레이어의 온오프를 통해 작성된 상황을 확인하며 작업 할 수 있습니다.
-- 레이어의 색상을 지정해 스케치 화면에서 레이어를 더 잘 식별할 수 있습니다.
+<br/><br/>
+
+<table align="center">
+  <tr>
+    <th style="text-align: center;">레이어 색상 지정</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" alt="레이어 색상 지정">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      레이어의 색상을 지정해 스케치 화면에서 레이어를 더 잘 식별할 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 ## 3. 3D 렌더링 인터페이스
 
-### 3-1. 렌더링 관련 설정
+### <span id="main-feature-rendering" style="font-size:1.5rem;">설정값 조절해 렌더링하기</span>
 
-<details>
-<summary>🖥️ 미리보기</summary>
-
-  <br/>
-  <span style="color: gray">3-1-1. 렌더링 두께 및 높이 설정</span>
-  <br/>
-  <img alt="렌더링 두께 및 높이 설정" src="https://github.com/user-attachments/assets/cf6ef116-1784-4402-bc13-f369cbc36b79" width="600" />
-
-</details>
-
-- 그려진 스케치 레이어에 두께(h값), 시작 높이(z값)을 설정하여 렌더링 속성을 지정할 수 있습니다.
-
-### 3-2. 카메라 관련 설정
-
-<details>
-<summary>🖥️ 미리보기</summary>
-
-  <br/>
-  <span style="color: gray">3-2-1. 렌더링 시점 변경</span>
-  <br/>
-  <img alt="렌더링 시점 변경" src="https://github.com/user-attachments/assets/9a29fd18-1304-4c52-bf4e-7aff02c4e27f" width="600" />
+<table align="center">
+  <tr>
+    <th style="text-align: center;">렌더링 두께 및 높이 설정</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/cf6ef116-1784-4402-bc13-f369cbc36b79" alt="레이어 색상 지정">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      그려진 스케치 레이어에 두께(h값), 시작 높이(z값)을 설정하여 렌더링 속성을 지정할 수 있습니다.
+    </td>
+  </tr>
+</table>
 
 <br/><br/>
-<span style="color: gray">3-2-2. 렌더링 카메라 변경</span>
-<br/>
-<img alt="렌더링 카메라 변경" src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" width="600" />
 
-</details>
+<table align="center">
+  <tr>
+    <th style="text-align: center;">렌더링 시점 변경</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/9a29fd18-1304-4c52-bf4e-7aff02c4e27f" alt="렌더링 시점 변경">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      생성된 모델을 확대 및 축소, 회전하여 시점을 변경할 수 있습니다.
+    </td>
+  </tr>
+</table>
 
-- 생성된 모델을 확대 및 축소, 회전하여 시점을 변경할 수 있습니다.
-- 설정된 카메라 옵션을 클릭해 카메라를 변경할 수 있습니다.
+<br/><br/>
 
-<br/>
-<br/>
+<table align="center">
+  <tr>
+    <th style="text-align: center;">렌더링 카메라 변경</th>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" alt="렌더링 시점 변경">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align:center;">
+      설정된 카메라 옵션을 클릭해 카메라를 변경할 수 있습니다.
+    </td>
+  </tr>
+</table>
+
+<br/><br/>
 
 # 🏋 Challenges
 
