@@ -1,177 +1,150 @@
-# <img src="https://github.com/user-attachments/assets/0163cafe-f306-45ed-a008-330b5850a005" width="24" /> Chunky
+<div align="center">
+  <img alt="Chunky Logo" src="./src/assets/readme/images/chunkyLogo.png" width="800" />
 
-<p align="center">
-  <img alt="Chunky Logo" src="https://github.com/user-attachments/assets/9aa7d3e2-1cbd-403e-a189-a532416da007" width="800" />
-</p>
+  <p align="center">
+    <a href="https://chunky.studio">Chunky.studio</a>
+    <span> | </span>
+    <a href="https://github.com/dlgnswk/chunky">Git Repository</a>
+  </p>
+
+  <br/>
+
+![Javascript](https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=JavaScript&logoColor=F7DF1E)
+![React](https://img.shields.io/badge/React-black?style=for-the-badge&logo=react&logoColor=61DAFB)
+![ReactRouter](https://img.shields.io/badge/React_Router-black?style=for-the-badge&logo=react-router&logoColor=CA4245)
+![ReactThreeFiber](https://img.shields.io/badge/R3F-black.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzQyMl8zNSkiPgo8cmVjdCB4PSIxNyIgd2lkdGg9IjMxIiBoZWlnaHQ9IjE0IiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIzNCIgeT0iMTQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNyIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMTciIHk9IjE3IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHk9IjE3IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjE3IiB5PSIzNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSJ3aGl0ZSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzQyMl8zNSI+CjxyZWN0IHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4=&style=for-the-badge)<br/>
+![Three.js](https://img.shields.io/badge/ThreeJs-black?style=for-the-badge&logo=three.js&logoColor=white)
+![React Hook Form](https://img.shields.io/badge/React--Hook--Form-black?style=for-the-badge&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-black.svg?style=for-the-badge)
+![SCSS](https://img.shields.io/badge/Sass-black?style=for-the-badge&logo=sass&logoColor=CC6699)<br/>
+![Firebase](https://img.shields.io/badge/firebase-black?style=for-the-badge&logo=firebase&logoColor=ffca28)
+![NETLIFY](https://img.shields.io/badge/Netlify-black?style=for-the-badge&logo=netlify&logoColor=00C7B7)
+![Vitest](https://img.shields.io/badge/Vitest-black?style=for-the-badge&logo=vitest&logoColor=%2344A833.svg?)
+![cypress](https://img.shields.io/badge/Cypress-black?style=for-the-badge&logo=cypress&logoColor=white)
+
+  <br/>
+
+---
+
+  <br/>
+
+대부분의 사람들에게 3D 모델링은 어렵습니다.
+<br/>
+저는 이런 3D 모델링의 진입장벽을 낮추고 싶었습니다.
+
+  <br/>
+
+<span style="font-style:italic; font-weight:bold;">"만약 간단한 스케치로 3D 모델링을 할 수 있다면 어떨까?"</span>
+<br/>
+<span style="font-style:italic; font-weight:bold;">"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도록 실체화 할 수 있을까?"</span>
+
+  <br/>
+
+**_<a href="www.chunky.studio">"Chunky"</a>_** 는 사용자가 그린 스케치를 3D로 변환해주고,<br>3D 프린팅을 통해 스케치를 실제로 만들어 낼 수 있도록 도와줍니다.
+
+  <br/>
+
+<span style="font-size: 1.5rem; font-style:italic; font-weight:bold;">간단한 스케치로 당신의 상상을 현실로 만들어보세요!</span>
+
+</div>
 
 <br/>
 
 <div align="center">
-  <b>Chunky</b> 는 사용자가 그린 스케치를 3D로 변환해주고, 3D 프린팅을 통해 스케치를 실제로 만들어 낼 수 있도록 도와주는 웹 사이트입니다.
-
-간단한 스케치에서 시작해 당신의 상상을 현실로 만들어보세요!
-
-[🎥 Chunky 시연 영상](https://youtu.be/example)
-
+  <video controls src="./src/assets/readme/videos/chunky-preview.mov" width="800">
+</div>
+<div align="center">
+  <span>preview</span>
+  <span><a href="">(watch full video)</a></span>
 </div>
 
-# 📖 Contents
-
-- [ Chunky](#-chunky)
-- [📖 Contents](#-contents)
-- [🔗 Links](#-links)
-- [🔥 Motivation](#-motivation)
-- [🛠 Tech Stacks](#-tech-stacks)
-  - [Frontend](#frontend)
-  - [Backend \& Database](#backend--database)
-  - [Deployment](#deployment)
-  - [Testing](#testing)
-- [🎨 Features](#-features)
-  - [1. 사용자 인터페이스](#1-사용자-인터페이스)
-    - [1-1. 회원가입](#1-1-회원가입)
-    - [1-2. 로그인](#1-2-로그인)
-    - [1-3. 로그아웃](#1-3-로그아웃)
-  - [2. 스케치 인터페이스](#2-스케치-인터페이스)
-    - [2-1. 그리기 도구](#2-1-그리기-도구)
-    - [2-2. 레이어 관련 기능](#2-2-레이어-관련-기능)
-  - [3. 3D 렌더링 인터페이스](#3-3d-렌더링-인터페이스)
-    - [3-1. 렌더링 관련 설정](#3-1-렌더링-관련-설정)
-    - [3-2. 카메라 관련 설정](#3-2-카메라-관련-설정)
-- [🏋 Challenges](#-challenges)
-  - [1. 도형을 어떻게 그려서 저장해야 할까?](#1-도형을-어떻게-그려서-저장해야-할까)
-    - [1-1. 품질 저하가 일어나지 않는 그래픽 형식은 무엇이 있을까?](#1-1-품질-저하가-일어나지-않는-그래픽-형식은-무엇이-있을까)
-    - [1-2. 사용자가 그리는 다양한 도형들을 어떻게 효과적이고 일관된 방식으로 저장할 수 있을까?](#1-2-사용자가-그리는-다양한-도형들을-어떻게-효과적이고-일관된-방식으로-저장할-수-있을까)
-    - [1-3. 그린 도형을 좌표값으로 어떻게 저장해야 할까?](#1-3-그린-도형을-좌표값으로-어떻게-저장해야-할까)
-  - [2. 복잡한 도형은 어떻게 그릴 수 있을까?](#2-복잡한-도형은-어떻게-그릴-수-있을까)
-    - [2-1. 여러 직선을 이어 그리는 폴리라인 도구](#2-1-여러-직선을-이어-그리는-폴리라인-도구)
-    - [2-2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구](#2-2-세개의-조절점을-통해-그린-3점-베지어-곡선-도구)
-  - [3. 사용자 경험을 위해 추가 할 수 있는 기능은 어떤게 있을까?](#3-사용자-경험을-위해-추가-할-수-있는-기능은-어떤게-있을까)
-    - [3-1. 그려진 도형의 모서리를 표시해주는 스냅포인트](#3-1-그려진-도형의-모서리를-표시해주는-스냅포인트)
-    - [3-2. 그리기 도구를 이용해 스케치 중인 경우 예상 그리기 선 표시](#3-2-그리기-도구를-이용해-스케치-중인-경우-예상-그리기-선-표시)
-    - [3-3. 도형 내부를 클릭한 경우 색을 채우는 페인트](#3-3-도형-내부를-클릭한-경우-색을-채우는-페인트)
-  - [4. 스케치를 어떻게 3D 모델로 변환할 수 있을까?](#4-스케치를-어떻게-3d-모델로-변환할-수-있을까)
-    - [4-1. 직접 그린 스케치를 좌표값으로 저장](#4-1-직접-그린-스케치를-좌표값으로-저장)
-    - [4-2. 저장한 좌표값을 면으로 렌더링](#4-2-저장한-좌표값을-면으로-렌더링)
-- [🗓 Schedule](#-schedule)
-
-<br/>
-<br/>
-
-# 🔗 Links
-
-<p align="center">
-  <a href="https://chunkys.netlify.app">Deployed website</a>
-  <span> | </span>
-  <a href="https://github.com/dlgnswk/chunky">Git Repository</a>
-</p>
-
-<br/>
-<br/>
-
-# 🔥 Motivation
-
-3D 모델링은 배우는 데 많은 시간과 노력이 필요하기 때문에 대부분의 사람들에게 여전히 어렵게 느껴집니다.
-<br/>
-저는 누구나 쉽게 자신의 아이디어를 실체화 할 수 있도록 3D 모델링의 러닝커브를 낮출 수 있는 방법을 고민했습니다.
-
-**"만약 간단한 스케치로 3D 모델링을 할 수 있다면 어떨까?"**
-
-또한 스케치를 통해 3D 모델링을 만드는 것에 그치지 않고 조금 더 생산적인 활동까지 사용자의 경험을 연장하고 싶었습니다.
-
-**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도록 실체화 할 수 있을까?"**
-
-이러한 생각을 기반으로 스케치부터 실체화까지 여러 작업을 하나의 흐름으로 묶어, 사용자들이 3D 모델링을 조금이라도 쉽고 친근하게 느끼게 만들 수 있는 서비스를 만들고자 했습니다.
-
-<br/>
-<br/>
-
-# 🛠 Tech Stacks
-
-## Frontend
-
-![Javascript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![ReactRouter](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
-![ReactThreeFiber](https://img.shields.io/badge/R3F-black.svg?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiBmaWxsPSJub25lIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzQyMl8zNSkiPgo8cmVjdCB4PSIxNyIgd2lkdGg9IjMxIiBoZWlnaHQ9IjE0IiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIzNCIgeT0iMTQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNyIgZmlsbD0id2hpdGUiLz4KPHJlY3QgeD0iMTciIHk9IjE3IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHk9IjE3IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IndoaXRlIi8+CjxyZWN0IHg9IjE3IiB5PSIzNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSJ3aGl0ZSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzQyMl8zNSI+CjxyZWN0IHdpZHRoPSI0OCIgaGVpZ2h0PSI0OCIgZmlsbD0id2hpdGUiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4=&style=for-the-badge)
-
-![Three.js](https://img.shields.io/badge/ThreeJs-black?style=for-the-badge&logo=three.js&logoColor=white)
-![React Hook Form](https://img.shields.io/badge/React--Hook--Form-eb5990?style=for-the-badge&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-black.svg?style=for-the-badge)
-![SCSS](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)
-
-## Backend & Database
-
-![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
-
-## Deployment
-
-![NETLIFY](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
-
-## Testing
-
-![Vitest](https://img.shields.io/badge/Vitest-%2344A833.svg?style=for-the-badge&logo=vitest&logoColor=white)
-![cypress](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)
-
-<br/>
-<br/>
-
-# 🎨 Features
-
-## 1. 사용자 인터페이스
-
-### 1-1. 회원가입
-
-<details>
-  <summary>🖥️ 미리보기</summary>
-
-  <br/>
-  <span style="color: gray">1-1-1. 웹사이트 회원가입 페이지</span>
-  <br/>
-  <img alt="회원가입 웹 화면" src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" width="720" />
-
-</details>
-
-- 모든 입력필드에 대해 유효성 검사를 통과하는 경우 회원가입이 가능합니다.
-
-### 1-2. 로그인
-
-<details>
-  <summary>🖥️ 미리보기</summary>
-
-  <br/>
-  <span style="color: gray">1-2-1. 일반 로그인</span>
-  <br/>
-  <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="720" />
-
 <br/><br/>
-<span style="color: gray">1-2-2. 구글 로그인</span>
+
+# 목차
+
+<div>
+  <div style="line-height: 2rem; margin-bottom: 1.5rem;">
+    <a href="#main-feature" style="font-size: 1.17rem;">첫번째, 주요 기능 소개</a>
+    <ul style="padding-left: 48px;">
+      <li><a href="#main-feature-user">사용자 계정 추가 및 관리하기</a></li>
+      <li><a href="#main-feature-drawing">그리기 도구 조작해서 그려보기</a></li>
+      <li><a href="#main-feature-rendering">설정값 조절해 렌더링하기</a></li>
+    </ul>
+  </div>
+
+  <div style="line-height: 2rem; margin-bottom: 1.5rem;">
+    <a href="" style="font-size: 1.17rem;">두번째, 개발 과정 기록</a>
+    <ul style="padding-left: 48px;">
+      <li><a href="">사용자 입력 값을 통한 선 그리기 및 저장 구현하기</a></li>
+      <li><a href="">다중 선과 곡선을 사용한 복잡한 도형 그리기 및 저장 구현하기</a></li>
+      <li><a href="">그리기 도구에 사용자 경험을 고려한 기능 추가하기</a></li>
+      <li><a href="">완성된 스케치를 3D 모델로 렌더링하기</a></li>
+      <li><a href="">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</a></li>
+      <li><a href="">완성된 3D 모델을 내보내 3D 프린팅하기 </a></li>
+    </ul>
+  </div>
+
+  <div style="line-height: 2rem; margin-bottom: 1.5rem;">
+    <a href="" style="font-size: 1.17rem;">세번째, 전체 개발 일정</a>
+    <ul style="padding-left: 48px;">
+      <li><a href="">전체 일정 및 칸반</a></li>
+      <li><a href="">일정 변동사항</a></li>
+    </ul>
+  </div>
+
+  <div style="line-height: 2rem; margin-bottom: 1.5rem;">
+    <a href="" style="font-size: 1.17rem;">네번째, 회고</a>
+  </div>
+</div>
+
 <br/>
-<img alt="구글 로그인" src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" width="720" />
+<br/>
+
+# <span id="main-feature">첫번째, 주요 기능 소개</span>
+
+## <span id="main-feature-user">사용자 계정 추가 및 관리하기</span>
+
+<details style="margin-bottom: 2rem;">
+  <summary style="font-size: 1.17rem; font-weight: bold; margin-bottom: 0.5rem;">회원가입</summary>
+
+  <div style="padding-left: 48px;">
+    <table align="center">
+    <tr>
+      <th width="500">회원가입</th>
+    </tr>
+    <tr>
+      <td>
+        <img src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" alt="Alt text 1">
+      </td>
+    </tr>
+  </table>
+    <li>모든 입력필드에 대해 유효성 검사를 통과하는 경우 회원가입이 가능합니다.</li>
+    <li>회원가입이 완료되면 회원정보는 firebase Authentication에 저장됩니다.</li>
+  </div>
 
 </details>
 
-- 일반 로그인 시 입력된 이메일과 비밀번호를 firebase에서 확인해 로그인합니다.
-- 구글 로그인 시 로그인 되어있는 구글 계정으로 로그인합니다.
+<details style="margin-bottom: 2rem;">
+  <summary style="font-size: 1.17rem; font-weight: bold; margin-bottom: 0.5rem;">로그인 및 로그아웃</summary>
 
-### 1-3. 로그아웃
-
-<details>
-  <summary>🖥️ 미리보기</summary>
-
-  <br/>
-  <span style="color: gray">1-3-1. 로그아웃</span>
-  <br/>
-  <img alt="로그아웃" src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" width="720" />
-
+  <div style="padding-left: 48px;">
+    <img alt="일반 로그인" src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" width="600" />
+    <p style="color: gray;">일반 로그인</p>
+    <img alt="구글 로그인" src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" width="600" />
+    <p style="color: gray;">구글 로그인</p>
+    <img alt="로그아웃" src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" width="600" />
+    <p style="color: gray;">로그아웃</p>
+    <li>일반 로그인 시 입력된 이메일과 비밀번호를 firebase에서 확인해 로그인합니다.</li>
+    <li>구글 로그인 시 로그인 되어있는 구글 계정으로 로그인합니다.</li>
+    <li>저장된 로그인 유저 정보를 제거합니다.</li>
+  </div>
 </details>
-
-- 저장된 로그인 유저 정보를 제거합니다.
 
 <br/>
 
-## 2. 스케치 인터페이스
+## <span id="main-feature-drawing">그리기 도구 조작해서 그려보기</span>
 
-### 2-1. 그리기 도구
+### 그리기 도구
 
 <details>
   <summary>🖥️ 미리보기</summary>
@@ -403,7 +376,7 @@ SVG의 모든 속성들이 그리기 도구 로직에 필요하지 않기 때문
 
 <br/>
 
-- <a id="bezier-curve"></a>베지어 곡선
+- <span id="bezier-curve">베지어 곡선</span>
 
   ```javascript
   {
