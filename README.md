@@ -634,11 +634,9 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>3. 폴리라인의 데이터들을 나타내는 `currentPolyline` 배열에서 데이터를 삭제합니다.
 <br/>4. `draw()` 메소드를 호출해 `clearRect() 메소드로 캔버스를 정리합니다.
 
-<br/>
+<br/><br/>
 
-<details>
-
-<summary><h3>2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구</h3></summary>
+## <span style="font-size: 1.3rem;">2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구</span>
 
 <br/>
 
@@ -727,42 +725,40 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 11. `stroke()` 메소드로 실제 캔버스에 곡선을 그립니다.
 
-</details>
-
 <br/>
 <br/>
 
 ## <span id="develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</span>
 
-### 1. 그려진 도형의 모서리를 표시해주는 스냅포인트
+## <span style="font-size: 1.3rem;">1. 그려진 도형의 모서리를 표시해주는 스냅포인트</span>
 
-### 2. 그리기 도구를 이용해 스케치 중인 경우 예상 그리기 선 표시
+## <span style="font-size: 1.3rem;">2. 그려질 선을 미리볼 수 있는 예상 그리기 선 표시</span>
 
-### 3. 도형 내부를 클릭한 경우 색을 채우는 페인트
+## <span style="font-size: 1.3rem;">3. 도형 내부의 색을 채우는 페인트 도구</span>
 
 <br/>
 
 ## <span id="develop-log-render">완성된 스케치를 3D 모델로 렌더링하기</span>
 
-### 1. 직접 그린 스케치를 좌표값으로 저장
+## <span style="font-size: 1.3rem;">1. 저장된 좌표를 가져와서 3D로 모델링</span>
 
-### 2. 저장한 좌표값을 면으로 렌더링
+## <span style="font-size: 1.3rem;">2. 모델링한 도형을 화면에 렌더링</span>
 
 <br/>
 
 ## <span id="develop-log-render-user">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</span>
 
-### 1. ㅇㅇㅇ
+## <span style="font-size: 1.3rem;">1. 좌표평면을 확인하기 위한 그리드와 3D 방위</span>
 
-### 2. ㅇㅇㅇ
+## <span style="font-size: 1.3rem;">2. 작업 편의를 위한 카메라 세팅</span>
 
 <br/>
 
 ## <span id="develop-log-print">완성된 3D 모델을 내보내 3D 프린팅하기</span>
 
-### 1. ㅇㅇㅇ
+## <span style="font-size: 1.3rem;">1. 3D 렌더링 장면을 STL 포맷으로 내보내기</span>
 
-### 2. ㅇㅇㅇ
+## <span style="font-size: 1.3rem;">2. STL 파일을 GCODE 포맷으로 슬라이싱</span>
 
 <br/>
 <br/>
@@ -771,19 +767,118 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 ## <span id="schedule-kanban">전체 일정 및 칸반</span>
 
-프로젝트 기간: 2024.07.10 ~ 2024.07.31 (약 3주)
+> 프로젝트 기간: 2024.07.14 ~ 2024.07.31 (약 3주)
 
-<details>
-<summary>1주차: 기획 및 프로젝트 세팅</summary>
-</details>
+### 1주차: 기획 및 프로젝트 세팅
 
-<details>
-<summary>2주차: 정적 UI 구현 및 2D 관련 기능 개발</summary>
-</details>
+<table style="width: 1000px;">
+  <thead>
+    <tr>
+      <th style="text-align: center;" colspan="7" >1주차</th>
+    </tr>
+    <tr>
+      <th style="text-align: center;">07/14 (일)</th>
+      <th style="text-align: center;">07/15 (월)</th>
+      <th style="text-align: center;">07/16 (화)</th>
+      <th style="text-align: center;">07/17 (수)</th>
+      <th style="text-align: center;">07/18 (목)</th>
+      <th style="text-align: center;">07/19 (금)</th>
+      <th style="text-align: center;">07/20 (토)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-<details>
-<summary>3주차: 3D 관련 기능 개발</summary>
-</details>
+### 2주차: 정적 UI 구현 및 2D 관련 기능 개발
+
+<table style="width: 1000px;">
+  <thead>
+    <tr>
+      <th style="text-align: center;" colspan="7" >2주차</th>
+    </tr>
+    <tr>
+      <th style="text-align: center;">07/21 (일)</th>
+      <th style="text-align: center;">07/22 (월)</th>
+      <th style="text-align: center;">07/23 (화)</th>
+      <th style="text-align: center;">07/24 (수)</th>
+      <th style="text-align: center;">07/25 (목)</th>
+      <th style="text-align: center;">07/26 (금)</th>
+      <th style="text-align: center;">07/27 (토)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### 3주차: 3D 관련 기능 개발
+
+<table style="width: 1000px;">
+  <thead>
+    <tr>
+      <th style="text-align: center;" colspan="7" >3주차</th>
+    </tr>
+    <tr>
+      <th style="text-align: center;">07/28 (일)</th>
+      <th style="text-align: center;">07/29 (월)</th>
+      <th style="text-align: center;">07/30 (화)</th>
+      <th style="text-align: center;">07/31 (수)</th>
+      <th style="text-align: center;">08/01 (목)</th>
+      <th style="text-align: center;">08/02 (금)</th>
+      <th style="text-align: center;">08/03 (토)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <br/>
 <br/>
