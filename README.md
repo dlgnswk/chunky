@@ -638,9 +638,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <details>
 
-<summary>
-<span style="font-size: 1.3rem; font-weight: bold;">2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구</span>
-</summary>
+<summary><h3>2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구</h3></summary>
 
 <br/>
 
