@@ -22,9 +22,7 @@
 ![Vitest](https://img.shields.io/badge/Vitest-black?style=for-the-badge&logo=vitest&logoColor=%2344A833.svg?)
 ![cypress](https://img.shields.io/badge/Cypress-black?style=for-the-badge&logo=cypress&logoColor=white)
 
-<br/>
-
-<hr height="0.04em">
+#
 
 <br/>
 
@@ -42,6 +40,8 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 **_<a href="www.chunky.studio">"Chunky"</a>_** 는 사용자가 그린 스케치를 3D로 변환해주고,<br>3D 프린팅을 통해 스케치를 실제로 만들어 낼 수 있도록 도와줍니다.<br/>
 
 ### <span style="font-size: 1.5rem; font-style:italic; font-weight:bold;">간단한 스케치로 당신의 상상을 현실로 만들어보세요!</span>
+
+<br/>
 
   <div align="center">
     <img src="./src/assets/readme/images/chunky-preview.gif" width="800">
@@ -73,12 +73,12 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
       <li><a href="#develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</a></li>
       <li><a href="#develop-log-render">완성된 스케치를 3D 모델로 렌더링하기</a></li>
       <li><a href="#develop-log-render-user">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</a></li>
-      <li><a href="#develop-log-print">완성된 3D 모델을 내보내 3D 프린팅하기 </a></li>
+      <li><a href="#develop-log-print">완성된 3D 모델을 내보내 3D 프린팅하기</a></li>
     </ul>
   </div>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="" style="font-size: 1.17rem;">세번째, 전체 개발 일정</a>
+    <a href="#schedule" style="font-size: 1.17rem;">세번째, 전체 개발 일정</a>
     <ul style="padding-left: 48px;">
       <li><a href="#schedule-kanban">전체 일정 및 칸반</a></li>
       <li><a href="#schedule-change">일정 변동사항</a></li>
@@ -326,9 +326,9 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <br/><br/>
 
-# 🏋 Challenges
+# <span id="develop-log">두번째, 개발 과정 기록</span>
 
-## 1. 도형을 어떻게 그려서 저장해야 할까?
+## <span id="develop-log-draw">사용자 입력 값을 통한 선 그리기 및 저장 구현하기</span>
 
 사용자가 그린 선을 통해 3D 렌더링을 하려면 단순히 선 형태의 이미지가 아니라 선 자체가 값을 가져야 했습니다.
 특히 직선뿐만 아니라 곡선, 다각형 등 다양한 형태의 도형도 그릴 수 있어야 했기 때문에 몇가지 조건이 있었습니다.
@@ -339,21 +339,26 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 먼저, 가장 기본적인 요구사항 부터 해결해보려고 했습니다.
 
-### 1-1. 품질 저하가 일어나지 않는 그래픽 형식은 무엇이 있을까?
+<br/>
 
-**1. SVG:**
+### 1. 품질 저하가 일어나지 않는 그래픽 형식은 무엇이 있을까?
+
+**1) SVG:**
+<br/>
 
 - 벡터기반 그래픽 포맷으로 수학적으로 이미지를 정의합니다.
 - 확대, 축소 시 품질 저하가 없고 파일 크기가 작습니다.
 - XML 기반으로 편집이 가능하고, 웹표준을 따릅니다.
 
-**2. PNG:**
+**2) PNG:**
+<br/>
 
 - 래스터 그래픽 포맷입니다.
 - 투명도를 지원합니다.
 - 확대, 축소시 품질 저하가 발생할 수 있습니다.
 
-**3. EPS:**
+**3) EPS:**
+<br/>
 
 - 벡터, 래스터 이미지를 모두 포함하는 그래픽 포맷입니다.
 - 다양한 디자인 요소를 사용할 수 있습니다.
@@ -361,11 +366,12 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <br/>
 
-**조사 결과를 토대로 1. 웹표준을 지원하고 2. 품질 저하가 없으며 3. 수정이 가능한 SVG 그래픽 포맷을 적용하고자 했습니다.**
+> [!NOTE]
+> 조사 결과를 토대로 1. **웹표준을 지원**하고 2. **품질 저하**가 없으며 3. **수정이 가능**한 SVG 그래픽 포맷을 적용하고자 했습니다.
 
 <br/>
 
-### 1-2. 사용자가 그리는 다양한 도형들을 어떻게 효과적이고 일관된 방식으로 저장할 수 있을까?
+### 2. 사용자가 그리는 다양한 도형들을 어떻게 효과적이고 일관된 방식으로 저장할 수 있을까?
 
 처음에는 단순히 자유선형으로 그리는 방식을 생각했었지만 그렇게 되면 SVG 그래픽 포맷의 이점을 잃는다는 생각이 들었습니다.
 SVG는 다양한 속성을 지원하는데, 현재 필요한 기능에는 모든 속성이 필요하지는 않았습니다.
@@ -383,17 +389,18 @@ SVG는 다양한 속성을 지원하는데, 현재 필요한 기능에는 모든
 
 SVG의 모든 속성들이 그리기 도구 로직에 필요하지 않기 때문에 JavaScript 객체로 SVG와 유사한 구조를 만들기로 결정했습니다.
 
-이러한 방식을 채택한 이유는 다음과 같습니다.
-
-1. 필요한 속성만 정의하여 데이터를 가볍게 유지할 수 있었습니다.
-2. 3D 렌더링에 필요한 추가 속성들을 쉽게 추가할 수 있었습니다.
-3. JavaScript 객체로 작성되어 데이터 조작 및 관리가 더 용이했습니다.
-
-이러한 방식으로 사용자가 그린 스케치를 벡터 그래픽 포맷으로 저장하면서, 필요한 다른 속성들도 쉽게 추가할 수 있게 되었습니다.
+> [!NOTE]
+> 이러한 방식을 채택한 이유는 다음과 같습니다.
+>
+> 1. 필요한 속성만 정의하여 데이터를 가볍게 유지할 수 있었습니다.
+> 2. 3D 렌더링에 필요한 추가 속성들을 쉽게 추가할 수 있었습니다.
+> 3. JavaScript 객체로 작성되어 데이터 조작 및 관리가 더 용이했습니다.
+>
+> 이러한 방식으로 사용자가 그린 스케치를 벡터 그래픽 포맷으로 저장하면서, 필요한 다른 속성들도 쉽게 추가할 수 있게 되었습니다.
 
 <br/>
 
-### 1-3. 그린 도형을 좌표값으로 어떻게 저장해야 할까?
+### 3. 그린 도형을 좌표값으로 어떻게 저장해야 할까?
 
 사용자의 편의성을 위해 여러 종류의 그리기 도구를 추가해야했습니다.
 <br/>
@@ -401,7 +408,7 @@ SVG의 모든 속성들이 그리기 도구 로직에 필요하지 않기 때문
 
 먼저 필요한 속성들을 전부 정리해 공통 속성과, 개별속성으로 구분했습니다.
 
-> **공통 속성**
+**1) 공통 속성**
 
 ```javascript
 {
@@ -420,7 +427,7 @@ SVG의 모든 속성들이 그리기 도구 로직에 필요하지 않기 때문
 <br/>
 <br/>
 
-> **개별 속성**
+**2) 개별 속성**
 
 - 폴리라인
 
@@ -541,23 +548,27 @@ SVG의 모든 속성들이 그리기 도구 로직에 필요하지 않기 때문
 
   <br/>
 
-이런 방식으로 그려진 도형을 저장하는 구조를 일관성, 확장성을 고려해 정리했습니다.
-<br/>
-공통 속성을 통해 데이터 관리의 일관성을 확보하였고, 개별 속성을 통해 다양한 도형을 정확히 표현할 수 있도록 했습니다.
+> [!NOTE]
+> 이런 방식으로 그려진 도형을 저장하는 구조를 일관성, 확장성을 고려해 정리했습니다.
+>
+> 공통 속성을 통해 데이터 관리의 일관성을 확보하였고, 개별 속성을 통해 다양한 도형을 정확히 표현할 수 있도록 했습니다.
 
 <br/>
 <br/>
 
-## 2. 복잡한 도형은 어떻게 그릴 수 있을까?
+## <span id="develop-log-draw-complex">다중 선과 곡선을 사용한 복잡한 도형 그리기 및 저장 구현하기</span>
 
-x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외하고 폴리라인과 베지어 곡선은 로직을 작성하는데 많은 어려움이 있었습니다.
-<br/>
+x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외하고 폴리라인과 베지어 곡선은<br/>
+로직을 작성하는데 많은 어려움이 있었습니다.
+<br/><br/>
 먼저 폴리라인을 작성하는 로직을 살펴보겠습니다.
 
-### 2-1. 여러 직선을 이어 그리는 폴리라인 도구
+<br/>
+
+## <span style="font-size: 1.3rem;">1. 여러 직선을 이어 그리는 폴리라인 도구</span>
 
 <div align="center">
-  <img alt="폴리라인 그리기" src="https://github.com/user-attachments/assets/68a3b979-4311-42ef-847f-cb6e9441d9fb" width="300" />
+<img alt="폴리라인 그리기" src="https://github.com/user-attachments/assets/68a3b979-4311-42ef-847f-cb6e9441d9fb" width="300" />
 
 <span align="right" style="color: gray">폴리라인 그리기 도구</span>
 
@@ -569,73 +580,72 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>
 이를 위해 키보드 이벤트도 추가해 그리기 완료, 취소 기능을 구현하였습니다.
 
-이러한 목적으로 구현한 폴리라인 그리기 로직의 순서를 도식화하면 다음과 같습니다.
+이러한 목적으로 구현한 폴리라인 그리기 로직의 순서를 이벤트 기준으로 도식화하면 다음과 같습니다.
 
-1. **`mousedown` 이벤트**
+<br>
 
-    <img alt="폴리라인 mousedown 이벤트" src="https://github.com/user-attachments/assets/96ecf89b-5cb8-4d8c-a13c-51ba9e22a837" width="720" />
+### <span style="font-size: 1.2rem;">1-1. `mousedown` 이벤트</span>
 
-   **#01)**<br/>
+<img alt="폴리라인 mousedown 이벤트" src="https://github.com/user-attachments/assets/96ecf89b-5cb8-4d8c-a13c-51ba9e22a837" width="720" />
 
-   1. `getMousePosition` 메소드를 통해 클릭한 위치의 좌표를 계산합니다.
-   2. 그리는 상태를 판별하는 `isDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
-   3. 전역 상태의 변수인 `currentPolyline` 배열에 해당 좌표를 추가합니다.
+**#01)**
+<br/>1. `getMousePosition` 메소드를 통해 클릭한 위치의 좌표를 계산합니다.
+<br/>2. 그리는 상태를 판별하는 `isDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
+<br/>3. 전역 상태의 변수인 `currentPolyline` 배열에 해당 좌표를 추가합니다.
 
-   **#02)**<br/>
+**#02)**
+<br/>4. `isDrawing` 변수를 확인합니다. 6. `true`인 경우 즉, 이미 그리기 중인 경우 새로운 점을 `currentPolyline` 배열에 추가합니다.
 
-   4. `isDrawing` 변수를 확인합니다. 6. `true`인 경우 즉, 이미 그리기 중인 경우 새로운 점을 `currentPolyline` 배열에 추가합니다.
-
-   **#03)**<br/>
-
-   5. `keydown` 이벤트가 발생하기 전까지 상기 과정을 반복합니다.
-
-<br/>
-
-2. **`keydown` 이벤트 - `Space` 또는 `Enter`**
-
-    <img alt="폴리라인 keydown 이벤트(Space, Enter)" src="https://github.com/user-attachments/assets/4835d87f-0552-473a-b660-0b688c3cbb7d" width="720" />
-
-   **#01)**<br/>
-
-   1. 먼저 `currentPolyline` 변수를 확인해 추가된 점이 2개 이상인지 판별합니다.
-   2. 2개 이상인 경우 `draw` 메소드를 호출합니다. (1개 이하인 경우 아무 작업도 수행하지 않음)
-   3. `draw` 메소드는 canvas API의 기본 기능을 조합해 만든 메소드 입니다.
-   4. `clearRect()` 메소드로 캔버스를 정리합니다.
-   5. `moveTo()` 메소드로 `currentPolyline`의 첫번째 점(폴리라인의 시작점)으로 이동합니다.
-
-   **#02)**<br/>
-
-   6. `for()` 반복문을 통해 나머지 점들을 순회하며 `lineTo()` 메소드로 가상의 선을 그립니다.
-
-   **#03)**<br/>
-
-   7. `stroke()` 메소드로 가상의 선을 실제 선으로 변환해 캔버스에 그립니다.
+**#03)**
+<br/>5. `keydown` 이벤트가 발생하기 전까지 상기 과정을 반복합니다.
 
 <br/>
 
-3.  **`keydown` 이벤트 - `Escape`**
+### 1-2. <span style="font-size: 1.2rem;">`keydown` 이벤트 - `Space` 또는 `Enter`</span>
 
-    <img alt="폴리라인 keydown 이벤트(Escape)" src="https://github.com/user-attachments/assets/cc6d22b7-d184-468a-8c73-4f6b9e71cf4f" width="720" />
+<img alt="폴리라인 keydown 이벤트(Space, Enter)" src="https://github.com/user-attachments/assets/4835d87f-0552-473a-b660-0b688c3cbb7d" width="720" />
 
-    **#01)**<br/>
+**#01)**
+<br/>1. 먼저 `currentPolyline` 변수를 확인해 추가된 점이 2개 이상인지 판별합니다.
+<br/>2. 2개 이상인 경우 `draw` 메소드를 호출합니다. (1개 이하인 경우 아무 작업도 수행하지 않음)
+<br/>3. `draw` 메소드는 canvas API의 기본 기능을 조합해 만든 메소드 입니다.
+<br/>4. `clearRect()` 메소드로 캔버스를 정리합니다.
+<br/>5. `moveTo()` 메소드로 `currentPolyline`의 첫번째 점(폴리라인의 시작점)으로 이동합니다.
 
-    1. 먼저 `cancelDrawing()` 메소드를 호출합니다.
+**#02)**
+<br/>6. `for()` 반복문을 통해 나머지 점들을 순회하며 `lineTo()` 메소드로 가상의 선을 그립니다.
 
-    **#02)**<br/>
-
-    2. 그리기 상태를 나타내는 `isDrawing` 변수를 `false` 초기화합니다.
-
-    **#03)**<br/>
-
-    3. 폴리라인의 데이터들을 나타내는 `currentPolyline` 배열에서 데이터를 삭제합니다.
-    4. `draw()` 메소드를 호출해 `clearRect() 메소드로 캔버스를 정리합니다.
+**#03)**
+<br/>7. `stroke()` 메소드로 가상의 선을 실제 선으로 변환해 캔버스에 그립니다.
 
 <br/>
 
-### 2-2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구
+### <span style="font-size: 1.2rem;">1-3. `keydown` 이벤트 - `Escape`</span>
+
+<img alt="폴리라인 keydown 이벤트(Escape)" src="https://github.com/user-attachments/assets/cc6d22b7-d184-468a-8c73-4f6b9e71cf4f" width="720" />
+
+**#01)**
+<br/>1. 먼저 `cancelDrawing()` 메소드를 호출합니다.
+
+**#02)**
+<br/>2. 그리기 상태를 나타내는 `isDrawing` 변수를 `false` 초기화합니다.
+
+**#03)**
+<br/>3. 폴리라인의 데이터들을 나타내는 `currentPolyline` 배열에서 데이터를 삭제합니다.
+<br/>4. `draw()` 메소드를 호출해 `clearRect() 메소드로 캔버스를 정리합니다.
+
+<br/>
+
+<details>
+
+<summary>
+<span style="font-size: 1.3rem; font-weight: bold;">2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구</span>
+</summary>
+
+<br/>
 
 <div align="center">
-  <img alt="베지어 곡선 그리기" src="https://github.com/user-attachments/assets/8602f126-23c0-4666-97f2-0833dae4f000" width="300" />
+<img alt="베지어 곡선 그리기" src="https://github.com/user-attachments/assets/8602f126-23c0-4666-97f2-0833dae4f000" width="300" />
 
 <span align="right" style="color: gray">베지어 곡선 그리기 도구</span>
 
@@ -653,93 +663,115 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/>
 
-이러한 목적으로 구현한 베지어 곡선 그리기 로직의 순서를 도식화하면 다음과 같습니다.
-
-1. **`mousedown` 이벤트**
-
-    <img alt="베지어 곡선 mousedown 이벤트" src="https://github.com/user-attachments/assets/5b3a1bf6-85a9-4c82-9aca-8fe556b60153" width="720" />
-
-   **#01)**<br/>
-
-   1. `mousedown` 이벤트 발생 시 `handleMouseDown` 메소드를 호출합니다.
-   2. 그리는 상태를 판별하는 `isBezierDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
-   3. `bezierStart` 를 현재 마우스 위치 좌표로 설정합니다.
-
-   **#02)**<br/>
-
-   4. 두번째 클릭시 `bezierEnd` 를 현재 마우스 위치 좌표로 설정합니다.
-
-   **#03)**<br/>
-
-   5. `bezierControl` 을 현재 마우스 위치로 초기화합니다.
+이러한 목적으로 구현한 베지어 곡선 그리기 로직의 순서를 이벤트 기준으로 도식화하면 다음과 같습니다.
 
 <br/>
 
-2. **`mousemove` 이벤트**
+### <span style="font-size: 1.2rem;">2-1. `mousedown` 이벤트</span>
 
-    <img alt="베지어 곡선 mousemove 이벤트" src="https://github.com/user-attachments/assets/47a11c22-a8aa-411a-a2a9-fd9d1aa8355a" width="720" />
+  <img alt="베지어 곡선 mousedown 이벤트" src="https://github.com/user-attachments/assets/5b3a1bf6-85a9-4c82-9aca-8fe556b60153" width="720" />
 
-   **#01)**<br/>
+**#01)**<br/>
 
-   1. `isBezierDrawing` 변수가 `true`이고 `bezierStart`, `bezierEnd` 가 설정되었는지 확인합니다.
+1.  `mousedown` 이벤트 발생 시 `handleMouseDown` 메소드를 호출합니다.
+2.  그리는 상태를 판별하는 `isBezierDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
+3.  `bezierStart` 를 현재 마우스 위치 좌표로 설정합니다.
 
-   **#02)**<br/>
+**#02)**<br/>
 
-   2. 모든 조건이 참인 경우 `bezierControl` 을 변경된 마우스 위치로 업데이트 합니다.
+4.  두번째 클릭시 `bezierEnd` 를 현재 마우스 위치 좌표로 설정합니다.
 
-   **#03)**<br/>
+**#03)**<br/>
 
-   3. 마우스 위치를 계속 추적하며 `bezierControl` 을 계속 업데이트 합니다.
-
-<br/>
-
-3. **`mouseup` 이벤트**
-
-    <img alt="베지어 곡선 mouseup 이벤트" src="https://github.com/user-attachments/assets/5d111cb7-fa8d-4bb0-bb29-6fc12617531e" width="720" />
-
-   **#01)**<br/>
-
-   1. `bezierStart`, `bezierEnd`, `bezierControl` 이 전부 설정되었는지 확인합니다.
-   2. 경로를 담을 수 있는 `closedBezier` 객체를 생성합니다.
-   3. 이 객체의 형태가 <a href="#bezier-curve">베지어 곡선의 개별 속성</a>으로 정의됩니다.
-   4. 이 객체에 `bezierStart`, `bezierEnd`, `bezierControl`의 값을 업데이트 합니다.
-   5. `renderCanvas()` 메소드를 호출합니다.
-
-   **#02)**<br/>
-
-   6. `beginPath()` 메소드로 선그리기를 시작합니다.
-   7. 반복문을 통해 `curve` 배열을 순회합니다.
-   8. 첫번째 경로를 확인해 `moveTo` 메소드로 해당 점(시작점)으로 이동합니다.
-   9. `quadraticCurveTo()`메소드로 제어점, 끝점값을 통해 가상의 곡선을 그립니다.
-   10. `lineTo()` 메소드로 시작점과 끝점을 이어 닫는 가상의 직선을 그립니다.
-
-   **#03)**<br/>
-
-   11. `stroke()` 메소드로 실제 캔버스에 곡선을 그립니다.
-
-<br/>
-<br/>
-
-## 3. 사용자 경험을 위해 추가 할 수 있는 기능은 어떤게 있을까?
-
-### 3-1. 그려진 도형의 모서리를 표시해주는 스냅포인트
-
-### 3-2. 그리기 도구를 이용해 스케치 중인 경우 예상 그리기 선 표시
-
-### 3-3. 도형 내부를 클릭한 경우 색을 채우는 페인트
+5.  `bezierControl` 을 현재 마우스 위치로 초기화합니다.
 
 <br/>
 
-## 4. 스케치를 어떻게 3D 모델로 변환할 수 있을까?
+### 2-2. `mousemove` 이벤트
 
-### 4-1. 직접 그린 스케치를 좌표값으로 저장
+  <img alt="베지어 곡선 mousemove 이벤트" src="https://github.com/user-attachments/assets/47a11c22-a8aa-411a-a2a9-fd9d1aa8355a" width="720" />
 
-### 4-2. 저장한 좌표값을 면으로 렌더링
+**#01)**<br/>
+
+1.  `isBezierDrawing` 변수가 `true`이고 `bezierStart`, `bezierEnd` 가 설정되었는지 확인합니다.
+
+**#02)**<br/>
+
+2.  모든 조건이 참인 경우 `bezierControl` 을 변경된 마우스 위치로 업데이트 합니다.
+
+**#03)**<br/>
+
+3.  마우스 위치를 계속 추적하며 `bezierControl` 을 계속 업데이트 합니다.
+
+<br/>
+
+### 2-3. `mouseup` 이벤트
+
+  <img alt="베지어 곡선 mouseup 이벤트" src="https://github.com/user-attachments/assets/5d111cb7-fa8d-4bb0-bb29-6fc12617531e" width="720" />
+
+**#01)**<br/>
+
+1.  `bezierStart`, `bezierEnd`, `bezierControl` 이 전부 설정되었는지 확인합니다.
+2.  경로를 담을 수 있는 `closedBezier` 객체를 생성합니다.
+3.  이 객체의 형태가 <a href="#bezier-curve">베지어 곡선의 개별 속성</a>으로 정의됩니다.
+4.  이 객체에 `bezierStart`, `bezierEnd`, `bezierControl`의 값을 업데이트 합니다.
+5.  `renderCanvas()` 메소드를 호출합니다.
+
+**#02)**<br/>
+
+6.  `beginPath()` 메소드로 선그리기를 시작합니다.
+7.  반복문을 통해 `curve` 배열을 순회합니다.
+8.  첫번째 경로를 확인해 `moveTo` 메소드로 해당 점(시작점)으로 이동합니다.
+9.  `quadraticCurveTo()`메소드로 제어점, 끝점값을 통해 가상의 곡선을 그립니다.
+10. `lineTo()` 메소드로 시작점과 끝점을 이어 닫는 가상의 직선을 그립니다.
+
+**#03)**<br/>
+
+11. `stroke()` 메소드로 실제 캔버스에 곡선을 그립니다.
+
+</details>
 
 <br/>
 <br/>
 
-# 🗓 Schedule
+## <span id="develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</span>
+
+### 1. 그려진 도형의 모서리를 표시해주는 스냅포인트
+
+### 2. 그리기 도구를 이용해 스케치 중인 경우 예상 그리기 선 표시
+
+### 3. 도형 내부를 클릭한 경우 색을 채우는 페인트
+
+<br/>
+
+## <span id="develop-log-render">완성된 스케치를 3D 모델로 렌더링하기</span>
+
+### 1. 직접 그린 스케치를 좌표값으로 저장
+
+### 2. 저장한 좌표값을 면으로 렌더링
+
+<br/>
+
+## <span id="develop-log-render-user">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</span>
+
+### 1. ㅇㅇㅇ
+
+### 2. ㅇㅇㅇ
+
+<br/>
+
+## <span id="develop-log-print">완성된 3D 모델을 내보내 3D 프린팅하기</span>
+
+### 1. ㅇㅇㅇ
+
+### 2. ㅇㅇㅇ
+
+<br/>
+<br/>
+
+# <span id="schedule">세번째, 전체 개발 일정</span>
+
+## <span id="schedule-kanban">전체 일정 및 칸반</span>
 
 프로젝트 기간: 2024.07.10 ~ 2024.07.31 (약 3주)
 
@@ -757,3 +789,9 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/>
 <br/>
+
+## <span id="schedule-change">일정 변동사항</span>
+
+<br/><br/>
+
+# <span id="memoir">네번째, 회고</span>
