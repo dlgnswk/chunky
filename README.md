@@ -818,8 +818,6 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/renderingUser/grid-axis.png" width="720" >
 
-<br/>
-
 **#01)**
 <br/>1. 2D 캔버스의 레이아웃 크기를 가져옵니다.
 
@@ -878,18 +876,25 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
   <tbody>
     <tr>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        회원가입, 로그인
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        회원가입 완료
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        드로잉 페이지 UI
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        모달 UI
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        그리기 툴 - 사각형
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        그리기 툴 - 삼각형
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        그리기 툴 - 사각형
       </td>
     </tr>
   </tbody>
@@ -914,19 +919,27 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        그리기 툴 -  폴리라인
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        그리기 툴 -  베지어 곡선
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        그리기 툴 -  페인트
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        그리기 툴 -  지우개
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        3D 렌더링 구현
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        렌더링 높이 추가 구현
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        렌더링 카메라 세팅
       </td>
     </tr>
   </tbody>
@@ -952,10 +965,13 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
   <tbody>
     <tr>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        .stl 파일 저장
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        프리셋 작성
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        리팩토링
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
       </td>
