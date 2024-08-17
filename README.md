@@ -73,7 +73,6 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
       <li><a href="#develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</a></li>
       <li><a href="#develop-log-render">완성된 스케치를 3D 모델로 렌더링하기</a></li>
       <li><a href="#develop-log-render-user">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</a></li>
-      <li><a href="#develop-log-print">완성된 3D 모델을 내보내 3D 프린팅하기</a></li>
     </ul>
   </div>
 
@@ -99,10 +98,10 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 ### 1. 회원가입
 
-<table align="center">
+<table width=330px;>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/5fba5214-6315-4f27-b04e-fc5b481357ed" alt="Alt text 1">
+      <img src="./src/assets/readme/images/user/register.gif" alt="Alt text 1">
     </td>
   </tr>
 </table>
@@ -124,13 +123,13 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   <tbody>
     <tr>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="https://github.com/user-attachments/assets/624602e6-ce3e-423c-a094-48b72a4a0b05" alt="구글 로그인" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/user/login-google.gif" alt="구글 로그인" style="max-width: 100%; height: auto;">
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="https://github.com/user-attachments/assets/d286e114-b9ee-4244-8c61-2b977cbed5d1" alt="일반 로그인" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/user/login-common.gif" alt="일반 로그인" style="max-width: 100%; height: auto;">
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="https://github.com/user-attachments/assets/3b8249eb-b274-41a8-8a81-e4eb2cfedf0c" alt="로그아웃" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/user/logout.gif" alt="로그아웃" style="max-width: 100%; height: auto;">
       </td>
     </tr>
   </tbody>
@@ -146,7 +145,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 ### 1. 스케치 기능
 
-<table style="width: 1000px;">
+<table style="width: 660px;">
   <thead>
     <tr>
       <th style="text-align: center;">폴리라인 도구 (단축키 P)</th>
@@ -156,10 +155,10 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   <tbody>
     <tr>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="https://github.com/user-attachments/assets/88f2e053-ccaa-47ba-9ed9-492398c26142" alt="폴리라인 도구" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/draw/draw-polyline.gif" alt="폴리라인 도구" style="max-width: 100%; height: auto;">
       </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="https://github.com/user-attachments/assets/8f234ccf-8472-4a49-97ef-1595912c839d" alt="베지어 곡선 도구" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/draw/draw-bezier.gif" alt="베지어 곡선 도구" style="max-width: 100%; height: auto;">
       </td>
     </tr>
     <tr>
@@ -186,13 +185,13 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   <tbody>
     <tr>
       <td style="text-align: center;">
-        <img src="https://github.com/user-attachments/assets/1f0287a5-2150-4d56-9d83-70d30b0ec6af" alt="사각형 도구" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/draw/draw-rectangle.gif" alt="사각형 도구" style="max-width: 100%; height: auto;">
       </td>
       <td style="text-align: center;">
-        <img src="https://github.com/user-attachments/assets/ca6cc198-d8fd-485b-a409-dfadc451cc09" alt="삼각형 도구" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/draw/draw-triangle.gif" alt="삼각형 도구" style="max-width: 100%; height: auto;">
       </td>
       <td style="text-align: center;">
-        <img src="https://github.com/user-attachments/assets/122a4dd4-9bba-410f-85ce-12bfe9dd9d6b" alt="원형 도구" style="max-width: 100%; height: auto;">
+        <img src="./src/assets/readme/images/draw/draw-circle.gif" alt="원형 도구" style="max-width: 100%; height: auto;">
       </td>
     </tr>
     <tr>
@@ -219,13 +218,13 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   </tr>
   <tr>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/ed15ef16-7bdf-4b56-b536-c4b7d6a72a3f" alt="페인트 도구" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/draw/draw-paint.gif" alt="페인트 도구" style="max-width: 100%; height: auto;">
     </td>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/f6a9a66f-1720-4e55-b9c2-8b749b78d001" alt="지우개 도구" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/draw/draw-eraser.gif" alt="지우개 도구" style="max-width: 100%; height: auto;">
     </td>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/8b2cda24-de0b-4a27-9d89-814d19694383" alt="이미지 가져오기 도구" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/draw/draw-image.gif" alt="이미지 가져오기 도구" style="max-width: 100%; height: auto;">
     </td>
   </tr>
   <tr>
@@ -253,13 +252,13 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   </tr>
   <tr>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/52645456-12d6-4097-af3f-98181bb6ef83" alt="레이어 생성, 복사, 삭제" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/layer/layer-cud.gif" alt="레이어 생성, 복사, 삭제" style="max-width: 100%; height: auto;">
     </td>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/21079803-5d3b-46a0-bb7f-132e74d13e1e" alt="레이어 온오프" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/layer/layer-onoff.gif" alt="레이어 온오프" style="max-width: 100%; height: auto;">
     </td>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/93406bce-8621-4846-bb41-7a85a44a533d" alt="레이어 색상 지정" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/layer/layer-color.gif" alt="레이어 색상 지정" style="max-width: 100%; height: auto;">
     </td>
   </tr>
   <tr>
@@ -281,13 +280,13 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 ### 1. 렌더링 관련 설정
 
-<table align="center">
+<table width="330px">
   <tr>
     <th style="text-align: center;">렌더링 두께 및 높이 설정</th>
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/cf6ef116-1784-4402-bc13-f369cbc36b79" alt="레이어 색상 지정">
+      <img src="./src/assets/readme/images/render/render-setting.gif" alt="레이어 색상 지정">
     </td>
   </tr>
   <tr>
@@ -301,17 +300,17 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 ### 2. 카메라 관련 설정
 
-<table style="width: 1000px;">
+<table style="width: 660px;">
   <tr>
     <th style="text-align: center;">렌더링 시점 변경</th>
     <th style="text-align: center;">렌더링 카메라 변경</th>
   </tr>
   <tr>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/9a29fd18-1304-4c52-bf4e-7aff02c4e27f" alt="렌더링 시점 변경" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/render/render-view.gif" alt="렌더링 시점 변경" style="max-width: 100%; height: auto;">
     </td>
     <td style="text-align: center;">
-      <img src="https://github.com/user-attachments/assets/7b091fce-6387-4433-8795-8c17e8afffb3" alt="렌더링 카메라 변경" style="max-width: 100%; height: auto;">
+      <img src="./src/assets/readme/images/render/render-camera.gif" alt="렌더링 카메라 변경" style="max-width: 100%; height: auto;">
     </td>
   </tr>
   <tr>
@@ -565,10 +564,10 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/>
 
-## <span style="font-size: 1.3rem;">1. 여러 직선을 이어 그리는 폴리라인 도구</span>
+### 1. 여러 직선을 이어 그리는 폴리라인 도구
 
 <div align="center">
-<img alt="폴리라인 그리기" src="https://github.com/user-attachments/assets/68a3b979-4311-42ef-847f-cb6e9441d9fb" width="300" />
+<img alt="폴리라인 그리기" src="./src/assets/readme/images/polyline/polyline-01.gif" width="300" />
 
 <span align="right" style="color: gray">폴리라인 그리기 도구</span>
 
@@ -584,9 +583,9 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br>
 
-### <span style="font-size: 1.2rem;">1-1. `mousedown` 이벤트</span>
+#### 1-1. `mousedown` 이벤트
 
-<img alt="폴리라인 mousedown 이벤트" src="https://github.com/user-attachments/assets/96ecf89b-5cb8-4d8c-a13c-51ba9e22a837" width="720" />
+<img alt="폴리라인 mousedown 이벤트" src="./src/assets/readme/images/polyline/polyline-02.png" width="720" />
 
 **#01)**
 <br/>1. `getMousePosition` 메소드를 통해 클릭한 위치의 좌표를 계산합니다.
@@ -601,9 +600,9 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/>
 
-### 1-2. <span style="font-size: 1.2rem;">`keydown` 이벤트 - `Space` 또는 `Enter`</span>
+#### 1-2. `keydown` 이벤트 - `Space` 또는 `Enter`
 
-<img alt="폴리라인 keydown 이벤트(Space, Enter)" src="https://github.com/user-attachments/assets/4835d87f-0552-473a-b660-0b688c3cbb7d" width="720" />
+<img alt="폴리라인 keydown 이벤트(Space, Enter)" src="./src/assets/readme/images/polyline/polyline-03.png" width="720" />
 
 **#01)**
 <br/>1. 먼저 `currentPolyline` 변수를 확인해 추가된 점이 2개 이상인지 판별합니다.
@@ -620,9 +619,9 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/>
 
-### <span style="font-size: 1.2rem;">1-3. `keydown` 이벤트 - `Escape`</span>
+#### 1-3. `keydown` 이벤트 - `Escape`
 
-<img alt="폴리라인 keydown 이벤트(Escape)" src="https://github.com/user-attachments/assets/cc6d22b7-d184-468a-8c73-4f6b9e71cf4f" width="720" />
+<img alt="폴리라인 keydown 이벤트(Escape)" src="./src/assets/readme/images/polyline/polyline-04.png" width="720" />
 
 **#01)**
 <br/>1. 먼저 `cancelDrawing()` 메소드를 호출합니다.
@@ -636,12 +635,12 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/><br/>
 
-## <span style="font-size: 1.3rem;">2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구</span>
+### 2. 세개의 조절점을 통해 그린 3점 베지어 곡선 도구
 
 <br/>
 
 <div align="center">
-<img alt="베지어 곡선 그리기" src="https://github.com/user-attachments/assets/8602f126-23c0-4666-97f2-0833dae4f000" width="300" />
+<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/bezier/bezier-01.gif" width="300" />
 
 <span align="right" style="color: gray">베지어 곡선 그리기 도구</span>
 
@@ -663,102 +662,192 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/>
 
-### <span style="font-size: 1.2rem;">2-1. `mousedown` 이벤트</span>
+#### 2-1. `mousedown` 이벤트
 
-  <img alt="베지어 곡선 mousedown 이벤트" src="https://github.com/user-attachments/assets/5b3a1bf6-85a9-4c82-9aca-8fe556b60153" width="720" />
+  <img alt="베지어 곡선 mousedown 이벤트" src="./src/assets/readme/images/bezier/bezier-02.png" width="720" />
 
-**#01)**<br/>
+**#01)**
+<br/>1. `mousedown` 이벤트 발생 시 `handleMouseDown` 메소드를 호출합니다.
+<br/>2. 그리는 상태를 판별하는 `isBezierDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
+<br/>3. `bezierStart` 를 현재 마우스 위치 좌표로 설정합니다.
 
-1.  `mousedown` 이벤트 발생 시 `handleMouseDown` 메소드를 호출합니다.
-2.  그리는 상태를 판별하는 `isBezierDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
-3.  `bezierStart` 를 현재 마우스 위치 좌표로 설정합니다.
+**#02)**
+<br/>4. 두번째 클릭시 `bezierEnd` 를 현재 마우스 위치 좌표로 설정합니다.
 
-**#02)**<br/>
-
-4.  두번째 클릭시 `bezierEnd` 를 현재 마우스 위치 좌표로 설정합니다.
-
-**#03)**<br/>
-
-5.  `bezierControl` 을 현재 마우스 위치로 초기화합니다.
+**#03)**
+<br/>5. `bezierControl` 을 현재 마우스 위치로 초기화합니다.
 
 <br/>
 
-### 2-2. `mousemove` 이벤트
+#### 2-2. `mousemove` 이벤트
 
-  <img alt="베지어 곡선 mousemove 이벤트" src="https://github.com/user-attachments/assets/47a11c22-a8aa-411a-a2a9-fd9d1aa8355a" width="720" />
+  <img alt="베지어 곡선 mousemove 이벤트" src="./src/assets/readme/images/bezier/bezier-03.png" width="720" />
 
-**#01)**<br/>
+**#01)**
+<br/>1. `isBezierDrawing` 변수가 `true`이고 `bezierStart`, `bezierEnd` 가 설정되었는지 확인합니다.
 
-1.  `isBezierDrawing` 변수가 `true`이고 `bezierStart`, `bezierEnd` 가 설정되었는지 확인합니다.
+**#02)**
+<br/>2. 모든 조건이 참인 경우 `bezierControl` 을 변경된 마우스 위치로 업데이트 합니다.
 
-**#02)**<br/>
-
-2.  모든 조건이 참인 경우 `bezierControl` 을 변경된 마우스 위치로 업데이트 합니다.
-
-**#03)**<br/>
-
-3.  마우스 위치를 계속 추적하며 `bezierControl` 을 계속 업데이트 합니다.
+**#03)**
+<br/>3. 마우스 위치를 계속 추적하며 `bezierControl` 을 계속 업데이트 합니다.
 
 <br/>
 
-### 2-3. `mouseup` 이벤트
+#### 2-3. `mouseup` 이벤트
 
-  <img alt="베지어 곡선 mouseup 이벤트" src="https://github.com/user-attachments/assets/5d111cb7-fa8d-4bb0-bb29-6fc12617531e" width="720" />
+  <img alt="베지어 곡선 mouseup 이벤트" src="./src/assets/readme/images/bezier/bezier-04.png" width="720" />
 
-**#01)**<br/>
+**#01)**
+<br/>1. `bezierStart`, `bezierEnd`, `bezierControl` 이 전부 설정되었는지 확인합니다.
+<br/>2. 경로를 담을 수 있는 `closedBezier` 객체를 생성합니다.
+<br/>3. 이 객체의 형태가 <a href="#bezier-curve">베지어 곡선의 개별 속성</a>으로 정의됩니다.
+<br/>4. 이 객체에 `bezierStart`, `bezierEnd`, `bezierControl`의 값을 업데이트 합니다.
+<br/>5. `renderCanvas()` 메소드를 호출합니다.
 
-1.  `bezierStart`, `bezierEnd`, `bezierControl` 이 전부 설정되었는지 확인합니다.
-2.  경로를 담을 수 있는 `closedBezier` 객체를 생성합니다.
-3.  이 객체의 형태가 <a href="#bezier-curve">베지어 곡선의 개별 속성</a>으로 정의됩니다.
-4.  이 객체에 `bezierStart`, `bezierEnd`, `bezierControl`의 값을 업데이트 합니다.
-5.  `renderCanvas()` 메소드를 호출합니다.
+**#02)**
+<br/>6. `beginPath()` 메소드로 선그리기를 시작합니다.
+<br/>7. 반복문을 통해 `curve` 배열을 순회합니다.
+<br/>8. 첫번째 경로를 확인해 `moveTo` 메소드로 해당 점(시작점)으로 이동합니다.
+<br/>9. `quadraticCurveTo()`메소드로 제어점, 끝점값을 통해 가상의 곡선을 그립니다.
+<br/>10. `lineTo()` 메소드로 시작점과 끝점을 이어 닫는 가상의 직선을 그립니다.
 
-**#02)**<br/>
-
-6.  `beginPath()` 메소드로 선그리기를 시작합니다.
-7.  반복문을 통해 `curve` 배열을 순회합니다.
-8.  첫번째 경로를 확인해 `moveTo` 메소드로 해당 점(시작점)으로 이동합니다.
-9.  `quadraticCurveTo()`메소드로 제어점, 끝점값을 통해 가상의 곡선을 그립니다.
-10. `lineTo()` 메소드로 시작점과 끝점을 이어 닫는 가상의 직선을 그립니다.
-
-**#03)**<br/>
-
-11. `stroke()` 메소드로 실제 캔버스에 곡선을 그립니다.
+**#03)**
+<br/>11. `stroke()` 메소드로 실제 캔버스에 곡선을 그립니다.
 
 <br/>
 <br/>
 
 ## <span id="develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</span>
 
-## <span style="font-size: 1.3rem;">1. 그려진 도형의 모서리를 표시해주는 스냅포인트</span>
+### 1. 그려진 도형의 모서리를 표시해주는 스냅포인트
 
-## <span style="font-size: 1.3rem;">2. 그려질 선을 미리볼 수 있는 예상 그리기 선 표시</span>
+스냅 포인트는 도형의 특정 모서리를 정확히 접근가능하게 도와주는 도구입니다.
+<br/>
+사용자가 기존 도형에 이어서 새로운 도형을 그릴 경우 정확한 점을 추적할 수 있게 도와줍니다.
+<br/><br/>
+마우스 이벤트를 통해 구현한 스냅 포인트 로직의 순서를 이벤트 기준으로 도식화하면 다음과 같습니다.
 
-## <span style="font-size: 1.3rem;">3. 도형 내부의 색을 채우는 페인트 도구</span>
+<img alt="스냅포인트 로직" src="./src/assets/readme/images/drawUser/snap-point.png" width="720" />
+
+<br/>
+
+**#01)**
+<br/>1. `mousemove` 이벤트를 통해 마우스가 움직일때마다 그려진 도형의 점들을 확인합니다.
+
+**#02)**
+<br/>2. 해당 점과 마우스의 좌표를 계산해 거리가 설정된 `SNAP_THRESHOLD`의 값보다 작은지 확인합니다.
+
+**#03)**
+<br/>3. `SNAP_THRESHOLD`의 값보다 작은 경우 스냅포인트를 표시합니다.
+
+<br/>
+
+### 2. 그려질 선을 미리볼 수 있는 예상 그리기 선 표시
+
+예상 그리기 선 표시를 통해 사용자는 그려질 선을 확인하며 작업할 수 있습니다.
+<br/>
+이를 위해 마우스 이벤트를 통해 구현한 예상 그리기 선 표시 로직을 이벤트 기준으로 도식화하면 다음과 같습니다.
+
+<img alt="예상 그리기 선 로직" src="./src/assets/readme/images/drawUser/predict-line.png" width="720" />
+
+<br/>
+
+**#01)**
+<br/>1. 어떤 도구를 통해 그리고 있는지 확인합니다.
+
+**#02)**
+<br/>2. `mousemove` 이벤트를 통해 마우스의 위치를 계속 확인합니다.
+
+**#03)**
+<br/>3. `context` 를 통해 선을 그리고 스타일을 부여합니다.
+
+<br/>
+
+### 3. 도형 내부의 색을 채우는 페인트 도구
+
+레이어가 중첩되어있는 경우 페인트 도구를 통해 쉽게 식별할 수 있습니다.<br/>
+마우스 이벤트를 통해 구현한 페인트 도구를 이벤트 기준으로 도식화 하면 다음과 같습니다.
+
+<img alt="예상 그리기 선 로직" src="./src/assets/readme/images/drawUser/paint-bucket.png" width="720" />
+
+<br/>
+
+**#01)**
+<br/>1. `mousedown` 이벤트가 발생한 시점의 마우스 좌표를 확인합니다.
+
+**#02)**
+<br/>2. 선택된 레이어에 존재하는 모든 도형을 순회해 좌표들을 확인합니다.
+<br/>3. 마우스 좌표와 도형의 좌표를 통해 내부를 클릭했는지 판단합니다.
+
+**#03)**
+<br/>4. 내부가 클릭되었다면 `context`를 통해 `fill` 속성을 업데이트 합니다.
 
 <br/>
 
 ## <span id="develop-log-render">완성된 스케치를 3D 모델로 렌더링하기</span>
 
-## <span style="font-size: 1.3rem;">1. 저장된 좌표를 가져와서 3D로 모델링</span>
+### 저장된 2D 스케치의 좌표를 가져와 3D 모델링 및 렌더링
 
-## <span style="font-size: 1.3rem;">2. 모델링한 도형을 화면에 렌더링</span>
+스케치를 하고 있는 2D 캔버스의 좌표를 가져와 3D 캔버스의 좌표에 렌더링합니다.<br/>
+이 과정을 도식화 하면 다음과 같습니다.
+
+<img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/rendering/xyz-rendering.png" width="720" >
+
+<br/>
+
+**#01)**
+<br/>1. 그려진 2D 스케치의 좌표값을 확인합니다.
+
+**#02)**
+<br/>2. 2D 좌표값을 3D 캔버스의 중심을 기준으로 변경합니다.
+<br/>3. `Three.js`의 `Shape()` 메소드를 통해 도형을 생성합니다.
+
+**#03)**
+<br/>4. 가져온 높이값으로 `Three.js`의 `(ExtrudeGeometry())` 메소드를 통해 모델링과 렌더링을 진행합니다.
 
 <br/>
 
 ## <span id="develop-log-render-user">더 나은 사용자 경험을 위한 3D 렌더링 화면 구성하기</span>
 
-## <span style="font-size: 1.3rem;">1. 좌표평면을 확인하기 위한 그리드와 3D 방위</span>
+### 1. 3D 공간을 확인하기 위한 그리드와 3D 축
 
-## <span style="font-size: 1.3rem;">2. 작업 편의를 위한 카메라 세팅</span>
+사용자가 작업을 하다보면 지금 보는 화면이 어떤 방향인지 인식하기 어려울 때가 있습니다.<br/>
+이러한 기능을 제공해 공간감각을 제공하고, 거리와 크기 그리고 방향을 인식하기 쉽게 만듭니다.<br/><br/>
+이 기능을 구현하기 위해 작성한 순서는 다음과 같습니다.
+
+<img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/renderingUser/grid-axis.png" width="720" >
 
 <br/>
 
-## <span id="develop-log-print">완성된 3D 모델을 내보내 3D 프린팅하기</span>
+**#01)**
+<br/>1. 2D 캔버스의 레이아웃 크기를 가져옵니다.
 
-## <span style="font-size: 1.3rem;">1. 3D 렌더링 장면을 STL 포맷으로 내보내기</span>
+**#02)**
+<br/>2. 크기를 20개로 분할하여 그리드를 렌더링합니다.
 
-## <span style="font-size: 1.3rem;">2. STL 파일을 GCODE 포맷으로 슬라이싱</span>
+**#03)**
+<br/>3. 렌더링한 그리드 위에 세개의 축을 추가해 가시성을 확보할 수 있게 하였습니
+
+<br/>
+
+### 2. 작업 편의를 위한 카메라 세팅
+
+사용자가 작업할 때 미리 설정된 다양한 뷰를 통해 디테일한 부분이나 전체적인 형태를 확인 할 수 있습니다.<br/>
+설정된 뷰는 다음과 같이 구분됩니다.
+
+<img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/renderingUser/camera-view.png" width="720" >
+
+<br/>
+
+**#01)**
+<br/>1. 원근뷰로 기본 카메라 설정입니다. 3D를 가장 자연스럽게 보여주며 전체 형태를 관찰하기 용이합니다.
+
+**#02)**
+<br/>2. 평면뷰로 정면, 후면, 좌측, 우측뷰가 있습니다. 2D 평면처럼 보이게 설정해 디테일한 부분을 확인할 수 있습니다.
+
+**#03)**
+<br/>3. 배치뷰로 전체 모델의 배치를 확인할 수 있습니다.
 
 <br/>
 <br/>
@@ -771,7 +860,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 ### 1주차: 기획 및 프로젝트 세팅
 
-<table style="width: 1000px;">
+<table style="width: 100%;">
   <thead>
     <tr>
       <th style="text-align: center;" colspan="7" >1주차</th>
@@ -808,7 +897,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 ### 2주차: 정적 UI 구현 및 2D 관련 기능 개발
 
-<table style="width: 1000px;">
+<table style="width: 100%;">
   <thead>
     <tr>
       <th style="text-align: center;" colspan="7" >2주차</th>
@@ -845,7 +934,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 ### 3주차: 3D 관련 기능 개발
 
-<table style="width: 1000px;">
+<table style="width: 100%;">
   <thead>
     <tr>
       <th style="text-align: center;" colspan="7" >3주차</th>
