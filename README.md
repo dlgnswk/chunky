@@ -919,7 +919,6 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
   </thead>
   <tbody>
     <tr>
-      </td>
       <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
         그리기 툴 -  폴리라인
       </td>
