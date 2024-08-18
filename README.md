@@ -78,10 +78,6 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
     <a href="#schedule" style="font-size: 1.17rem;">세번째, 전체 개발 일정</a>
-    <ul style="padding-left: 48px;">
-      <li><a href="#schedule-kanban">전체 일정 및 칸반</a></li>
-      <li><a href="#schedule-change">일정 변동사항</a></li>
-    </ul>
   </div>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
@@ -956,16 +952,13 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <table style="width: 100%; table-layout: fixed;">
   <thead>
     <tr>
-      <th style="text-align: center;" colspan="7" >3주차</th>
+      <th style="text-align: center;" colspan="4" >3주차</th>
     </tr>
     <tr>
       <th style="text-align: center; width: 14.28%;">07/28 (일)</th>
       <th style="text-align: center; width: 14.28%;">07/29 (월)</th>
       <th style="text-align: center; width: 14.28%;">07/30 (화)</th>
       <th style="text-align: center; width: 14.28%;">07/31 (수)</th>
-      <th style="text-align: center; width: 14.28%;">08/01 (목)</th>
-      <th style="text-align: center; width: 14.28%;">08/02 (금)</th>
-      <th style="text-align: center; width: 14.28%;">08/03 (토)</th>
     </tr>
   </thead>
   <tbody>
@@ -980,21 +973,11 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
         리팩토링 및 추가 보완
       </td>
       <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
-      </td>
-      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
-      </td>
-      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
-      </td>
-      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        유저 플로우 테스트 및 최종 수정
       </td>
     </tr>
   </tbody>
 </table>
-
-<br/>
-<br/>
-
-## <span id="schedule-change">일정 변동사항</span>
 
 <br/><br/>
 
