@@ -858,7 +858,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 ### 1주차: UI 디자인 및 기본 구조 설정
 
-<table style="width: 100%;">
+<table style="width: 100%; table-layout: fixed;">
   <thead>
     <tr>
       <th style="text-align: center;" colspan="7" >1주차</th>
@@ -904,7 +904,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 ### 2주차: 그리기 기능 구현 및 UI 추가 보완
 
-<table style="width: 100%;">
+<table style="width: 100%; table-layout: fixed;">
   <thead>
     <tr>
       <th style="text-align: center;" colspan="7" >2주차</th>
@@ -953,7 +953,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 ### 3주차: 3D 기능 구현 및 리팩토링 등 마무리 작업
 
-<table style="width: 100%;">
+<table style="width: 100%; table-layout: fixed;">
   <thead>
     <tr>
       <th style="text-align: center;" colspan="7" >3주차</th>
