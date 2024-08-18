@@ -2,7 +2,7 @@
   <img alt="Chunky Logo" src="./src/assets/readme/images/chunkyLogo.png" width="800" />
 
   <p align="center">
-    <a href="https://chunky.studio">Chunky.studio</a>
+    <a href="https://chunky.site">Chunky Website</a>
     <span> | </span>
     <a href="https://github.com/dlgnswk/chunky">Git Repository</a>
   </p>
