@@ -856,7 +856,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 > 프로젝트 기간: 2024.07.14 ~ 2024.07.31 (약 3주)
 
-### 1주차: 기획 및 프로젝트 세팅
+### 1주차: UI 디자인 및 기본 구조 설정
 
 <table style="width: 100%;">
   <thead>
@@ -864,43 +864,45 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
       <th style="text-align: center;" colspan="7" >1주차</th>
     </tr>
     <tr>
-      <th style="text-align: center;">07/14 (일)</th>
-      <th style="text-align: center;">07/15 (월)</th>
-      <th style="text-align: center;">07/16 (화)</th>
-      <th style="text-align: center;">07/17 (수)</th>
-      <th style="text-align: center;">07/18 (목)</th>
-      <th style="text-align: center;">07/19 (금)</th>
-      <th style="text-align: center;">07/20 (토)</th>
+      <th style="text-align: center; width: 14.28%;">07/14 (일)</th>
+      <th style="text-align: center; width: 14.28%;">07/15 (월)</th>
+      <th style="text-align: center; width: 14.28%;">07/16 (화)</th>
+      <th style="text-align: center; width: 14.28%;">07/17 (수)</th>
+      <th style="text-align: center; width: 14.28%;">07/18 (목)</th>
+      <th style="text-align: center; width: 14.28%;">07/19 (금)</th>
+      <th style="text-align: center; width: 14.28%;">07/20 (토)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
         회원가입, 로그인
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
         회원가입 완료
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
         드로잉 페이지 UI
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
         모달 UI
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        그리기 툴 - 사각형
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        그리기 도구<br/>- 사각형
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        그리기 툴 - 삼각형
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        그리기 도구<br/>- 삼각형
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        그리기 툴 - 사각형
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        그리기 도구<br/>- 사각형
       </td>
     </tr>
   </tbody>
 </table>
 
-### 2주차: 정적 UI 구현 및 2D 관련 기능 개발
+<br/><br/>
+
+### 2주차: 그리기 기능 구현 및 UI 추가 보완
 
 <table style="width: 100%;">
   <thead>
@@ -908,43 +910,48 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
       <th style="text-align: center;" colspan="7" >2주차</th>
     </tr>
     <tr>
-      <th style="text-align: center;">07/21 (일)</th>
-      <th style="text-align: center;">07/22 (월)</th>
-      <th style="text-align: center;">07/23 (화)</th>
-      <th style="text-align: center;">07/24 (수)</th>
-      <th style="text-align: center;">07/25 (목)</th>
-      <th style="text-align: center;">07/26 (금)</th>
-      <th style="text-align: center;">07/27 (토)</th>
+      <th style="text-align: center; width: 14.28%;">07/21 (일)</th>
+      <th style="text-align: center; width: 14.28%;">07/22 (월)</th>
+      <th style="text-align: center; width: 14.28%;">07/23 (화)</th>
+      <th style="text-align: center; width: 14.28%;">07/24 (수)</th>
+      <th style="text-align: center; width: 14.28%;">07/25 (목)</th>
+      <th style="text-align: center; width: 14.28%;">07/26 (금)</th>
+      <th style="text-align: center; width: 14.28%;">07/27 (토)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        그리기 툴 -  폴리라인
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        그리기 도구<br/>-  폴리라인
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        그리기 툴 -  베지어 곡선
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        그리기 도구<br/>-  베지어 곡선
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        그리기 툴 -  페인트
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        그리기 도구<br/>-  페인트
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        그리기 툴 -  지우개
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        그리기 도구<br/>-  지우개
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        3D 렌더링 구현
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        3D 구현<br/>
+        - 모델링 작업
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        렌더링 높이 추가 구현
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        3D 구현<br/>
+        - 렌더링 작업
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        렌더링 카메라 세팅
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        3D 구현<br/>
+        - 카메라 세팅
       </td>
     </tr>
   </tbody>
 </table>
 
-### 3주차: 3D 관련 기능 개발
+<br/><br/>
+
+### 3주차: 3D 기능 구현 및 리팩토링 등 마무리 작업
 
 <table style="width: 100%;">
   <thead>
@@ -952,33 +959,33 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
       <th style="text-align: center;" colspan="7" >3주차</th>
     </tr>
     <tr>
-      <th style="text-align: center;">07/28 (일)</th>
-      <th style="text-align: center;">07/29 (월)</th>
-      <th style="text-align: center;">07/30 (화)</th>
-      <th style="text-align: center;">07/31 (수)</th>
-      <th style="text-align: center;">08/01 (목)</th>
-      <th style="text-align: center;">08/02 (금)</th>
-      <th style="text-align: center;">08/03 (토)</th>
+      <th style="text-align: center; width: 14.28%;">07/28 (일)</th>
+      <th style="text-align: center; width: 14.28%;">07/29 (월)</th>
+      <th style="text-align: center; width: 14.28%;">07/30 (화)</th>
+      <th style="text-align: center; width: 14.28%;">07/31 (수)</th>
+      <th style="text-align: center; width: 14.28%;">08/01 (목)</th>
+      <th style="text-align: center; width: 14.28%;">08/02 (금)</th>
+      <th style="text-align: center; width: 14.28%;">08/03 (토)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        .stl 파일 저장
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        파일저장 및 포맷변환
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        프리셋 작성
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        프리셋 작성 및 출력 테스트
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        리팩토링
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
+        리팩토링 및 추가 보완
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
       </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+      <td style="text-align: left; border: 1px solid #ddd; padding: 8px;">
       </td>
     </tr>
   </tbody>
