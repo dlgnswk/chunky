@@ -107,7 +107,7 @@ function Canvas3D() {
       />
       {layerList.length === 0 ? (
         <div className="default-logo">
-          <IoCubeOutline />
+          <IoCubeOutline aria-label="cube-outline-icon" />
         </div>
       ) : (
         <Canvas
