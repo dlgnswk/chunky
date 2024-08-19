@@ -33,7 +33,9 @@ function Welcome() {
           alt="welcome chunky"
         />
       </div>
-      <p className="welcome-message">{userName} 님, 환영해요!</p>
+      <p data-testid="welcome-message" className="welcome-message">
+        {userName} 님, 환영해요!
+      </p>
       <div className="intro-message">
         <div className="intro-logo horizon-text">
           <Logo />
