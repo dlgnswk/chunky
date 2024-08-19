@@ -152,7 +152,11 @@ function LayerCard({
       }}
     >
       <div className="layer-info">
-        <button className="layer-visible" onClick={handleVisibleClick}>
+        <button
+          data-testid="layer-visible-button"
+          className="layer-visible"
+          onClick={handleVisibleClick}
+        >
           {visible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
         </button>
         <div className="layer-wrapper">
