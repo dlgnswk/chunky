@@ -80,6 +80,8 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
     <a href="#schedule" style="font-size: 1.17rem;">세번째, 전체 개발 일정</a>
   </div>
 
+  <br/>
+
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
     <a href="#memoir" style="font-size: 1.17rem;">네번째, 회고</a>
   </div>
