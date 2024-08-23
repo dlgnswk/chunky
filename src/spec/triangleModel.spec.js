@@ -35,14 +35,14 @@ describe('triangleModel', () => {
 
   it('should return null if the path is not a valid triangle', () => {
     const invalidPaths = [
-      { type: 'triangle', points: [{ x: 0, y: 0 }] }, // Not enough points
+      { type: 'triangle', points: [{ x: 0, y: 0 }] },
       {
         type: 'triangle',
         points: [
           { x: 0, y: 0 },
           { x: 50, y: 50 },
         ],
-      }, // Not enough points
+      },
       {
         type: 'otherType',
         points: [
@@ -50,7 +50,7 @@ describe('triangleModel', () => {
           { x: 100, y: 0 },
           { x: 50, y: 100 },
         ],
-      }, // Incorrect type
+      },
     ];
 
     const depth = 10;

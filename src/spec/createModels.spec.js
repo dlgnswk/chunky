@@ -7,7 +7,6 @@ import triangleModel from '../models/triangleModel';
 import polygonModel from '../models/polygonModel';
 import bezierModel from '../models/bezierModel';
 
-// Mock the model functions to return a valid 3D model structure
 const mock3DModel = {
   geometry: new THREE.BoxGeometry(),
   material: new THREE.MeshStandardMaterial(),
