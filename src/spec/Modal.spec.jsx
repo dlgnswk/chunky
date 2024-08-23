@@ -1,4 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import Modal from '../components/shared/Modal/Modal';
 import useStore from '../../src/store/store';
@@ -39,5 +45,23 @@ describe('Modal Component', () => {
     fireEvent.click(closeButton);
 
     expect(mockSetIsModalOpened).toHaveBeenCalledWith(false);
+  });
+
+  it('displays no history message when there is no history', async () => {
+    vi.mock('../../src/services/firestore', async (importOriginal) => {
+      const actual = await importOriginal();
+      return {
+        ...actual,
+        getHistoryFromFirestore: vi.fn(() => Promise.resolve([])),
+      };
+    });
+
+    render(<Modal text="History" setIsModalOpened={mockSetIsModalOpened} />);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('저장된 히스토리가 없습니다.'),
+      ).toBeInTheDocument();
+    });
   });
 });
