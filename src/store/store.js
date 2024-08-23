@@ -26,7 +26,7 @@ import {
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
-import handleAuthError from '../utils/authError';
+import handleAuthError from '../utils/handleAuthError';
 import { auth, db, onAuthStateChanged } from '../services/firebase-config';
 import firestore from '../services/firestore';
 
