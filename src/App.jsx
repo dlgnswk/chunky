@@ -15,6 +15,7 @@ import AlertModal from './components/shared/Modal/AlertModal';
 
 import './styles/global.scss';
 import './styles/variables.scss';
+import MobileView from './components/Mobile/MobileView';
 
 function App() {
   const alertState = useStore((state) => state.alertState);
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <>
+      <MobileView />
       {alertState.map((alert) => (
         <AlertModal
           key={alert.id}

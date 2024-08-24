@@ -6,3 +6,9 @@
 @mixin font-pixelifySans {
   font-family: 'PixelifySans';
 }
+
+@mixin tablet {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}

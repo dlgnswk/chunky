@@ -1,0 +1,55 @@
+@use '../../styles/mixin' as mixin;
+
+.page-mobile {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--layout-bg-color);
+
+  @include mixin.tablet {
+    display: block;
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+  }
+
+  .box-img {
+    width: 240px;
+    margin-bottom: 10px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .text-img {
+    width: 80px;
+    margin-right: 3px;
+  }
+}
