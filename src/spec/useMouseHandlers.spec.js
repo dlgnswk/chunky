@@ -269,7 +269,6 @@ describe('useMouseHandlers - specific lines testing', () => {
       ),
     );
 
-    // 간단한 상태 초기화 테스트
     expect(result.current.lineStart).toBeNull();
     expect(result.current.lineEnd).toBeNull();
     expect(result.current.isDrawingPolyline).toBeFalsy();

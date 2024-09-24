@@ -25,7 +25,7 @@ describe('useCanvasSetup', () => {
     };
 
     screenRef.current.getBoundingClientRect.mockReturnValue({
-      width: 800, // 초기 scale 값을 작게 설정하기 위해 화면 크기를 canvas와 동일하게 설정
+      width: 800,
       height: 600,
     });
 
@@ -46,9 +46,9 @@ describe('useCanvasSetup', () => {
       result.current.updateInitialOffset();
     });
 
-    expect(result.current.scale).toBeLessThanOrEqual(1); // 초기 scale 값을 확인
-    expect(result.current.offset.x).toBeGreaterThanOrEqual(0); // 초기 offset 값 확인
-    expect(result.current.offset.y).toBeGreaterThanOrEqual(0); // 초기 offset 값 확인
+    expect(result.current.scale).toBeLessThanOrEqual(1);
+    expect(result.current.offset.x).toBeGreaterThanOrEqual(0);
+    expect(result.current.offset.y).toBeGreaterThanOrEqual(0);
   });
 
   it('should handle wheel events correctly (zoom in)', () => {
@@ -67,8 +67,8 @@ describe('useCanvasSetup', () => {
     });
 
     expect(result.current.scale).toBeGreaterThan(0.5);
-    expect(result.current.offset.x).toBeLessThan(0); // Offset이 이동했는지 확인
-    expect(result.current.offset.y).toBeLessThan(0); // Offset이 이동했는지 확인
+    expect(result.current.offset.x).toBeLessThan(0);
+    expect(result.current.offset.y).toBeLessThan(0);
   });
 
   it('should handle wheel events correctly (zoom out)', () => {
@@ -76,7 +76,6 @@ describe('useCanvasSetup', () => {
       useCanvasSetup(canvasSize, screenRef, canvasRef),
     );
 
-    // 초기 scale 값을 충분히 작게 설정하여 zoom out 테스트가 예상대로 동작하도록 설정
     act(() => {
       result.current.setScale(1);
     });
@@ -91,9 +90,9 @@ describe('useCanvasSetup', () => {
       screenRef.current.addEventListener.mock.calls[0][1](event);
     });
 
-    expect(result.current.scale).toBeLessThan(1); // zoom out 후 scale이 감소했는지 확인
-    expect(result.current.offset.x).toBeGreaterThanOrEqual(0); // Offset이 이동했는지 확인
-    expect(result.current.offset.y).toBeGreaterThanOrEqual(0); // Offset이 이동했는지 확인
+    expect(result.current.scale).toBeLessThan(1);
+    expect(result.current.offset.x).toBeGreaterThanOrEqual(0);
+    expect(result.current.offset.y).toBeGreaterThanOrEqual(0);
   });
 
   it('should clean up the event listener on unmount', () => {
@@ -110,7 +109,7 @@ describe('useCanvasSetup', () => {
 
     expect(removeEventListenerSpy).toHaveBeenCalledWith(
       'wheel',
-      screenRef.current.addEventListener.mock.calls[0][1], // 이전에 설정된 핸들러 전달
+      screenRef.current.addEventListener.mock.calls[0][1],
     );
   });
 });
