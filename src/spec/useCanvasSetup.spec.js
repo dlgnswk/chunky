@@ -96,7 +96,7 @@ describe('useCanvasSetup', () => {
   });
 
   it('should clean up the event listener on unmount', () => {
-    const { result, unmount } = renderHook(() =>
+    const { unmount } = renderHook(() =>
       useCanvasSetup(canvasSize, screenRef, canvasRef),
     );
 
