@@ -1,4 +1,3 @@
-import Logo from '../shared/Logo/Logo';
 import './style.scss';
 
 // import pcIcon from '../../assets/icons/icon-pc.png';
