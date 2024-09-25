@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import convert2Dto3D from '../r3f-utils/convert2Dto3D'; // 파일 경로에 맞게 수정하세요
+import convert2Dto3D from '../r3f-utils/convert2Dto3D';
 
 describe('convert2Dto3D', () => {
   it('converts (x, y, z) correctly for given canvas size', () => {
