@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import drawGrid from '../utils/drawGrid';
+import drawGrid from '../components/Workspace/Canvas2D/utils/drawGrid';
 
 describe('drawGrid', () => {
   it('should draw the grid and axis lines with correct styles and positions', () => {

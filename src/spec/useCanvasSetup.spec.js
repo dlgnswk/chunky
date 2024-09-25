@@ -1,6 +1,6 @@
 import { beforeEach, expect, describe, it, vi } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import useCanvasSetup from '../hooks/useCanvasSetup';
+import useCanvasSetup from '../components/Workspace/Canvas2D/hooks/useCanvasSetup';
 
 describe('useCanvasSetup', () => {
   let canvasSize;
