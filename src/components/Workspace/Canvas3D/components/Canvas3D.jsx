@@ -6,11 +6,11 @@ import * as THREE from 'three';
 import { STLExporter } from 'three/examples/jsm/exporters/STLExporter';
 import { IoCubeOutline } from 'react-icons/io5';
 
-import ToolBox from './ToolBox';
-import Layer3D from './Layer3D';
-import LayoutGridAxes from './LayoutGridAxes';
-import useCameraControl from '../../r3f-utils/useCameraControl';
-import useStore from '../../store/store';
+import ToolBox from '../../ToolBox';
+import Layer3D from '../../Layer3D';
+import LayoutGridAxes from '../../LayoutGridAxes';
+import useCameraControl from '../../../../r3f-utils/useCameraControl';
+import useStore from '../../../../store/store';
 
 function SceneContent() {
   const { scene } = useThree();
