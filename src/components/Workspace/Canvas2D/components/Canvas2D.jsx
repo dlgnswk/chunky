@@ -1,32 +1,35 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { IoSquareOutline } from 'react-icons/io5';
 
-import useCanvasSetup from '../../hooks/useCanvasSetup';
-import useMouseHandlers from '../../hooks/useMouseHandlers';
+import useCanvasSetup from '../hooks/useCanvasSetup';
+import useMouseHandlers from '../../../../hooks/useMouseHandlers';
 
-import drawGrid from '../../utils/drawGrid';
-import handleKeyDown from '../../utils/handleKeyDown';
-import getCursorStyle from '../../utils/getCursorStyle';
+import drawGrid from '../utils/drawGrid';
+import handleKeyDown from '../../../../utils/handleKeyDown';
+import getCursorStyle from '../../../../utils/getCursorStyle';
 
-import useStore from '../../store/store';
+import useStore from '../../../../store/store';
 
-import ToolBox from './ToolBox';
+import ToolBox from '../../ToolBox';
+import renderEraserArea from '../utils/renderEraserArea';
+import renderSnapPoint from '../utils/renderSnapPoint';
+import renderCurrentTool from '../utils/renderCurrentTool';
 
 function Canvas2D() {
-  const {
-    drawingToolList,
-    canvasSize,
-    addPathToLayer,
-    selectedLayer,
-    loadLayers,
-    user,
-    layerList,
-    initializeLayerListener,
-    setLayerList,
-  } = useStore();
-
   const canvasRef = useRef(null);
   const screenRef = useRef(null);
+
+  const drawingToolList = useStore((state) => state.drawingToolList);
+  const canvasSize = useStore((state) => state.canvasSize);
+  const addPathToLayer = useStore((state) => state.addPathToLayer);
+  const selectedLayer = useStore((state) => state.selectedLayer);
+  const loadLayers = useStore((state) => state.loadLayers);
+  const user = useStore((state) => state.user);
+  const layerList = useStore((state) => state.layerList);
+  const initializeLayerListener = useStore(
+    (state) => state.initializeLayerListener,
+  );
+  const setLayerList = useStore((state) => state.setLayerList);
 
   const {
     scale,
@@ -41,7 +44,7 @@ function Canvas2D() {
 
   const [wasLayerListEmpty, setWasLayerListEmpty] = useState(true);
   const [selectedTool, setSelectedTool] = useState(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [setMousePosition] = useState({ x: 0, y: 0 });
   const [selectedImage, setSelectedImage] = useState(null);
   const [isResizing, setIsResizing] = useState(false);
   const [resizeHandle, setResizeHandle] = useState(null);
@@ -302,7 +305,6 @@ function Canvas2D() {
     setLayerList,
     updateLayerInFirestore,
     refreshLayerState,
-    selectedLayer,
     selectedImage,
     setSelectedImage,
     isResizing,
@@ -364,103 +366,15 @@ function Canvas2D() {
     }
   }, [selectedLayer, handleLayerUpdate]);
 
-  const renderCurrentTool = useCallback(
-    (ctx) => {
-      if (
-        selectedTool === 'line' &&
-        isDrawingPolyline &&
-        currentPolyline.length > 0
-      ) {
-        ctx.beginPath();
-        ctx.moveTo(currentPolyline[0].x, currentPolyline[0].y);
-        for (let i = 1; i < currentPolyline.length; i += 1) {
-          ctx.lineTo(currentPolyline[i].x, currentPolyline[i].y);
-        }
-        ctx.strokeStyle = '#0068ff';
-        ctx.lineWidth = 1;
-        ctx.stroke();
+  const renderCanvas = useCallback(() => {
+    if (!canvasRef.current) return;
+    const ctx = canvasRef.current.getContext('2d');
+    if (!ctx) return;
 
-        if (lineEnd) {
-          ctx.beginPath();
-          ctx.moveTo(
-            currentPolyline[currentPolyline.length - 1].x,
-            currentPolyline[currentPolyline.length - 1].y,
-          );
-          ctx.lineTo(lineEnd.x, lineEnd.y);
-          ctx.strokeStyle = 'tomato';
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-
-        if (currentPolyline.length > 2 && lineEnd) {
-          const distToStart = Math.hypot(
-            lineEnd.x - currentPolyline[0].x,
-            lineEnd.y - currentPolyline[0].y,
-          );
-          if (distToStart < 10) {
-            ctx.beginPath();
-            ctx.moveTo(lineEnd.x, lineEnd.y);
-            ctx.lineTo(currentPolyline[0].x, currentPolyline[0].y);
-            ctx.setLineDash([5, 5]);
-            ctx.strokeStyle = 'gray';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            ctx.setLineDash([]);
-          }
-        }
-      } else if (selectedTool === 'bezier' && bezierStart && bezierEnd) {
-        ctx.beginPath();
-        ctx.moveTo(bezierStart.x, bezierStart.y);
-        ctx.quadraticCurveTo(
-          bezierControl ? bezierControl.x : currentMousePos.x,
-          bezierControl ? bezierControl.y : currentMousePos.y,
-          bezierEnd.x,
-          bezierEnd.y,
-        );
-        ctx.strokeStyle = 'tomato';
-        ctx.stroke();
-      } else if (selectedTool === 'rectangle' && rectStart) {
-        ctx.beginPath();
-        ctx.rect(
-          rectStart.x,
-          rectStart.y,
-          currentMousePos.x - rectStart.x,
-          currentMousePos.y - rectStart.y,
-        );
-        ctx.strokeStyle = 'tomato';
-        ctx.stroke();
-      } else if (selectedTool === 'triangle' && trianglePoints.length > 0) {
-        ctx.beginPath();
-        ctx.moveTo(trianglePoints[0].x, trianglePoints[0].y);
-        for (let i = 1; i < trianglePoints.length; i += 1) {
-          ctx.lineTo(trianglePoints[i].x, trianglePoints[i].y);
-        }
-        if (trianglePoints.length < 3) {
-          ctx.lineTo(currentMousePos.x, currentMousePos.y);
-        }
-        ctx.closePath();
-        ctx.strokeStyle = 'tomato';
-        ctx.stroke();
-      } else if (selectedTool === 'circle' && circleCenter) {
-        const radius = Math.sqrt(
-          (currentMousePos.x - circleCenter.x) ** 2 +
-            (currentMousePos.y - circleCenter.y) ** 2,
-        );
-        ctx.beginPath();
-        ctx.arc(circleCenter.x, circleCenter.y, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = 'tomato';
-        ctx.stroke();
-      }
-
-      if (snapPoint) {
-        ctx.beginPath();
-        ctx.arc(snapPoint.x, snapPoint.y, 2, 0, 2 * Math.PI);
-        ctx.fillStyle = 'tomato';
-        ctx.fill();
-      }
-    },
-    [
-      selectedTool,
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    drawGrid(ctx, canvasSize.width, canvasSize.height);
+    renderLayers(ctx);
+    renderCurrentTool(ctx, selectedTool, {
       isDrawingPolyline,
       currentPolyline,
       lineEnd,
@@ -472,92 +386,31 @@ function Canvas2D() {
       circleCenter,
       currentMousePos,
       snapPoint,
-    ],
-  );
-
-  const renderSnapPoint = useCallback(
-    (ctx) => {
-      if (
-        snapPoint &&
-        (selectedTool === 'line' ||
-          selectedTool === 'bezier' ||
-          selectedTool === 'rectangle' ||
-          selectedTool === 'triangle' ||
-          selectedTool === 'circle')
-      ) {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(snapPoint.x, snapPoint.y, 5 / scale, 0, 2 * Math.PI);
-        ctx.fillStyle = '#0068ff';
-        ctx.fill();
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2 / scale;
-        ctx.stroke();
-        ctx.restore();
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(snapPoint.x - 7 / scale, snapPoint.y);
-        ctx.lineTo(snapPoint.x + 7 / scale, snapPoint.y);
-        ctx.moveTo(snapPoint.x, snapPoint.y - 7 / scale);
-        ctx.lineTo(snapPoint.x, snapPoint.y + 7 / scale);
-        ctx.strokeStyle = '#0068ff';
-        ctx.lineWidth = 2 / scale;
-        ctx.stroke();
-        ctx.restore();
-      }
-    },
-    [snapPoint, selectedTool, scale],
-  );
-
-  const renderEraserArea = useCallback(
-    (ctx) => {
-      if (isErasing && eraserStart && eraserEnd) {
-        ctx.save();
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 2 / scale;
-        ctx.setLineDash([5 / scale, 5 / scale]);
-        ctx.beginPath();
-        ctx.rect(
-          eraserStart.x,
-          eraserStart.y,
-          eraserEnd.x - eraserStart.x,
-          eraserEnd.y - eraserStart.y,
-        );
-        ctx.stroke();
-        ctx.restore();
-      }
-    },
-    [isErasing, eraserStart, eraserEnd, scale],
-  );
-
-  const renderCanvas = useCallback(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-    const context = canvasRef.current.getContext('2d');
-    if (!context) {
-      return;
-    }
-
-    context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    drawGrid(context, canvasSize.width, canvasSize.height);
-    renderLayers();
-    renderCurrentTool(context);
-    renderSnapPoint(context);
+    });
+    renderSnapPoint(ctx, snapPoint, selectedTool, scale);
     if (isErasing && eraserStart && eraserEnd) {
-      renderEraserArea(context);
+      renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale);
     }
   }, [
     canvasRef,
     canvasSize,
     renderLayers,
-    renderCurrentTool,
-    renderSnapPoint,
-    renderEraserArea,
+    selectedTool,
+    isDrawingPolyline,
+    currentPolyline,
+    lineEnd,
+    bezierStart,
+    bezierEnd,
+    bezierControl,
+    rectStart,
+    trianglePoints,
+    circleCenter,
+    currentMousePos,
+    snapPoint,
     isErasing,
     eraserStart,
     eraserEnd,
+    scale,
   ]);
 
   useEffect(() => {
@@ -607,59 +460,23 @@ function Canvas2D() {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      return;
-    }
+    if (!canvas) return;
 
     canvas.width = canvasSize.width;
     canvas.height = canvasSize.height;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    drawGrid(ctx, canvasSize.width, canvasSize.height);
-
-    renderLayers(ctx);
-
-    renderCurrentTool(ctx);
-
-    renderSnapPoint(ctx);
-
-    if (isErasing && eraserStart && eraserEnd) {
-      renderEraserArea(ctx);
-    }
+    renderCanvas();
 
     const handleResize = () => {
       canvas.width = canvasSize.width;
       canvas.height = canvasSize.height;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawGrid(ctx, canvasSize.width, canvasSize.height);
-      renderLayers(ctx);
-      renderCurrentTool(ctx);
-      renderSnapPoint(ctx);
-      if (isErasing && eraserStart && eraserEnd) {
-        renderEraserArea(ctx);
-      }
+      renderCanvas();
     };
 
     window.addEventListener('resize', handleResize);
-  }, [
-    canvasRef,
-    canvasSize,
-    renderLayers,
-    renderCurrentTool,
-    renderSnapPoint,
-    renderEraserArea,
-    isErasing,
-    eraserStart,
-    eraserEnd,
-    drawGrid,
-  ]);
+    // eslint-disable-next-line consistent-return
+    return () => window.removeEventListener('resize', handleResize);
+  }, [canvasSize, renderCanvas]);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -670,9 +487,21 @@ function Canvas2D() {
       drawGrid(ctx, canvasSize.width, canvasSize.height);
 
       renderLayers(ctx);
-      renderCurrentTool(ctx);
-      renderSnapPoint(ctx);
-      renderEraserArea(ctx);
+      renderCurrentTool(ctx, selectedTool, {
+        isDrawingPolyline,
+        currentPolyline,
+        lineEnd,
+        bezierStart,
+        bezierEnd,
+        bezierControl,
+        rectStart,
+        trianglePoints,
+        circleCenter,
+        currentMousePos,
+        snapPoint,
+      });
+      renderSnapPoint(ctx, snapPoint, selectedTool, scale);
+      renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale);
     }
   }, [
     canvasSize,
@@ -695,9 +524,21 @@ function Canvas2D() {
       drawGrid(ctx, canvasSize.width, canvasSize.height);
 
       renderLayers(ctx);
-      renderCurrentTool(ctx);
-      renderSnapPoint(ctx);
-      renderEraserArea(ctx);
+      renderCurrentTool(ctx, selectedTool, {
+        isDrawingPolyline,
+        currentPolyline,
+        lineEnd,
+        bezierStart,
+        bezierEnd,
+        bezierControl,
+        rectStart,
+        trianglePoints,
+        circleCenter,
+        currentMousePos,
+        snapPoint,
+      });
+      renderSnapPoint(ctx, snapPoint, selectedTool, scale);
+      renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale);
     }
   }, [
     canvasSize,
@@ -725,9 +566,21 @@ function Canvas2D() {
       drawGrid(ctx, canvasSize.width, canvasSize.height);
 
       renderLayers(ctx);
-      renderCurrentTool(ctx);
-      renderSnapPoint(ctx);
-      renderEraserArea(ctx);
+      renderCurrentTool(ctx, selectedTool, {
+        isDrawingPolyline,
+        currentPolyline,
+        lineEnd,
+        bezierStart,
+        bezierEnd,
+        bezierControl,
+        rectStart,
+        trianglePoints,
+        circleCenter,
+        currentMousePos,
+        snapPoint,
+      });
+      renderSnapPoint(ctx, snapPoint, selectedTool, scale);
+      renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale);
     }
   }, [
     canvasSize,
@@ -753,30 +606,21 @@ function Canvas2D() {
         selectTool={selectTool}
         selectedTool={selectedTool}
       />
-      {layerList.length === 0 && (
+      {layerList.length === 0 ? (
         <div className="default-logo">
           <IoSquareOutline />
         </div>
-      )}
-      {layerList.length !== 0 && (
-        <button
+      ) : (
+        <div
           ref={screenRef}
-          onClick={handleCanvasClick}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMoveWrapper}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
+          className="canvas-container"
           style={{
             overflow: 'hidden',
             width: '100%',
             height: '100%',
             position: 'relative',
             cursor: getCursorStyle(selectedTool, dragging),
-            background: 'none',
-            border: 'none',
-            padding: 0,
           }}
-          aria-label="Drawing canvas area"
         >
           <canvas
             ref={canvasRef}
@@ -791,8 +635,13 @@ function Canvas2D() {
               top: `${offset.y}px`,
             }}
             onClick={handleCanvasClick}
-          ></canvas>
-        </button>
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMoveWrapper}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            aria-label="Drawing canvas area"
+          />
+        </div>
       )}
     </div>
   );
