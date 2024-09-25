@@ -79,7 +79,7 @@ function useCanvasSetup(canvasSize, screenRef, canvasRef) {
         element.removeEventListener('wheel', handleWheel);
       }
     };
-  }, [handleWheel, screenRef.current]);
+  }, [handleWheel]);
 
   return {
     scale,
