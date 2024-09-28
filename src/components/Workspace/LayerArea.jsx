@@ -10,14 +10,12 @@ import LayerCard from './LayerCard';
 import LayerImage from './LayerImage';
 
 function LayerArea() {
-  const {
-    layerList = [],
-    addLayer,
-    selectedLayer,
-    setSelectedLayer,
-    layerTitle,
-    setLayerTitle,
-  } = useStore();
+  const layerList = useStore((state) => state.layerList);
+  const addLayer = useStore((state) => state.addLayer);
+  const selectedLayer = useStore((state) => state.selectedLayer);
+  const setSelectedLayer = useStore((state) => state.setSelectedLayer);
+  const layerTitle = useStore((state) => state.layerTitle);
+  const setLayerTitle = useStore((state) => state.setLayerTitle);
 
   useEffect(() => {
     if (layerList.length > 0 && !selectedLayer) {
