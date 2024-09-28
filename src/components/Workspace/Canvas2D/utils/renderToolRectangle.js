@@ -1,13 +1,15 @@
-function renderToolRectangle(ctx, { rectStart, currentMousePos }) {
-  if (rectStart) {
+function renderToolRectangle(ctx, { rectStart, rectEnd }) {
+  if (rectStart && rectEnd) {
     ctx.beginPath();
     ctx.rect(
-      rectStart.x,
-      rectStart.y,
-      currentMousePos.x - rectStart.x,
-      currentMousePos.y - rectStart.y,
+      Math.min(rectStart.x, rectEnd.x),
+      Math.min(rectStart.y, rectEnd.y),
+      Math.abs(rectEnd.x - rectStart.x),
+      Math.abs(rectEnd.y - rectStart.y),
     );
+
     ctx.strokeStyle = 'tomato';
+    ctx.lineWidth = 1;
     ctx.stroke();
   }
 }

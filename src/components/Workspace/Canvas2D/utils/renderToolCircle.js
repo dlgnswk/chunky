@@ -1,5 +1,5 @@
 function renderToolCircle(ctx, { circleCenter, currentMousePos }) {
-  if (circleCenter) {
+  if (circleCenter && currentMousePos) {
     const radius = Math.sqrt(
       (currentMousePos.x - circleCenter.x) ** 2 +
         (currentMousePos.y - circleCenter.y) ** 2,
