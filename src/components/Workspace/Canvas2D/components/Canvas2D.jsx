@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { IoSquareOutline } from 'react-icons/io5';
 
 import useCanvasSetup from '../hooks/useCanvasSetup';
-import useMouseHandlers from '../../../../hooks/useMouseHandlers';
 
 import drawGrid from '../utils/drawGrid';
 import handleKeyDown from '../../../../utils/handleKeyDown';
@@ -14,6 +13,16 @@ import ToolBox from '../../ToolBox';
 import renderEraserArea from '../utils/renderEraserArea';
 import renderSnapPoint from '../utils/renderSnapPoint';
 import renderCurrentTool from '../utils/renderCurrentTool';
+import drawLine from '../utils/drawLine';
+import moveCanvas from '../utils/moveCanvas';
+import drawBezier from '../utils/drawBezier';
+import drawRectangle from '../utils/drawRectangle';
+import drawTriangle from '../utils/drawTriangle';
+import drawCircle from '../utils/drawCircle';
+import removeShapes from '../utils/removeShapes';
+import fillColor from '../utils/fillColor';
+import checkMousePoint from '../utils/checkMousePoint';
+import findSnapPoint from '../utils/findSnapPoint';
 
 function Canvas2D() {
   const canvasRef = useRef(null);
@@ -23,13 +32,44 @@ function Canvas2D() {
   const canvasSize = useStore((state) => state.canvasSize);
   const addPathToLayer = useStore((state) => state.addPathToLayer);
   const selectedLayer = useStore((state) => state.selectedLayer);
-  const loadLayers = useStore((state) => state.loadLayers);
   const user = useStore((state) => state.user);
   const layerList = useStore((state) => state.layerList);
   const initializeLayerListener = useStore(
     (state) => state.initializeLayerListener,
   );
   const setLayerList = useStore((state) => state.setLayerList);
+
+  // lineTool
+  const [setLineStart] = useState(null);
+  const [lineEnd, setLineEnd] = useState(null);
+  const [currentPolyline, setCurrentPolyline] = useState([]);
+  const [isDrawingPolyline, setIsDrawingPolyline] = useState(false);
+
+  // BezierTool
+  const [bezierStart, setBezierStart] = useState(null);
+  const [bezierEnd, setBezierEnd] = useState(null);
+  const [bezierControl, setBezierControl] = useState(null);
+  const [isBezierDrawing, setIsBezierDrawing] = useState(false);
+
+  // RectangleTool
+  const [rectStart, setRectStart] = useState(null);
+  const [rectEnd, setRectEnd] = useState(null);
+
+  // TriangleTool
+  const [trianglePoints, setTrianglePoints] = useState([]);
+  const [currentMousePos, setCurrentMousePos] = useState(null);
+
+  // CircleTool
+  const [circleCenter, setCircleCenter] = useState(null);
+  const [circleRadius, setCircleRadius] = useState(0);
+
+  // EraseTool
+  const [isErasing, setIsErasing] = useState(false);
+  const [eraserStart, setEraserStart] = useState(null);
+  const [eraserEnd, setEraserEnd] = useState(null);
+
+  // snapPoint
+  const [snapPoint, setSnapPoint] = useState(null);
 
   const {
     scale,
@@ -44,11 +84,6 @@ function Canvas2D() {
 
   const [wasLayerListEmpty, setWasLayerListEmpty] = useState(true);
   const [selectedTool, setSelectedTool] = useState(null);
-  const [setMousePosition] = useState({ x: 0, y: 0 });
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [isResizing, setIsResizing] = useState(false);
-  const [resizeHandle, setResizeHandle] = useState(null);
-
   const imageCache = useRef(new Map());
 
   useEffect(() => {
@@ -62,46 +97,6 @@ function Canvas2D() {
       }
     };
   }, [user, initializeLayerListener]);
-
-  const fillPath = useCallback((path, color) => {
-    if (canvasRef.current) {
-      const context = canvasRef.current.getContext('2d');
-
-      context.save();
-      context.fillStyle = color;
-      context.beginPath();
-
-      switch (path?.type) {
-        case 'rectangle':
-          context.rect(path.x, path.y, path.width, path.height);
-          break;
-        case 'triangle':
-          context.moveTo(path.points[0].x, path.points[0].y);
-          context.lineTo(path.points[1].x, path.points[1].y);
-          context.lineTo(path.points[2].x, path.points[2].y);
-          context.closePath();
-          break;
-        case 'bezier':
-          context.moveTo(path.x1, path.y1);
-          context.quadraticCurveTo(path.cx, path.cy, path.x2, path.y2);
-          break;
-        case 'circle':
-          context.arc(
-            path.center.x,
-            path.center.y,
-            path.radius,
-            0,
-            2 * Math.PI,
-          );
-          break;
-        default:
-          break;
-      }
-
-      context.fill();
-      context.restore();
-    }
-  }, []);
 
   const renderLayersRef = useRef(null);
 
@@ -217,7 +212,7 @@ function Canvas2D() {
               ctx.fill();
             }
 
-            ctx.strokeStyle = '#0068ff';
+            ctx.strokeStyle = layer.fill;
             ctx.lineWidth = 1;
             ctx.stroke();
           });
@@ -257,61 +252,7 @@ function Canvas2D() {
     (state) => state.updateLayerInFirestore,
   );
 
-  const refreshLayerState = useStore((state) => state.refreshLayerState);
-
   renderLayersRef.current = renderLayers;
-
-  const {
-    handleMouseDown,
-    handleMouseMove,
-    handleMouseUp,
-    handleCanvasClick,
-    lineStart,
-    lineEnd,
-    bezierStart,
-    bezierEnd,
-    bezierControl,
-    rectStart,
-    trianglePoints,
-    currentMousePos,
-    circleCenter,
-    snapPoint,
-    cancelDrawing,
-    finalizeErase,
-    isErasing,
-    setIsErasing,
-    eraserStart,
-    setEraserStart,
-    eraserEnd,
-    setEraserEnd,
-    currentPolyline,
-    isDrawingPolyline,
-    finalizePolyline,
-  } = useMouseHandlers(
-    selectedTool,
-    { x: offset.x, y: offset.y, scale },
-    setOffset,
-    setDragging,
-    setStartPoint,
-    dragging,
-    startPoint,
-    canvasRef,
-    addPathToLayer,
-    selectedLayer,
-    layerList,
-    renderLayers,
-    fillPath,
-    updateLayerInFirestore,
-    setLayerList,
-    updateLayerInFirestore,
-    refreshLayerState,
-    selectedImage,
-    setSelectedImage,
-    isResizing,
-    setIsResizing,
-    resizeHandle,
-    setResizeHandle,
-  );
 
   const selectTool = (tool) => {
     setSelectedTool((prevTool) => {
@@ -326,10 +267,6 @@ function Canvas2D() {
       return tool;
     });
   };
-
-  useEffect(() => {
-    loadLayers();
-  }, [loadLayers]);
 
   useEffect(() => {
     if (layerList.length > 0 && wasLayerListEmpty) {
@@ -347,25 +284,6 @@ function Canvas2D() {
     updateInitialOffset,
   ]);
 
-  useEffect(() => {
-    if (selectedTool !== 'eraser') {
-      finalizeErase();
-    }
-  }, [selectedTool, finalizeErase]);
-
-  const handleLayerUpdate = useCallback(
-    (updatedLayer) => {
-      updateLayerInFirestore(updatedLayer);
-    },
-    [updateLayerInFirestore],
-  );
-
-  useEffect(() => {
-    if (selectedLayer) {
-      handleLayerUpdate(selectedLayer);
-    }
-  }, [selectedLayer, handleLayerUpdate]);
-
   const renderCanvas = useCallback(() => {
     if (!canvasRef.current) return;
     const ctx = canvasRef.current.getContext('2d');
@@ -373,7 +291,7 @@ function Canvas2D() {
 
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     drawGrid(ctx, canvasSize.width, canvasSize.height);
-    renderLayers(ctx);
+    renderLayers();
     renderCurrentTool(ctx, selectedTool, {
       isDrawingPolyline,
       currentPolyline,
@@ -382,6 +300,7 @@ function Canvas2D() {
       bezierEnd,
       bezierControl,
       rectStart,
+      rectEnd,
       trianglePoints,
       circleCenter,
       currentMousePos,
@@ -411,19 +330,49 @@ function Canvas2D() {
     eraserStart,
     eraserEnd,
     scale,
+    layerList,
   ]);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      renderLayers();
+      renderCanvas();
+    }
+  }, [renderLayers, renderCanvas]);
 
   useEffect(() => {
     const handleKeyDownCallback = (event) => {
       handleKeyDown(event, selectTool);
+
       if (event.key === 'Escape') {
-        if (lineStart || bezierStart || rectStart || isDrawingPolyline) {
-          cancelDrawing();
+        if (selectedTool === 'line' && isDrawingPolyline) {
+          drawLine.cancelLine({
+            setIsDrawingPolyline,
+            setCurrentPolyline,
+            setLineStart,
+            setLineEnd,
+            renderCanvas,
+          });
+        } else if (bezierStart || rectStart) {
           renderCanvas();
         }
       }
-      if (event.key === 'Enter' && isDrawingPolyline) {
-        finalizePolyline();
+      if (event.key === ' ' && selectedTool === 'line' && isDrawingPolyline) {
+        event.preventDefault();
+
+        drawLine.finalizeLine({
+          isDrawingPolyline,
+          currentPolyline,
+          setIsDrawingPolyline,
+          setCurrentPolyline,
+          setLineStart,
+          setLineEnd,
+          selectedLayer,
+          layerList,
+          setLayerList,
+          updateLayerInFirestore,
+          renderCanvas,
+        });
       }
     };
 
@@ -433,50 +382,16 @@ function Canvas2D() {
     };
   }, [
     selectTool,
-    lineStart,
+    selectedTool,
+    isDrawingPolyline,
+    currentPolyline,
     bezierStart,
     rectStart,
-    cancelDrawing,
-    isDrawingPolyline,
-    finalizePolyline,
     renderCanvas,
+    selectedLayer,
+    layerList,
+    updateLayerInFirestore,
   ]);
-
-  useEffect(() => {
-    renderCanvas();
-  }, [renderCanvas, layerList, finalizeErase]);
-
-  useEffect(() => {
-    renderCanvas();
-  }, [finalizeErase]);
-
-  useEffect(() => {
-    if (canvasRef.current) {
-      const ctx = canvasRef.current.getContext('2d');
-      renderLayers(ctx);
-      renderCanvas();
-    }
-  }, [renderLayers]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    canvas.width = canvasSize.width;
-    canvas.height = canvasSize.height;
-
-    renderCanvas();
-
-    const handleResize = () => {
-      canvas.width = canvasSize.width;
-      canvas.height = canvasSize.height;
-      renderCanvas();
-    };
-
-    window.addEventListener('resize', handleResize);
-    // eslint-disable-next-line consistent-return
-    return () => window.removeEventListener('resize', handleResize);
-  }, [canvasSize, renderCanvas]);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -486,7 +401,7 @@ function Canvas2D() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGrid(ctx, canvasSize.width, canvasSize.height);
 
-      renderLayers(ctx);
+      renderLayers();
       renderCurrentTool(ctx, selectedTool, {
         isDrawingPolyline,
         currentPolyline,
@@ -515,88 +430,310 @@ function Canvas2D() {
     layerList,
   ]);
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
+  const handleMouseDown = useCallback(
+    (event) => {
+      if (selectedTool === 'line') {
+        drawLine.handleStart(event, {
+          canvasRef,
+          scale,
+          isDrawingPolyline,
+          currentPolyline,
+          setIsDrawingPolyline,
+          setCurrentPolyline,
+          setLineStart,
+          setLineEnd,
+          renderCanvas,
+          layerList,
+        });
+      } else if (selectedTool === 'move') {
+        moveCanvas.handleStart(event, {
+          setDragging,
+          setStartPoint,
+          offset,
+        });
+      } else if (selectedTool === 'bezier') {
+        drawBezier.handleStart(event, {
+          canvasRef,
+          scale,
+          bezierStart,
+          setBezierStart,
+          bezierEnd,
+          setBezierEnd,
+          setBezierControl,
+          setIsBezierDrawing,
+          layerList,
+        });
+      } else if (selectedTool === 'rectangle') {
+        drawRectangle.handleStart(event, {
+          canvasRef,
+          scale,
+          setRectStart,
+          setRectEnd,
+          renderCanvas,
+          layerList,
+        });
+      } else if (selectedTool === 'triangle') {
+        drawTriangle.handleStart(event, {
+          canvasRef,
+          scale,
+          setTrianglePoints,
+          selectedLayer,
+          addPathToLayer,
+          layerList,
+        });
+      } else if (selectedTool === 'circle') {
+        drawCircle.handleStart(event, {
+          canvasRef,
+          scale,
+          setCircleCenter,
+          layerList,
+        });
+      } else if (selectedTool === 'eraser') {
+        removeShapes.handleStart(event, {
+          canvasRef,
+          scale,
+          setIsErasing,
+          setEraserStart,
+          setEraserEnd,
+        });
+      } else if (selectedTool === 'paintBucket') {
+        fillColor.handleStart(event, {
+          canvasRef,
+          scale,
+          layerList,
+          checkMousePoint,
+          updateLayerInFirestore,
+        });
+      }
+    },
+    [
+      selectedTool,
+      canvasRef,
+      scale,
+      layerList,
+      isDrawingPolyline,
+      currentPolyline,
+      setIsDrawingPolyline,
+      setCurrentPolyline,
+      setLineStart,
+      setLineEnd,
+      setDragging,
+      setStartPoint,
+      offset,
+      setBezierStart,
+      setIsBezierDrawing,
+      setRectStart,
+      setRectEnd,
+      setTrianglePoints,
+      setCircleCenter,
+      isErasing,
+      setIsErasing,
+      setEraserStart,
+      setEraserEnd,
+      checkMousePoint,
+      renderCanvas,
+    ],
+  );
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawGrid(ctx, canvasSize.width, canvasSize.height);
-
-      renderLayers(ctx);
-      renderCurrentTool(ctx, selectedTool, {
-        isDrawingPolyline,
-        currentPolyline,
-        lineEnd,
-        bezierStart,
-        bezierEnd,
-        bezierControl,
-        rectStart,
-        trianglePoints,
-        circleCenter,
-        currentMousePos,
-        snapPoint,
+  const handleMouseMove = useCallback(
+    (event) => {
+      findSnapPoint(event, {
+        canvasRef,
+        scale,
+        setSnapPoint,
+        layerList,
       });
-      renderSnapPoint(ctx, snapPoint, selectedTool, scale);
-      renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale);
-    }
-  }, [
-    canvasSize,
-    renderLayers,
-    renderCurrentTool,
-    renderSnapPoint,
-    renderEraserArea,
-    layerList,
-  ]);
 
-  const handleMouseMoveWrapper = (event) => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    const mouseX = (event.clientX - rect.left) / scale;
-    const mouseY = (event.clientY - rect.top) / scale;
-    setMousePosition({ x: mouseX, y: mouseY });
-    handleMouseMove(event);
-  };
+      if (selectedTool === 'line') {
+        drawLine.handleMove(event, {
+          canvasRef,
+          scale,
+          isDrawingPolyline,
+          setLineEnd,
+          renderCanvas,
+          layerList,
+        });
+      } else if (selectedTool === 'move') {
+        moveCanvas.handleMove(event, {
+          dragging,
+          startPoint,
+          setOffset,
+        });
+      } else if (selectedTool === 'bezier') {
+        drawBezier.handleMove(event, {
+          canvasRef,
+          scale,
+          bezierStart,
+          bezierEnd,
+          setBezierControl,
+          isBezierDrawing,
+          layerList,
+        });
+      } else if (selectedTool === 'rectangle') {
+        drawRectangle.handleMove(event, {
+          canvasRef,
+          scale,
+          rectStart,
+          setRectEnd,
+          setCurrentMousePos,
+          renderCanvas,
+          layerList,
+        });
+      } else if (selectedTool === 'triangle') {
+        drawTriangle.handleMove(event, {
+          canvasRef,
+          scale,
+          setCurrentMousePos,
+          layerList,
+        });
+      } else if (selectedTool === 'circle') {
+        drawCircle.handleMove(event, {
+          canvasRef,
+          scale,
+          circleCenter,
+          setCircleRadius,
+          setCurrentMousePos,
+          layerList,
+        });
+      } else if (selectedTool === 'eraser') {
+        removeShapes.handleMove(event, {
+          canvasRef,
+          scale,
+          isErasing,
+          setEraserEnd,
+        });
+      }
+    },
+    [
+      selectedTool,
+      canvasRef,
+      scale,
+      isDrawingPolyline,
+      setLineEnd,
+      dragging,
+      startPoint,
+      setOffset,
+      bezierStart,
+      isBezierDrawing,
+      bezierControl,
+      setBezierControl,
+      setBezierEnd,
+      rectStart,
+      setRectStart,
+      rectEnd,
+      setRectEnd,
+      setCurrentMousePos,
+      circleCenter,
+      setCircleRadius,
+      isErasing,
+      setEraserEnd,
+      renderCanvas,
+      setSnapPoint,
+      layerList,
+    ],
+  );
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext('2d');
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawGrid(ctx, canvasSize.width, canvasSize.height);
-
-      renderLayers(ctx);
-      renderCurrentTool(ctx, selectedTool, {
-        isDrawingPolyline,
-        currentPolyline,
-        lineEnd,
-        bezierStart,
-        bezierEnd,
-        bezierControl,
-        rectStart,
-        trianglePoints,
-        circleCenter,
-        currentMousePos,
-        snapPoint,
-      });
-      renderSnapPoint(ctx, snapPoint, selectedTool, scale);
-      renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale);
-    }
-  }, [
-    canvasSize,
-    renderLayers,
-    renderCurrentTool,
-    renderSnapPoint,
-    renderEraserArea,
-    isErasing,
-    eraserStart,
-    eraserEnd,
-    layerList,
-  ]);
-
-  useEffect(() => {
-    renderCanvas();
-  }, [layerList, renderCanvas]);
+  const handleMouseUp = useCallback(
+    (event) => {
+      if (selectedTool === 'line') {
+        drawLine.handleEnd(event, {
+          isDrawingPolyline,
+          lineEnd,
+          currentPolyline,
+          setCurrentPolyline,
+          setLineStart,
+          selectedLayer,
+          addPathToLayer,
+          renderCanvas,
+        });
+      } else if (selectedTool === 'move') {
+        moveCanvas.handleEnd({
+          setDragging,
+        });
+      } else if (selectedTool === 'bezier') {
+        drawBezier.handleEnd(event, {
+          bezierStart,
+          setBezierStart,
+          bezierEnd,
+          setBezierEnd,
+          bezierControl,
+          setBezierControl,
+          selectedLayer,
+          layerList,
+          updateLayerInFirestore,
+        });
+      } else if (selectedTool === 'rectangle') {
+        drawRectangle.handleEnd(event, {
+          rectStart,
+          rectEnd,
+          setRectStart,
+          setRectEnd,
+          selectedLayer,
+          layerList,
+          updateLayerInFirestore,
+          renderCanvas,
+        });
+      } else if (selectedTool === 'circle') {
+        drawCircle.handleEnd(event, {
+          circleCenter,
+          setCircleCenter,
+          circleRadius,
+          setCircleRadius,
+          layerList,
+          selectedLayer,
+          updateLayerInFirestore,
+          renderCanvas,
+        });
+      } else if (selectedTool === 'eraser') {
+        removeShapes.handleEnd({
+          isErasing,
+          eraserStart,
+          eraserEnd,
+          selectedLayer,
+          layerList,
+          updateLayerInFirestore,
+          setIsErasing,
+          setEraserStart,
+          setEraserEnd,
+        });
+      }
+    },
+    [
+      selectedTool,
+      isDrawingPolyline,
+      lineEnd,
+      currentPolyline,
+      setCurrentPolyline,
+      setLineStart,
+      selectedLayer,
+      renderCanvas,
+      setDragging,
+      bezierStart,
+      bezierControl,
+      bezierEnd,
+      setIsBezierDrawing,
+      setBezierStart,
+      setBezierControl,
+      setBezierEnd,
+      selectedLayer,
+      rectStart,
+      setRectStart,
+      rectEnd,
+      setRectEnd,
+      selectedLayer,
+      circleCenter,
+      setCircleCenter,
+      circleRadius,
+      setCircleRadius,
+      isErasing,
+      eraserStart,
+      eraserEnd,
+      setIsErasing,
+      setEraserStart,
+      setEraserEnd,
+      layerList,
+    ],
+  );
 
   return (
     <div className="canvas-2d">
@@ -634,9 +771,8 @@ function Canvas2D() {
               left: `${offset.x}px`,
               top: `${offset.y}px`,
             }}
-            onClick={handleCanvasClick}
             onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMoveWrapper}
+            onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
             aria-label="Drawing canvas area"
