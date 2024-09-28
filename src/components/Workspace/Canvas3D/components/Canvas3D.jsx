@@ -88,9 +88,7 @@ function Canvas3D() {
   const canvasRef = useRef();
   const sceneRef = useRef();
   const cameraRef = useCameraControl();
-
   const { canvasSize, layerList, viewToolList } = useStore();
-
   const [selectedTool, setSelectedTool] = useState('viewPerspective');
 
   const selectTool = (tool) => {
@@ -151,18 +149,19 @@ function Canvas3D() {
           />
           <group ref={sceneRef}>
             <LayoutGridAxes />
-            {layerList.map(
-              (layer) =>
-                layer.visible && (
-                  <Layer3D
-                    key={layer.id}
-                    layer={layer}
-                    zPosition={layer.zIndex}
-                    thickness={layer.height}
-                    renderOrder={1}
-                  />
-                ),
-            )}
+            {Array.isArray(layerList) &&
+              layerList.map(
+                (layer) =>
+                  layer.visible && (
+                    <Layer3D
+                      key={layer.id}
+                      layer={layer}
+                      zPosition={layer.zIndex}
+                      thickness={layer.height}
+                      renderOrder={1}
+                    />
+                  ),
+              )}
           </group>
         </Canvas>
       )}
