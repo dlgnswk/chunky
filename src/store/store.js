@@ -402,16 +402,7 @@ const useStore = create((set, get) => ({
       };
     }
 
-    const id = await firestore.addLayerToFirestore(uid, newLayer);
-
-    if (id) {
-      newLayer.id = id;
-      set((state) => ({
-        layerList: [...state.layerList, newLayer],
-        nextLayerIndex: state.nextLayerIndex + 1,
-        selectedLayer: newLayer,
-      }));
-    }
+    await firestore.addLayerToFirestore(uid, newLayer);
   },
 
   updateLayer: (index, updatedProperties) => {
