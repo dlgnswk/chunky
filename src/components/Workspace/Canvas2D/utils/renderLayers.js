@@ -1,4 +1,8 @@
-function renderLayers(ctx, layerList, imageCache) {
+function renderLayers(canvasRef, layerList, imageCache) {
+  const ctx = canvasRef.current?.getContext('2d');
+
+  if (!ctx) return;
+
   layerList.forEach((layer) => {
     if (layer && layer.visible) {
       if (layer.type === 'draw' && Array.isArray(layer.path)) {
