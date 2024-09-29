@@ -98,6 +98,8 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 # <span id="controls">첫번째, 주요 기능 소개</span>
 
+<img src="./src/assets/readme/images/chunkyControls.png" alt="chunky controls">
+
 <br/>
 
 # <span id="main-feature">두번째, 주요 기능 소개</span>
