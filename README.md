@@ -65,9 +65,9 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
     <a href="#main-feature" style="font-size: 1.17rem;">두번째, 주요 기능 소개</a>
     <ul style="padding-left: 48px;">
-      <li><a href="#main-feature-user">사용자 계정 추가 및 관리하기</a></li>
       <li><a href="#main-feature-drawing">그리기 도구 조작해서 그려보기</a></li>
       <li><a href="#main-feature-rendering">설정값 조절해 렌더링하기</a></li>
+      <li><a href="#main-feature-user">사용자 계정 추가 및 관리하기</a></li>
     </ul>
   </div>
 
@@ -103,53 +103,6 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 <br/>
 
 # <span id="main-feature">두번째, 주요 기능 소개</span>
-
-## <span id="main-feature-user">사용자 계정 추가 및 관리하기</span>
-
-### 1. 회원가입
-
-<table width=330px;>
-  <tr>
-    <td>
-      <img src="./src/assets/readme/images/user/register.gif" alt="Alt text 1">
-    </td>
-  </tr>
-</table>
-<li>모든 입력필드에 대해 유효성 검사를 통과하는 경우 회원가입이 가능합니다.</li>
-<li>회원가입이 완료되면 회원정보는 Firebase Authentication에 저장됩니다.</li>
-
-<br/><br/>
-
-### 2. 로그인 및 로그아웃
-
-<table style="width: 1000px;">
-  <thead>
-    <tr>
-      <th style="text-align: center;">구글 로그인</th>
-      <th style="text-align: center;">일반 로그인</th>
-      <th style="text-align: center;">로그아웃</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="./src/assets/readme/images/user/login-google.gif" alt="구글 로그인" style="max-width: 100%; height: auto;">
-      </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="./src/assets/readme/images/user/login-common.gif" alt="일반 로그인" style="max-width: 100%; height: auto;">
-      </td>
-      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
-        <img src="./src/assets/readme/images/user/logout.gif" alt="로그아웃" style="max-width: 100%; height: auto;">
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<li>일반 로그인 시 입력된 이메일과 비밀번호를 Firebase에서 확인해 로그인합니다.</li>
-<li>구글 로그인 시 로그인 되어있는 구글 계정으로 로그인합니다.</li>
-<li>저장된 로그인 유저 정보를 제거합니다.</li>
-
-<br/>
 
 ## <span id="main-feature-drawing">그리기 도구 조작해서 그려보기</span>
 
@@ -332,6 +285,53 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
     </td>
   </tr>
 </table>
+
+<br/>
+
+## <span id="main-feature-user">사용자 계정 추가 및 관리하기</span>
+
+### 1. 회원가입
+
+<table width=330px;>
+  <tr>
+    <td>
+      <img src="./src/assets/readme/images/user/register.gif" alt="Alt text 1">
+    </td>
+  </tr>
+</table>
+<li>모든 입력필드에 대해 유효성 검사를 통과하는 경우 회원가입이 가능합니다.</li>
+<li>회원가입이 완료되면 회원정보는 Firebase Authentication에 저장됩니다.</li>
+
+<br/><br/>
+
+### 2. 로그인 및 로그아웃
+
+<table style="width: 1000px;">
+  <thead>
+    <tr>
+      <th style="text-align: center;">구글 로그인</th>
+      <th style="text-align: center;">일반 로그인</th>
+      <th style="text-align: center;">로그아웃</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="./src/assets/readme/images/user/login-google.gif" alt="구글 로그인" style="max-width: 100%; height: auto;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="./src/assets/readme/images/user/login-common.gif" alt="일반 로그인" style="max-width: 100%; height: auto;">
+      </td>
+      <td style="text-align: center; border: 1px solid #ddd; padding: 8px;">
+        <img src="./src/assets/readme/images/user/logout.gif" alt="로그아웃" style="max-width: 100%; height: auto;">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<li>일반 로그인 시 입력된 이메일과 비밀번호를 Firebase에서 확인해 로그인합니다.</li>
+<li>구글 로그인 시 로그인 되어있는 구글 계정으로 로그인합니다.</li>
+<li>저장된 로그인 유저 정보를 제거합니다.</li>
 
 <br/><br/>
 
