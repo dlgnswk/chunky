@@ -68,9 +68,9 @@ function Canvas3D() {
         <Canvas
           shadows
           camera={{
-            position: [-100, -canvasSize.height * 1.1, canvasSize.depth * 1.1],
+            position: [-100, -canvasSize.height * 1, canvasSize.depth * 1],
             up: [0, 0, 1],
-            fov: 40,
+            fov: 45,
             near: 0.1,
             far:
               Math.max(canvasSize.width, canvasSize.height, canvasSize.depth) *
