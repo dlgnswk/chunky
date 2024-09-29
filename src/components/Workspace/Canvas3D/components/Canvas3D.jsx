@@ -1,94 +1,32 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
+import React, { useRef, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
-import { EffectComposer, Bloom } from '@react-three/postprocessing';
+import {
+  EffectComposer,
+  Bloom,
+  ToneMapping,
+} from '@react-three/postprocessing';
+import { BlendFunction } from 'postprocessing';
+
 import * as THREE from 'three';
-import { STLExporter } from 'three/examples/jsm/exporters/STLExporter';
+
 import { IoCubeOutline } from 'react-icons/io5';
 
 import ToolBox from '../../ToolBox';
 import Layer3D from '../../Layer3D';
-import LayoutGridAxes from '../../LayoutGridAxes';
-import useCameraControl from '../../../../r3f-utils/useCameraControl';
+import useCameraControl from '../hooks/useCameraControl';
 import useStore from '../../../../store/store';
-
-function SceneContent() {
-  const { scene } = useThree();
-  const { setExportToSTL } = useStore();
-
-  const exportToSTL = useCallback(() => {
-    const exporter = new STLExporter();
-    const exportScene = new THREE.Scene();
-
-    const traverseAndExport = (object) => {
-      if (
-        object instanceof THREE.Mesh &&
-        object.geometry &&
-        !(object.parent instanceof THREE.AxesHelper) &&
-        object.name !== 'LayoutGridAxes'
-      ) {
-        const clonedObject = object.clone();
-        clonedObject.material = new THREE.MeshStandardMaterial({
-          color: object.material.color,
-          roughness: 0.7,
-          metalness: 0.2,
-        });
-        exportScene.add(clonedObject);
-      }
-
-      object.children.forEach((child) => traverseAndExport(child));
-    };
-
-    scene.children.forEach((child) => traverseAndExport(child));
-
-    const stlString = exporter.parse(exportScene);
-
-    const blob = new Blob([stlString], { type: 'text/plain' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'scene_without_grid.stl';
-    link.click();
-  }, [scene]);
-
-  useEffect(() => {
-    setExportToSTL(exportToSTL);
-  }, [exportToSTL, setExportToSTL]);
-
-  return null;
-}
-
-function CameraController() {
-  const { camera, gl } = useThree();
-  const controls = useRef();
-  const { cameraPosition, cameraTarget, cameraUp } = useStore();
-
-  useEffect(() => {
-    camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-    camera.up.set(cameraUp.x, cameraUp.y, cameraUp.z);
-    controls.current.target.set(cameraTarget.x, cameraTarget.y, cameraTarget.z);
-    controls.current.update();
-  }, [camera, cameraPosition, cameraTarget, cameraUp]);
-
-  return (
-    <OrbitControls
-      ref={controls}
-      args={[camera, gl.domElement]}
-      enableRotate={false}
-      enablePan
-      mouseButtons={{
-        LEFT: THREE.MOUSE.ROTATE,
-        MIDDLE: THREE.MOUSE.DOLLY,
-        RIGHT: THREE.MOUSE.PAN,
-      }}
-    />
-  );
-}
+import GridWithAxes from './GridWithAxes';
 
 function Canvas3D() {
   const canvasRef = useRef();
   const sceneRef = useRef();
   const cameraRef = useCameraControl();
-  const { canvasSize, layerList, viewToolList } = useStore();
+
+  const canvasSize = useStore((state) => state.canvasSize);
+  const layerList = useStore((state) => state.layerList);
+  const viewToolList = useStore((state) => state.viewToolList);
+
   const [selectedTool, setSelectedTool] = useState('viewPerspective');
 
   const selectTool = (tool) => {
@@ -110,14 +48,10 @@ function Canvas3D() {
       ) : (
         <Canvas
           shadows
-          gl={{
-            toneMapping: THREE.ACESFilmicToneMapping,
-            toneMappingExposure: 1,
-          }}
           camera={{
-            position: [0, -canvasSize.height * 1.1, canvasSize.depth * 1.1],
+            position: [-100, -canvasSize.height * 1.1, canvasSize.depth * 1.1],
             up: [0, 0, 1],
-            fov: 50,
+            fov: 40,
             near: 0.1,
             far:
               Math.max(canvasSize.width, canvasSize.height, canvasSize.depth) *
@@ -127,17 +61,34 @@ function Canvas3D() {
           style={{ height: '100%', width: '100%' }}
           background="#ffffff"
         >
-          <CameraController />
-          <SceneContent />
-          <EffectComposer multisampling={0} enableNormalPass>
+          <ToneMapping
+            blendFunction={BlendFunction.NORMAL}
+            adaptive
+            resolution={256}
+            middleGrey={0.6}
+            maxLuminance={16.0}
+            averageLuminance={1.0}
+            adaptationRate={1.0}
+          />
+          <EffectComposer disableNormalPass enabled>
             <Bloom
               intensity={0.9}
-              luminanceThreshold={0.3}
-              luminanceSmoothing={0.9}
+              luminanceThreshold={1}
+              luminanceSmoothing={4}
             />
           </EffectComposer>
-          <ambientLight intensity={1} />
-          <directionalLight position={[2, 3, 5]} intensity={1} castShadow />
+          <ambientLight color="#ffffff" intensity={1} />
+          <directionalLight
+            position={[3000, -1000, 5000]}
+            target-position={[0, 0, 0]}
+            intensity={1.1}
+            color={0xffffff}
+            castShadow
+            shadow-camera-top={6}
+            shadow-camera-bottom={-6}
+            shadow-camera-left={-6}
+            shadow-camera-right={6}
+          />
           <Environment preset="city" />
           <OrbitControls
             ref={cameraRef}
@@ -146,9 +97,13 @@ function Canvas3D() {
             zoomSpeed={2}
             target={[0, 0, 0]}
             up={[0, 0, 1]}
+            mouseButtons={{
+              LEFT: THREE.MOUSE.ROTATE,
+              MIDDLE: THREE.MOUSE.PAN,
+            }}
           />
           <group ref={sceneRef}>
-            <LayoutGridAxes />
+            <GridWithAxes />
             {Array.isArray(layerList) &&
               layerList.map(
                 (layer) =>
