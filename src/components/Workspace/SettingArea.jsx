@@ -42,21 +42,22 @@ function SettingArea() {
 
     const fetchData = async () => {
       const fetchedHistory = await firestore.getHistoryFromFirestore(user.uid);
-      const fetchedLayer = await firestore.getLayersFromFirestore(user.uid);
 
-      if (fetchedLayer.length !== 0 && fetchedHistory.length !== 0)
+      if (fetchedHistory.length !== 0) {
         setIsFirstVisit(false);
+      } else {
+        try {
+          const fetchedPresets = await firestore.getPresetsFromFirestore();
 
-      try {
-        const fetchedPresets = await firestore.getPresetsFromFirestore();
-
-        setLayers(fetchedPresets[0].layers);
-        setLayerTitle(fetchedPresets[0].name);
-      } catch (error) {
-        setAlertState('failed-load-preset');
+          setLayers(fetchedPresets[0].layers);
+          setLayerTitle(fetchedPresets[0].name);
+        } catch (error) {
+          setAlertState('failed-load-preset');
+        }
       }
     };
     fetchData();
+    console.log(isFirstVisit);
   }, [user, isFirstVisit, setIsFirstVisit]);
 
   const navigate = useNavigate();
