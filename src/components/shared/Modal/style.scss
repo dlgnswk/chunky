@@ -85,3 +85,78 @@
     }
   }
 }
+
+.control-layer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .control-modal-window {
+    @include mixin.font-urbanist;
+    padding: 30px;
+    background-color: var(--text-color);
+    border-radius: 10px;
+    margin-top: 120px;
+
+    .control-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      margin-bottom: 30px;
+
+      .control-modal-title {
+        @include mixin.font-pixelifySans;
+        font-size: 30px;
+      }
+
+      .control-modal-sub-title {
+        @include mixin.font-urbanist;
+        font-size: 25px;
+      }
+
+      .control-modal-close-button {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0);
+        color: white;
+        border: 0;
+        font-size: 28px;
+      }
+
+      .control-modal-close-button:hover {
+        cursor: pointer;
+      }
+    }
+
+    .control-modal-content {
+      @include mixin.font-urbanist;
+      color: white;
+      width: 1000px;
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      .control-image {
+        display: block;
+        margin-bottom: 20px;
+      }
+
+      .controls-readme-link {
+        color: white;
+        font-weight: bold;
+        margin-right: 3px;
+      }
+    }
+  }
+}
