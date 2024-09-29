@@ -1,7 +1,5 @@
 import './style.scss';
 
-// import pcIcon from '../../assets/icons/icon-pc.png';
-
 function MobileView() {
   return (
     <div className="page-mobile">
