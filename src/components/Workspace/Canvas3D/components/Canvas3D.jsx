@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
+import React, { useEffect, useRef, useState } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { Environment } from '@react-three/drei';
 import {
   EffectComposer,
   Bloom,
@@ -8,24 +8,43 @@ import {
 } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 
-import * as THREE from 'three';
-
 import { IoCubeOutline } from 'react-icons/io5';
 
 import ToolBox from '../../ToolBox';
 import Layer3D from '../../Layer3D';
-import useCameraControl from '../hooks/useCameraControl';
 import useStore from '../../../../store/store';
 import GridWithAxes from './GridWithAxes';
+import CameraControl from './CameraControl';
+
+function DynamicCamera() {
+  const { camera } = useThree();
+  const cameraSetting = useStore((state) => state.cameraSetting);
+
+  useEffect(() => {
+    if (cameraSetting.position) {
+      camera.position.set(
+        cameraSetting.position.x,
+        cameraSetting.position.y,
+        cameraSetting.position.z,
+      );
+    }
+    if (cameraSetting.up) {
+      camera.up.set(cameraSetting.up.x, cameraSetting.up.y, cameraSetting.up.z);
+    }
+    camera.updateProjectionMatrix();
+  }, [camera, cameraSetting]);
+
+  return null;
+}
 
 function Canvas3D() {
   const canvasRef = useRef();
   const sceneRef = useRef();
-  const cameraRef = useCameraControl();
 
   const canvasSize = useStore((state) => state.canvasSize);
   const layerList = useStore((state) => state.layerList);
   const viewToolList = useStore((state) => state.viewToolList);
+  const cameraSetting = useStore((state) => state.cameraSetting);
 
   const [selectedTool, setSelectedTool] = useState('viewPerspective');
 
@@ -90,18 +109,8 @@ function Canvas3D() {
             shadow-camera-right={6}
           />
           <Environment preset="city" />
-          <OrbitControls
-            ref={cameraRef}
-            makeDefault
-            enableDamping={false}
-            zoomSpeed={2}
-            target={[0, 0, 0]}
-            up={[0, 0, 1]}
-            mouseButtons={{
-              LEFT: THREE.MOUSE.ROTATE,
-              MIDDLE: THREE.MOUSE.PAN,
-            }}
-          />
+          <DynamicCamera />
+          <CameraControl {...cameraSetting} />
           <group ref={sceneRef}>
             <GridWithAxes />
             {Array.isArray(layerList) &&

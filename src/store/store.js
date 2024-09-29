@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import * as THREE from 'three';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -69,6 +70,22 @@ const useStore = create((set, get) => ({
   cameraPosition: { x: 0, y: -180 * 1.1, z: 180 * 1.1 },
   cameraTarget: { x: 0, y: 0, z: 0 },
   cameraUp: { x: 0, y: 0, z: 1 },
+  cameraSetting: {
+    makeDefault: true,
+    enableDamping: false,
+    zoomSpeed: 2,
+    target: [0, 0, 0],
+    up: [0, 0, 1],
+    mouseButtons: {
+      LEFT: THREE.MOUSE.ROTATE,
+      MIDDLE: THREE.MOUSE.PAN,
+    },
+  },
+
+  setCameraSetting: (newSetting) =>
+    set((state) => ({
+      cameraSetting: { ...state.cameraSetting, ...newSetting },
+    })),
 
   setCameraView: (position, target, up) =>
     set({

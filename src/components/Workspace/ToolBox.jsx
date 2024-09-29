@@ -2,13 +2,17 @@ import { useRef } from 'react';
 
 import { PiImage } from 'react-icons/pi';
 
+import * as THREE from 'three';
+
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../services/firebase-config';
 
 import useStore from '../../store/store';
 
 function ToolBox({ type, iconList, selectTool, selectedTool }) {
-  const { setCameraView, canvasSize } = useStore();
+  const canvasSize = useStore((state) => state.canvasSize);
+  const cameraSetting = useStore((state) => state.cameraSetting);
+  const setCameraSetting = useStore((state) => state.setCameraSetting);
   const fileInputRef = useRef(null);
   const { addLayer, setAlertState } = useStore();
 
@@ -22,52 +26,66 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
     const { width, height, depth } = canvasSize;
     const distance = Math.max(width, height, depth) * 1.1;
 
+    let newCameraSetting = {
+      enableDamping: false,
+      dampingFactor: 0.05,
+      zoomSpeed: 2,
+    };
+
     switch (viewId) {
       case 'viewPerspective':
-        setCameraView(
-          { x: -distance, y: -distance, z: distance },
-          { x: 0, y: 0, z: 0 },
-          { x: 0, y: 0, z: 1 },
-        );
+        newCameraSetting = {
+          ...newCameraSetting,
+          position: new THREE.Vector3(-distance, -distance, distance),
+          up: new THREE.Vector3(0, 0, 1),
+          target: new THREE.Vector3(0, 0, 0),
+        };
         break;
       case 'viewFront':
-        setCameraView(
-          { x: 0, y: -distance, z: 0 },
-          { x: 0, y: 0, z: 0 },
-          { x: 0, y: 0, z: 1 },
-        );
+        newCameraSetting = {
+          ...newCameraSetting,
+          position: new THREE.Vector3(0, -distance * 1.5, 0),
+          up: new THREE.Vector3(0, 0, 1),
+          target: new THREE.Vector3(0, 0, 0),
+        };
         break;
       case 'viewBack':
-        setCameraView(
-          { x: 0, y: distance, z: 0 },
-          { x: 0, y: 0, z: 0 },
-          { x: 0, y: 0, z: 1 },
-        );
+        newCameraSetting = {
+          ...newCameraSetting,
+          position: new THREE.Vector3(0, distance * 1.5, 0),
+          up: new THREE.Vector3(0, 0, 1),
+          target: new THREE.Vector3(0, 0, 0),
+        };
         break;
       case 'viewLeft':
-        setCameraView(
-          { x: -distance, y: 0, z: 0 },
-          { x: 0, y: 0, z: 0 },
-          { x: 0, y: 0, z: 1 },
-        );
+        newCameraSetting = {
+          ...newCameraSetting,
+          position: new THREE.Vector3(-distance * 1.5, 0, 0),
+          up: new THREE.Vector3(0, 0, 1),
+          target: new THREE.Vector3(0, 0, 0),
+        };
         break;
       case 'viewRight':
-        setCameraView(
-          { x: distance, y: 0, z: 0 },
-          { x: 0, y: 0, z: 0 },
-          { x: 0, y: 0, z: 1 },
-        );
+        newCameraSetting = {
+          ...newCameraSetting,
+          position: new THREE.Vector3(distance * 1.5, 0, 0),
+          up: new THREE.Vector3(0, 0, 1),
+          target: new THREE.Vector3(0, 0, 0),
+        };
         break;
       case 'viewUp':
-        setCameraView(
-          { x: 0, y: 0, z: distance },
-          { x: 0, y: 0, z: 0 },
-          { x: 0, y: 1, z: 0 },
-        );
+        newCameraSetting = {
+          ...newCameraSetting,
+          position: new THREE.Vector3(0, 0, distance * 1.5),
+          up: new THREE.Vector3(0, 1, 0),
+          target: new THREE.Vector3(0, 0, 0),
+        };
         break;
       default:
         break;
     }
+
+    setCameraSetting(newCameraSetting);
   };
 
   const handleFileChange = async (event) => {
