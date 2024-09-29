@@ -32,23 +32,27 @@ import { auth, db, onAuthStateChanged } from '../services/firebase-config';
 import firestore from '../services/firestore';
 
 const DRAWING_ICON_LIST = [
-  { id: 'move', icon: PiHandWaving },
-  { id: 'line', icon: PiLineSegment },
-  { id: 'bezier', icon: PiBezierCurve },
-  { id: 'rectangle', icon: PiRectangle },
-  { id: 'triangle', icon: PiTriangle },
-  { id: 'circle', icon: PiCircle },
-  { id: 'paintBucket', icon: PiPaintBucket },
-  { id: 'eraser', icon: PiEraser },
+  { id: 'move', icon: PiHandWaving, label: '화면 이동하기 M' },
+  { id: 'line', icon: PiLineSegment, label: '직선 그리기 L' },
+  { id: 'bezier', icon: PiBezierCurve, label: '곡선 그리기 A' },
+  { id: 'rectangle', icon: PiRectangle, label: '사각형 그리기 R' },
+  { id: 'triangle', icon: PiTriangle, label: '삼각형 그리기 T' },
+  { id: 'circle', icon: PiCircle, label: '원 그리기 C' },
+  { id: 'paintBucket', icon: PiPaintBucket, label: '색 채우기 P' },
+  { id: 'eraser', icon: PiEraser, label: '지우기 E' },
 ];
 
 const VIEW_ICON_LIST = [
-  { id: 'viewPerspective', icon: 'images/viewPerspective.svg' },
-  { id: 'viewBack', icon: 'images/viewBack.svg' },
-  { id: 'viewFront', icon: 'images/viewFront.svg' },
-  { id: 'viewLeft', icon: 'images/viewLeft.svg' },
-  { id: 'viewRight', icon: 'images/viewRight.svg' },
-  { id: 'viewUp', icon: 'images/viewUp.svg' },
+  {
+    id: 'viewPerspective',
+    icon: 'images/viewPerspective.svg',
+    label: '입면으로 보기',
+  },
+  { id: 'viewBack', icon: 'images/viewBack.svg', label: '후면으로 보기' },
+  { id: 'viewFront', icon: 'images/viewFront.svg', label: '정면으로 보기' },
+  { id: 'viewLeft', icon: 'images/viewLeft.svg', label: '좌측면으로 보기' },
+  { id: 'viewRight', icon: 'images/viewRight.svg', label: '우측면으로 보기' },
+  { id: 'viewUp', icon: 'images/viewUp.svg', label: '평면으로 보기' },
 ];
 
 const INITIAL_LAYER_LIST = [];
@@ -80,6 +84,11 @@ const useStore = create((set, get) => ({
       LEFT: THREE.MOUSE.ROTATE,
       MIDDLE: THREE.MOUSE.PAN,
     },
+  },
+  isFirstVisit: true,
+
+  setIsFirstVisit(isVisit) {
+    set({ isFirstVisit: isVisit });
   },
 
   setCameraSetting: (newSetting) =>

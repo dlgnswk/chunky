@@ -11,7 +11,6 @@ import useStore from '../../store/store';
 
 function ToolBox({ type, iconList, selectTool, selectedTool }) {
   const canvasSize = useStore((state) => state.canvasSize);
-  const cameraSetting = useStore((state) => state.cameraSetting);
   const setCameraSetting = useStore((state) => state.setCameraSetting);
   const fileInputRef = useRef(null);
   const { addLayer, setAlertState } = useStore();
@@ -25,7 +24,6 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
 
     const { width, height, depth } = canvasSize;
     const distance = Math.max(width, height, depth) * 1.1;
-
     let newCameraSetting = {
       enableDamping: false,
       dampingFactor: 0.05,
@@ -36,7 +34,7 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
       case 'viewPerspective':
         newCameraSetting = {
           ...newCameraSetting,
-          position: new THREE.Vector3(-distance, -distance, distance),
+          position: new THREE.Vector3(-distance, -distance, distance * 1.25),
           up: new THREE.Vector3(0, 0, 1),
           target: new THREE.Vector3(0, 0, 0),
         };
@@ -138,12 +136,13 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
   return (
     <div className="toolbox-container">
       {type === '2d' &&
-        iconList.map(({ id, icon: IconComponent }) => (
+        iconList.map(({ id, icon: IconComponent, label }) => (
           <button
             className={`tool-button ${selectedTool === id ? 'selected' : ''}`}
             key={id}
             aria-label={id}
             onClick={() => selectTool(id)}
+            data-tooltip={label}
           >
             <IconComponent />
           </button>
@@ -155,6 +154,7 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
             className="tool-button"
             aria-label="image-button"
             onClick={handleImageImport}
+            data-tooltip="이미지 불러오기"
           >
             <PiImage />
           </button>
@@ -168,12 +168,13 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
         </>
       )}
       {type === '3d' &&
-        iconList.map(({ id, icon }) => (
+        iconList.map(({ id, icon, label }) => (
           <button
             className={`tool-button ${selectedTool === id ? 'selected' : ''}`}
             key={id}
             aria-label={id}
             onClick={() => handleViewChange(id)}
+            data-tooltip={label}
           >
             <img src={icon} alt="view icon" />
           </button>

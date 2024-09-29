@@ -8,6 +8,8 @@ import useStore from '../../store/store';
 
 import ModalButton from '../shared/Button/ModalButton';
 import Logo from '../shared/Logo/Logo';
+import firestore from '../../services/firestore';
+import ControlModal from '../shared/Modal/ControlModal';
 
 const LAYOUT_OPTIONS = {
   option1: { width: 180, height: 180, depth: 180 },
@@ -18,15 +20,17 @@ const LAYOUT_OPTIONS = {
 };
 
 function SettingArea() {
-  const {
-    isModalOpened,
-    setIsModalOpened,
-    modalType,
-    setModalType,
-    setCanvasSize,
-    setAlertState,
-    user,
-  } = useStore();
+  const isModalOpened = useStore((state) => state.isModalOpened);
+  const setIsModalOpened = useStore((state) => state.setIsModalOpened);
+  const modalType = useStore((state) => state.modalType);
+  const setModalType = useStore((state) => state.setModalType);
+  const setCanvasSize = useStore((state) => state.setCanvasSize);
+  const setAlertState = useStore((state) => state.setAlertState);
+  const user = useStore((state) => state.user);
+  const isFirstVisit = useStore((state) => state.isFirstVisit);
+  const setIsFirstVisit = useStore((state) => state.setIsFirstVisit);
+  const setLayers = useStore((state) => state.setLayers);
+  const setLayerTitle = useStore((state) => state.setLayerTitle);
 
   const [userName, setUserName] = useState('');
 
@@ -35,7 +39,25 @@ function SettingArea() {
     if (userData && userData.displayName) {
       setUserName(userData.displayName);
     }
-  }, []);
+
+    const fetchData = async () => {
+      const fetchedHistory = await firestore.getHistoryFromFirestore(user.uid);
+      const fetchedLayer = await firestore.getLayersFromFirestore(user.uid);
+
+      if (fetchedLayer.length !== 0 && fetchedHistory.length !== 0)
+        setIsFirstVisit(false);
+
+      try {
+        const fetchedPresets = await firestore.getPresetsFromFirestore();
+
+        setLayers(fetchedPresets[0].layers);
+        setLayerTitle(fetchedPresets[0].name);
+      } catch (error) {
+        setAlertState('failed-load-preset');
+      }
+    };
+    fetchData();
+  }, [user, isFirstVisit, setIsFirstVisit]);
 
   const navigate = useNavigate();
 
@@ -93,6 +115,7 @@ function SettingArea() {
         modalType={modalType}
         setModalType={setModalType}
       />
+      {isFirstVisit && <ControlModal setIsFirstVisit={setIsFirstVisit} />}
     </div>
   );
 }

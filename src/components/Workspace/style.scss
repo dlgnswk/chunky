@@ -579,6 +579,29 @@
           fill: white;
         }
       }
+
+      .tool-button::before {
+        content: attr(data-tooltip);
+        font-size: 16px;
+        visibility: hidden;
+        opacity: 0;
+        width: max-content;
+        background-color: var(--text-color);
+        color: #fff;
+        text-align: center;
+        border-radius: 5px;
+        padding: 7px 12px 5px;
+        transition: opacity 0.3s ease-in-out;
+
+        position: absolute;
+        z-index: 1;
+        transform: translate(0, 40px);
+      }
+
+      .tool-button:hover::before {
+        opacity: 1;
+        visibility: visible;
+      }
     }
   }
   .canvas-3d {
