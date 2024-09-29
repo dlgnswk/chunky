@@ -57,7 +57,6 @@ function SettingArea() {
       }
     };
     fetchData();
-    console.log(isFirstVisit);
   }, [user, isFirstVisit, setIsFirstVisit]);
 
   const navigate = useNavigate();
