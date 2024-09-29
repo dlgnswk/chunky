@@ -94,11 +94,11 @@ function SettingArea() {
       <div className="layout-setting">
         <span>Layout</span>
         <select className="layout-select" onChange={handleLayoutChange}>
-          <option value="option1">180 x 180 x 180</option>
-          <option value="option2">210 x 210 x 210</option>
+          <option value="option1">400 x 400 x 450</option>
+          <option value="option2">300 x 300 x 300</option>
           <option value="option3">220 x 220 x 250</option>
-          <option value="option4">300 x 300 x 300</option>
-          <option value="option5">400 x 400 x 450</option>
+          <option value="option4">210 x 210 x 210</option>
+          <option value="option5">180 x 180 x 180</option>
         </select>
       </div>
       <ModalButton

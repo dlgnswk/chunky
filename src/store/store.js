@@ -56,7 +56,7 @@ const VIEW_ICON_LIST = [
 ];
 
 const INITIAL_LAYER_LIST = [];
-const INITIAL_CANVAS_SIZE = { width: 180, height: 180, depth: 180 };
+const INITIAL_CANVAS_SIZE = { width: 400, height: 400, depth: 450 };
 
 const useStore = create((set, get) => ({
   user: null,
@@ -71,15 +71,16 @@ const useStore = create((set, get) => ({
   layerList: [],
   exportToSTL: null,
   layerTitle: 'Layer Title',
-  cameraPosition: { x: 0, y: -180 * 1.1, z: 180 * 1.1 },
+  cameraPosition: { x: 0, y: -400 * 1.1, z: 400 * 1.1 },
   cameraTarget: { x: 0, y: 0, z: 0 },
   cameraUp: { x: 0, y: 0, z: 1 },
   cameraSetting: {
     makeDefault: true,
     enableDamping: false,
     zoomSpeed: 2,
-    target: [0, 0, 0],
-    up: [0, 0, 1],
+    position: new THREE.Vector3(-400, -400, 500),
+    up: new THREE.Vector3(0, 0, 1),
+    target: new THREE.Vector3(0, 0, 0),
     mouseButtons: {
       LEFT: THREE.MOUSE.ROTATE,
       MIDDLE: THREE.MOUSE.PAN,
