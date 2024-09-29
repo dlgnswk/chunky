@@ -57,7 +57,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <div>
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="#controls" style="font-size: 1.17rem;">첫번째, 사용 설명서</a>
+    <a href="#controls" style="font-size: 1.17rem;">첫번째, 조작 방법</a>
   </div>
 
   <br/>
@@ -96,7 +96,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 <br/>
 <br/>
 
-# <span id="controls">첫번째, 주요 기능 소개</span>
+# <span id="controls">첫번째, 조작 방법</span>
 
 <img src="./src/assets/readme/images/chunkyControls.png" alt="chunky controls">
 
