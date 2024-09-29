@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 
 function useCanvasSetup(canvasSize, screenRef, canvasRef) {
   const [scale, setScale] = useState(0.5);
@@ -32,46 +32,41 @@ function useCanvasSetup(canvasSize, screenRef, canvasRef) {
     updateInitialOffset();
   }, [canvasSize.width, canvasSize.height]);
 
-  const handleWheel = useCallback(
-    (event) => {
-      event.preventDefault();
+  const handleWheel = (event) => {
+    const scaleFactor = 0.2;
+    const { clientX, clientY } = event;
+    const rect = canvasRef.current.getBoundingClientRect();
+    const mouseX = clientX - rect.left;
+    const mouseY = clientY - rect.top;
 
-      const scaleFactor = 0.2;
-      const { clientX, clientY } = event;
-      const rect = canvasRef.current.getBoundingClientRect();
-      const mouseX = clientX - rect.left;
-      const mouseY = clientY - rect.top;
+    if (event.deltaY < 0) {
+      setScale((prevScale) => {
+        const newScale = Math.min(prevScale + scaleFactor, maxScale);
+        setOffset((prevOffset) => ({
+          x: prevOffset.x - (mouseX * (newScale - prevScale)) / newScale,
+          y: prevOffset.y - (mouseY * (newScale - prevScale)) / newScale,
+        }));
 
-      if (event.deltaY < 0) {
-        setScale((prevScale) => {
-          const newScale = Math.min(prevScale + scaleFactor, maxScale);
-          setOffset((prevOffset) => ({
-            x: prevOffset.x - (mouseX * (newScale - prevScale)) / newScale,
-            y: prevOffset.y - (mouseY * (newScale - prevScale)) / newScale,
-          }));
+        return newScale;
+      });
+    } else {
+      setScale((prevScale) => {
+        const newScale = Math.max(prevScale - scaleFactor, 0.1);
 
-          return newScale;
-        });
-      } else {
-        setScale((prevScale) => {
-          const newScale = Math.max(prevScale - scaleFactor, 0.1);
+        setOffset((prevOffset) => ({
+          x: prevOffset.x - (mouseX * (newScale - prevScale)) / newScale,
+          y: prevOffset.y - (mouseY * (newScale - prevScale)) / newScale,
+        }));
 
-          setOffset((prevOffset) => ({
-            x: prevOffset.x - (mouseX * (newScale - prevScale)) / newScale,
-            y: prevOffset.y - (mouseY * (newScale - prevScale)) / newScale,
-          }));
-
-          return newScale;
-        });
-      }
-    },
-    [maxScale, canvasRef],
-  );
+        return newScale;
+      });
+    }
+  };
 
   useEffect(() => {
     const element = screenRef.current;
     if (element) {
-      element.addEventListener('wheel', handleWheel, { passive: false });
+      element.addEventListener('wheel', handleWheel, { passive: true });
     }
 
     return () => {
