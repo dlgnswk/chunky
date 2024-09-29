@@ -1,46 +1,30 @@
-import { useEffect, useRef } from 'react';
-import createModels from '../../models/createModels';
+import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import useStore from '../../store/store';
+import GroupModel from './Canvas3D/components/GroupModel';
 
-function Layer3D({ layer, zPosition, thickness }) {
-  const groupRef = useRef();
-  const { canvasSize } = useStore();
-
-  useEffect(() => {
-    if (layer && layer.path && layer.path.length > 0 && groupRef.current) {
-      while (groupRef.current.children.length > 0) {
-        groupRef.current.remove(groupRef.current.children[0]);
-      }
-
-      layer.path.forEach((path) => {
-        const result = createModels(
-          path,
-          layer.height,
-          canvasSize,
-          false,
-          layer.fill,
-        );
-
-        if (result && result.mesh) {
-          result.mesh.position.z = zPosition;
-          result.mesh.castShadow = true;
-          result.mesh.receiveShadow = true;
-
-          groupRef.current.add(result.mesh);
-        }
-      });
-
-      groupRef.current.visible = groupRef.current.children.length > 0;
-    } else if (groupRef.current) {
-      groupRef.current.visible = false;
-    }
-  }, [layer, zPosition, thickness, canvasSize]);
+function Layer3D({ layer, zPosition }) {
+  const canvasSize = useStore((state) => state.canvasSize);
 
   if (!layer || !layer.path || layer.path.length === 0) {
     return null;
   }
 
-  return <group ref={groupRef} />;
+  return (
+    <group visible={layer.visible}>
+      {layer.path.map((path) => (
+        <GroupModel
+          key={uuidv4()}
+          path={path}
+          depth={layer.height}
+          canvasSize={canvasSize}
+          flipHorizontally={false}
+          fill={layer.fill}
+          zPosition={zPosition}
+        />
+      ))}
+    </group>
+  );
 }
 
 export default Layer3D;
