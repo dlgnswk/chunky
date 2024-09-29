@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { ExtrudeGeometry, Shape } from 'three';
-import convert2Dto3D from '../../../../r3f-utils/convert2Dto3D';
+import convert2Dto3D from '../utils/convert2Dto3D';
 
 function CircleModel({ path, depth, canvasSize, fill, zPosition }) {
   const geometry = useMemo(() => {
