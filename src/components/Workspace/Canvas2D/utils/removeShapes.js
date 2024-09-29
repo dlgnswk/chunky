@@ -164,8 +164,6 @@ const handleEnd = async (state) => {
 
       const updatedLayer = { ...currentLayer, path: updatedPaths };
       await updateLayerInFirestore(updatedLayer);
-    } catch (error) {
-      console.error('Failed to update layer:', error);
     } finally {
       setIsErasing(false);
       setEraserStart(null);
