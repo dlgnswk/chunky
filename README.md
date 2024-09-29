@@ -57,7 +57,13 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <div>
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="#main-feature" style="font-size: 1.17rem;">첫번째, 주요 기능 소개</a>
+    <a href="#controls" style="font-size: 1.17rem;">첫번째, 사용 설명서</a>
+  </div>
+
+  <br/>
+  
+  <div style="line-height: 2rem; margin-bottom: 1.5rem;">
+    <a href="#main-feature" style="font-size: 1.17rem;">두번째, 주요 기능 소개</a>
     <ul style="padding-left: 48px;">
       <li><a href="#main-feature-user">사용자 계정 추가 및 관리하기</a></li>
       <li><a href="#main-feature-drawing">그리기 도구 조작해서 그려보기</a></li>
@@ -66,7 +72,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   </div>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="#develop-log" style="font-size: 1.17rem;">두번째, 개발 과정 기록</a>
+    <a href="#develop-log" style="font-size: 1.17rem;">세번째, 개발 과정 기록</a>
     <ul style="padding-left: 48px;">
       <li><a href="#develop-log-draw">사용자 입력 값을 통한 선 그리기 및 저장 구현하기</a></li>
       <li><a href="#develop-log-draw-complex">다중 선과 곡선을 사용한 복잡한 도형 그리기 및 저장 구현하기</a></li>
@@ -77,20 +83,24 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
   </div>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="#schedule" style="font-size: 1.17rem;">세번째, 전체 개발 일정</a>
+    <a href="#schedule" style="font-size: 1.17rem;">네번째, 전체 개발 일정</a>
   </div>
 
   <br/>
 
   <div style="line-height: 2rem; margin-bottom: 1.5rem;">
-    <a href="#memoir" style="font-size: 1.17rem;">네번째, 회고</a>
+    <a href="#memoir" style="font-size: 1.17rem;">다섯번째, 회고</a>
   </div>
 </div>
 
 <br/>
 <br/>
 
-# <span id="main-feature">첫번째, 주요 기능 소개</span>
+# <span id="controls">첫번째, 주요 기능 소개</span>
+
+<br/>
+
+# <span id="main-feature">두번째, 주요 기능 소개</span>
 
 ## <span id="main-feature-user">사용자 계정 추가 및 관리하기</span>
 
@@ -323,7 +333,7 @@ _**"스케치를 통해 3D 모델을 만들었다면 실제로 만질 수 있도
 
 <br/><br/>
 
-# <span id="develop-log">두번째, 개발 과정 기록</span>
+# <span id="develop-log">세번째, 개발 과정 기록</span>
 
 ## <span id="develop-log-draw">사용자 입력 값을 통한 선 그리기 및 저장 구현하기</span>
 
@@ -848,7 +858,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>
 <br/>
 
-# <span id="schedule">세번째, 전체 개발 일정</span>
+# <span id="schedule">네번째, 전체 개발 일정</span>
 
 ## <span id="schedule-kanban">전체 일정 및 칸반</span>
 
@@ -983,7 +993,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/><br/>
 
-# <span id="memoir">네번째, 회고</span>
+# <span id="memoir">다섯번째, 회고</span>
 
 **3D 모델링을 기반으로 하는 웹 프로젝트**
 
