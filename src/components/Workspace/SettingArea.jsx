@@ -12,11 +12,11 @@ import firestore from '../../services/firestore';
 import ControlModal from '../shared/Modal/ControlModal';
 
 const LAYOUT_OPTIONS = {
-  option1: { width: 180, height: 180, depth: 180 },
-  option2: { width: 210, height: 210, depth: 210 },
+  option1: { width: 400, height: 400, depth: 450 },
+  option2: { width: 300, height: 300, depth: 300 },
   option3: { width: 220, height: 220, depth: 250 },
-  option4: { width: 300, height: 300, depth: 300 },
-  option5: { width: 400, height: 400, depth: 450 },
+  option4: { width: 210, height: 210, depth: 210 },
+  option5: { width: 180, height: 180, depth: 180 },
 };
 
 function SettingArea() {
