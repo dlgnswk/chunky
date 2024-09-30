@@ -732,7 +732,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>
 
 <div align="center">
-<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/bezier/bezier-01.gif" width="300" />
+<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/rectangle/rectangle-01.gif" width="300" />
 
 <span align="right" style="color: gray">사각형 그리기 도구</span>
 
@@ -754,7 +754,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>
 
 <div align="center">
-<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/bezier/bezier-01.gif" width="300" />
+<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/triangle/triangle-01.gif" width="300" />
 
 <span align="right" style="color: gray">삼각형 그리기 도구</span>
 
@@ -776,7 +776,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>
 
 <div align="center">
-<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/bezier/bezier-01.gif" width="300" />
+<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/circle/circle-01.gif" width="300" />
 
 <span align="right" style="color: gray">원 그리기 도구</span>
 
