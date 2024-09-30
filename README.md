@@ -727,15 +727,69 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/><br/>
 
-### 3. 그래그를 통한 사각형 그리기 도구
+### 3. 드래그를 통한 사각형 그리기 도구
+
+<br/>
+
+<div align="center">
+<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/bezier/bezier-01.gif" width="300" />
+
+<span align="right" style="color: gray">사각형 그리기 도구</span>
+
+</div>
+
+사각형 그리기 도구는 드래그 한번으로 원하는 크기의 사각형을 그려주는 도구입니다.
+<br/>
+기능 구현을 위해서는 먼저 처음 클릭(mousedown)한 지점과 클릭을 뗀(mouseup) 지점의 좌표를 알아야했습니다.
+<br/>
+이러한 방식으로 구현한 사각형 그리기 로직의 순서를 이벤트 기준으로 도식화 하면 다음과 같습니다.
+<br/>
+
+
 
 <br/><br/>
 
 ### 4. 세번의 클릭을 통한 삼각형 그리기 도구
 
+<br/>
+
+<div align="center">
+<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/bezier/bezier-01.gif" width="300" />
+
+<span align="right" style="color: gray">삼각형 그리기 도구</span>
+
+</div>
+
+사용자는 삼각형 그리기 도구로 모서리 위치를 클릭해 삼각형을 만들 수 있습니다.
+<br/>
+삼각형을 그리기 위해 사용자가 입력한 세개의 모서리 좌표 데이터가 필요했습니다.
+<br/>
+이러한 목적으로 구현한 삼각형 그리기 로직의 순서를 이벤트 기준으로 도식화하면 다음과 같습니다.
+<br/>
+
+
+
 <br/><br/>
 
 ### 5. 중심점을 기준으로 하는 원 그리기 도구
+
+<br/>
+
+<div align="center">
+<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/bezier/bezier-01.gif" width="300" />
+
+<span align="right" style="color: gray">원 그리기 도구</span>
+
+</div>
+
+원 그리기 도구는 중심점을 기준으로 원하는 반지름을 설정해 원을 만들 수 있는 도구입니다.
+<br/>
+원을 그리기 위해 사용자가 지정한 중심점과 드래그를 통해 반지름을 구해 해당하는 원의 크기를 구해야 했습니다.
+<br/>
+이를 위해 원 그리기 로직의 순서를 이벤트 기준으로 도식화하면 다음과 같습니다.
+<br/>
+
+
 
 <br/>
 <br/>
