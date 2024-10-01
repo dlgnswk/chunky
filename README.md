@@ -938,12 +938,49 @@ const renderToolBezier= (ctx) => {
 
 **#01)**
 <br/>1. `mousedown` 이벤트가 일어난 캔버스 좌표를 시작점과 끝점에 입력합니다.
+```javascript
+const handleStart = (event, state) => {
+  // 좌표계산 로직
+
+  setRectStart({ x: mouseX, y: mouseY }); // 시작점 좌표
+  setRectEnd({ x: mouseX, y: mouseY }); // 끝점 좌표
+}
+```
 
 **#02)**
 <br/>2. `mousemove` 이벤트를 통해 끝점의 좌표를 업데이트합니다.
+```javascript
+const handleMove = (event, state) => {
+  // 좌표계산 로직
+
+  setRectEnd(point); // 끝점 업데이트
+}
+```
 
 **#03)**
 <br/>3. `mouseup` 이벤트가 일어났을때 시작점과 끝점이 존재한다면 사각형의 정보를 저장해 렌더링합니다.
+```javascript
+const handleEnd = (event, state) => {
+  if (rectStart && rectEnd) {
+    // 시작점과 끝점이 존재하는 경우
+    const newPath = {
+      type: 'rectangle',
+      x: Math.min(rectStart.x, rectEnd.x),
+      y: Math.min(rectStart.y, rectEnd.y),
+      width: Math.abs(rectEnd.x - rectStart.x),
+      height: Math.abs(rectEnd.y - rectStart.y),
+      fill: 'none',
+    }; // path 객체에 사각형 정보 저장
+  
+    const updatedLayer = {
+      ...currentLayer,
+      path: [...currentLayer.path, newPath],
+    }; // path를 추가한 새로운 레이어 객체 생성
+
+    await updateLayerInFirestore(updatedLayer); // firestore에 레이어 업데이트
+  }
+}
+```
 
 <br/>
 
@@ -971,12 +1008,33 @@ const renderToolBezier= (ctx) => {
 
 **#01)**
 <br/>1. `mousedown` 이벤트를 통해 꼭지점의 좌표를 저장합니다.
+```javascript
+const handleStart = (event, state) => {
+  // 좌표계산 로직
+
+setTrianglePoints((prevPoints) => {
+  const newPoints = [...prevPoints, point];
+
+  return newPoints;
+});
+```
 
 **#02)**
 <br/>2. 저장된 꼭지점이 3개가 될 때까지 계속 저장합니다.
 
 **#03)**
 <br/>3. 저장 후 꼭지점이 3개가 된 경우 삼각형의 정보를 저장하고 렌더링합니다.
+```javascript
+if (newPoints.length === 3) {
+  if (selectedLayer) {
+    addPathToLayer(selectedLayer.index, {
+      type: 'triangle',
+      points: newPoints,
+    });
+  }
+  return [];
+}
+```
 
 <br/>
 
@@ -1004,13 +1062,45 @@ const renderToolBezier= (ctx) => {
 
 **#01)**
 <br/>1. `mousedown` 이벤트를 통해 원의 중심 좌표를 저장합니다.
+```javascript
+const handleStart = () => {
+  // 좌표계산 로직
+
+  setCircleCenter({ x: mouseX, y: mouseY }); // 원의 중심 좌표 저장
+};
+```
 
 **#02)**
 <br/>2. `mousemove` 이벤트가 발생하면 마우스의 현재 위치와 중심 좌표를 계산해 결과(반지름)를 저장합니다.
+```javascript
+const handleMove = () => {
+  // 좌표계산 로직
+
+  const dx = mouseX - circleCenter.x; // 현재 마우스 위치의 x 좌표와 중심의 x 좌표 차이
+  const dy = mouseY - circleCenter.y; // 현재 마우스 위치의 y 좌표와 중심의 y 좌표 차이
+  setCircleRadius(Math.sqrt(dx * dx + dy * dy)); // 원의 반지름 저장
+};
+```
 
 **#03)**
 <br/>3. `mouseup` 이벤트가 발생하고 중심좌표와 반지름이 존재하면 원의 정보를 저장하고 렌더링합니다.
+```javascript
+if (circleCenter && circleRadius) {
+  const newPath = {
+    type: 'circle',
+    center: circleCenter,
+    radius: circleRadius,
+  }; // path 객체에 삼각형의 정보 저장
 
+  const updatedLayer = {
+    ...currentLayer,
+    path: [...currentLayer.path, newPath],
+  }; // 새로운 레이어에 path 값 저장
+  
+  await updateLayerInFirestore(updatedLayer);
+  // firestore에 새로운 레이어 업데이트
+}
+```
 <br/>
 
 ## <span id="develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</span>
