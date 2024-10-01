@@ -897,7 +897,59 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 
 <br/>
 
+<div align="center">
+<img alt="지우개 도구" src="./src/assets/readme/images/erase/erase-01.gif" width="300" />
+
+<span align="right" style="color: gray">지우개 도구</span>
+
+</div>
+
+지우개 영역 내에 있는 도형을 선택된 레이어에서 삭제합니다..<br/>
+이를 위해 구현한 지우개 도구를 이벤트 기준으로 도식화 하면 다음과 같습니다.
+
+<img alt="지우개 도구 로직" src="./src/assets/readme/images/erase/erase-02.png" width="720" />
+
+<br/>
+
+**#01)**
+<br/>1. `mousedown` 이벤트가 발생한 좌표를 시작점과 끝점에 저장합니다.
+
+**#02)**
+<br/>2. `mousemove` 이벤트를 통해 끝점을 업데이트합니다.
+
+**#03)**
+<br/>3. `mouseup` 이벤트가 일어나면 지우개 영역을 계산합니다.
+<br/>4. 해당 레이어를 순회하여 지우개 영역내부에 존재하는 path를 제외하고 새로운 레이어를 생성합니다.
+
+<br/>
+
 ### 5. 이미지 파일을 캔버스에 부착하는 이미지 추가 도구
+
+<br/>
+
+<div align="center">
+<img alt="이미지 추가하기" src="./src/assets/readme/images/image/image-01.gif" width="300" />
+
+<span align="right" style="color: gray">이미지 추가 도구</span>
+
+</div>
+
+이미지를 캔버스에 추가해 이미지를 따라 그릴 수 있도록 합니다.<br/>
+이미지를 불러오기 위한 로직의 흐름을 도식화 한다면 다음과 같습니다.
+
+<img alt="이미지 추가하기 로직" src="./src/assets/readme/images/image/image-02.png" width="720" />
+
+<br/>
+
+**#01)**
+<br/>1. type이 file인 `<input>` 태그를 통해 클릭하면 파일 선택창을 열어줍니다.
+
+**#02)**
+<br/>2. 이미지를 선택하면 firestore storage에 업로드 합니다.
+<br/>3. 해당 이미지의 경로를 통해 firestore storage로 부터 url을 가져옵니다.
+
+**#03)**
+<br/>4. 가져온 url을 이미지 객체에 저장하고 layer를 추가합니다.
 
 <br/>
 
