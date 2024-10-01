@@ -672,7 +672,7 @@ const finalizeLine = () => {
 ```
 
 **#02)**
-<br/>3. `beginPath` 메소드를 이용해 선그리기를 시작합니다.
+<br/>3. `beginPath` 메소드를 이용해 선그리기를 시작합니다.
 <br/>4. `moveTo()` 메소드로 `currentPolyline`의 첫번째 점(폴리라인의 시작점)으로 이동합니다.
 <br/>5. `for()` 반복문을 통해 나머지 점들을 순회하며 `lineTo()` 메소드로 가상의 선을 그립니다.
 ```javascript
@@ -727,7 +727,7 @@ const cancelLine = () => {
 ```
 
 **#03)**
-<br/>4. canvas를 렌더링하는 함수인 renderCanvas를 호출해 캔버스를 새로고침합니다.
+<br/>4. canvas를 렌더링하는 함수인 renderCanvas를 호출해 캔버스를 새로고침합니다.
 ```javascript
 const cancelLine = () => {
   // 변수 초기화 로직
