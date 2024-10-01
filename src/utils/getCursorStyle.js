@@ -1,4 +1,4 @@
-function getCursorStyle(selectedTool, dragging) {
+const getCursorStyle = (selectedTool, dragging) => {
   if (selectedTool === 'move') {
     return dragging ? 'grabbing' : 'grab';
   }
@@ -24,6 +24,6 @@ function getCursorStyle(selectedTool, dragging) {
   }
 
   return 'default';
-}
+};
 
 export default getCursorStyle;

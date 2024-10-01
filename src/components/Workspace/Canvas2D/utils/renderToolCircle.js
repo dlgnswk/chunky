@@ -1,4 +1,4 @@
-function renderToolCircle(ctx, { circleCenter, currentMousePos }) {
+const renderToolCircle = (ctx, { circleCenter, currentMousePos }) => {
   if (circleCenter && currentMousePos) {
     const radius = Math.sqrt(
       (currentMousePos.x - circleCenter.x) ** 2 +
@@ -9,6 +9,6 @@ function renderToolCircle(ctx, { circleCenter, currentMousePos }) {
     ctx.strokeStyle = 'tomato';
     ctx.stroke();
   }
-}
+};
 
 export default renderToolCircle;

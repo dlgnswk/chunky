@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-function handleAuthError(error, set) {
+const handleAuthError = (error, set) => {
   let message;
   switch (error.code) {
     case 'auth/invalid-email':
@@ -16,6 +16,6 @@ function handleAuthError(error, set) {
   set((state) => ({
     alertState: [...state.alertState, { id: uuidv4(), message }],
   }));
-}
+};
 
 export default handleAuthError;

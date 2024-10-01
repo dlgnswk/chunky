@@ -1,7 +1,7 @@
-function renderToolBezier(
+const renderToolBezier = (
   ctx,
   { bezierStart, bezierEnd, bezierControl, currentMousePos },
-) {
+) => {
   if (bezierStart && bezierEnd) {
     ctx.beginPath();
     ctx.moveTo(bezierStart.x, bezierStart.y);
@@ -14,6 +14,6 @@ function renderToolBezier(
     ctx.strokeStyle = 'tomato';
     ctx.stroke();
   }
-}
+};
 
 export default renderToolBezier;

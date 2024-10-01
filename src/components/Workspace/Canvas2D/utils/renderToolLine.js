@@ -1,4 +1,7 @@
-function renderToolLine(ctx, { isDrawingPolyline, currentPolyline, lineEnd }) {
+const renderToolLine = (
+  ctx,
+  { isDrawingPolyline, currentPolyline, lineEnd },
+) => {
   if (isDrawingPolyline && currentPolyline.length > 0) {
     ctx.beginPath();
     ctx.moveTo(currentPolyline[0].x, currentPolyline[0].y);
@@ -38,6 +41,6 @@ function renderToolLine(ctx, { isDrawingPolyline, currentPolyline, lineEnd }) {
       }
     }
   }
-}
+};
 
 export default renderToolLine;

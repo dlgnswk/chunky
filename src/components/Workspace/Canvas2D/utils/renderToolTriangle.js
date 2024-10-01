@@ -1,4 +1,4 @@
-function renderToolTriangle(ctx, { trianglePoints, currentMousePos }) {
+const renderToolTriangle = (ctx, { trianglePoints, currentMousePos }) => {
   if (trianglePoints && trianglePoints.length > 0) {
     ctx.beginPath();
     ctx.moveTo(trianglePoints[0].x, trianglePoints[0].y);
@@ -17,6 +17,6 @@ function renderToolTriangle(ctx, { trianglePoints, currentMousePos }) {
     ctx.strokeStyle = 'tomato';
     ctx.stroke();
   }
-}
+};
 
 export default renderToolTriangle;

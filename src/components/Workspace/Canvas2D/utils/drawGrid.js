@@ -1,4 +1,4 @@
-function drawGrid(ctx, width, height) {
+const drawGrid = (ctx, width, height) => {
   const gridSpacing = 9;
 
   ctx.clearRect(0, 0, width, height);
@@ -34,6 +34,6 @@ function drawGrid(ctx, width, height) {
   ctx.moveTo(0, height / 2);
   ctx.lineTo(width, height / 2);
   ctx.stroke();
-}
+};
 
 export default drawGrid;

@@ -1,4 +1,4 @@
-function renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale) {
+const renderEraserArea = (ctx, isErasing, eraserStart, eraserEnd, scale) => {
   if (isErasing && eraserStart && eraserEnd) {
     ctx.save();
     ctx.strokeStyle = 'red';
@@ -14,6 +14,6 @@ function renderEraserArea(ctx, isErasing, eraserStart, eraserEnd, scale) {
     ctx.stroke();
     ctx.restore();
   }
-}
+};
 
 export default renderEraserArea;

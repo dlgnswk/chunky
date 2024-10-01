@@ -1,4 +1,4 @@
-function renderToolRectangle(ctx, { rectStart, rectEnd }) {
+const renderToolRectangle = (ctx, { rectStart, rectEnd }) => {
   if (rectStart && rectEnd) {
     ctx.beginPath();
     ctx.rect(
@@ -12,6 +12,6 @@ function renderToolRectangle(ctx, { rectStart, rectEnd }) {
     ctx.lineWidth = 1;
     ctx.stroke();
   }
-}
+};
 
 export default renderToolRectangle;

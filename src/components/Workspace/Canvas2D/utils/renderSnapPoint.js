@@ -1,4 +1,4 @@
-function renderSnapPoint(ctx, snapPoint, selectedTool, scale) {
+const renderSnapPoint = (ctx, snapPoint, selectedTool, scale) => {
   if (
     snapPoint &&
     (selectedTool === 'line' ||
@@ -28,6 +28,6 @@ function renderSnapPoint(ctx, snapPoint, selectedTool, scale) {
     ctx.stroke();
     ctx.restore();
   }
-}
+};
 
 export default renderSnapPoint;

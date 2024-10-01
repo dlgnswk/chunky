@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function useCanvasSetup(canvasSize, screenRef, canvasRef) {
+const useCanvasSetup = (canvasSize, screenRef, canvasRef) => {
   const [scale, setScale] = useState(0.5);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
@@ -87,6 +87,6 @@ function useCanvasSetup(canvasSize, screenRef, canvasRef) {
     setStartPoint,
     updateInitialOffset,
   };
-}
+};
 
 export default useCanvasSetup;

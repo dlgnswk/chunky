@@ -1,4 +1,4 @@
-function renderLayers(canvasRef, layerList, imageCache) {
+const renderLayers = (canvasRef, layerList, imageCache) => {
   const ctx = canvasRef.current?.getContext('2d');
 
   if (!ctx) return;
@@ -95,6 +95,6 @@ function renderLayers(canvasRef, layerList, imageCache) {
       }
     }
   });
-}
+};
 
 export default renderLayers;

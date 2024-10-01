@@ -5,7 +5,7 @@ import renderToolRectangle from './renderToolRectangle';
 import renderToolSnapPoint from './renderToolSnapPoint';
 import renderToolTriangle from './renderToolTriangle';
 
-function renderCurrentTool(ctx, selectedTool, props) {
+const renderCurrentTool = (ctx, selectedTool, props) => {
   switch (selectedTool) {
     case 'line':
       renderToolLine(ctx, { ...props });
@@ -29,6 +29,6 @@ function renderCurrentTool(ctx, selectedTool, props) {
   if (props.snapPoint) {
     renderToolSnapPoint(ctx, props.snapPoint);
   }
-}
+};
 
 export default renderCurrentTool;
