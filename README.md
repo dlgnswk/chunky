@@ -598,9 +598,25 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <img alt="폴리라인 mousedown 이벤트" src="./src/assets/readme/images/polyline/polyline-02.png" width="720" />
 
 **#01)**
-<br/>1. `getMousePosition` 메소드를 통해 클릭한 위치의 좌표를 계산합니다.
-<br/>2. 그리는 상태를 판별하는 `isDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
+<br/>1. canvasRef에 담아 가져온 canvas요소의 크기를 통해 클릭한 위치의 좌표를 계산합니다.
+<br/>2. 그리는 상태를 판별하는 `isBezierDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
 <br/>3. 전역 상태의 변수인 `currentPolyline` 배열에 해당 좌표를 추가합니다.
+```
+const canvas = canvasRef.current;
+const rect = canvas.getBoundingClientRect();
+let mouseX = (event.clientX - rect.left) / scale;
+let mouseY = (event.clientY - rect.top) / scale;
+
+// 근처에 스냅포인트가 있는 경우 mouseX,Y 값 재할당
+
+const point = { x: mouseX, y: mouseY };
+
+if (!bezierStart) {
+  // 첫번째 클릭인 경우
+  setBezierStart(point);
+  setIsBezierDrawing(true);
+}
+```
 
 **#02)**
 <br/>4. `isDrawing` 변수를 확인합니다. 6. `true`인 경우 즉, 이미 그리기 중인 경우 새로운 점을 `currentPolyline` 배열에 추가합니다.
