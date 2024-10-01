@@ -679,7 +679,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 **#01)**
 <br/>1. canvasRef에 담아 가져온 canvas요소의 크기를 통해 클릭한 위치의 좌표를 계산합니다.
 <br/>2. 그리는 상태를 판별하는 `isBezierDrawing`를 `true`로 설정합니다. (기본값은 `false`)
-<br/>3. 베지어 곡선의 `bezierStart`에 해당 좌표를 추가합니다.
+<br/>3. 베지어 곡선의 `bezierStart`에 해당 좌표를 추가합니다.
 ```javascript
 const handleStart = () => {
   const canvas = canvasRef.current; // canvas 엘리먼트
