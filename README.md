@@ -732,7 +732,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>
 
 <div align="center">
-<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/rectangle/rectangle-01.gif" width="300" />
+<img alt="사각형 그리기" src="./src/assets/readme/images/rectangle/rectangle-01.gif" width="300" />
 
 <span align="right" style="color: gray">사각형 그리기 도구</span>
 
@@ -745,16 +745,27 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 이러한 방식으로 구현한 사각형 그리기 로직의 순서를 이벤트 기준으로 도식화 하면 다음과 같습니다.
 <br/>
 
+<img alt="사각형 그리기 로직" src="./src/assets/readme/images/rectangle/rectangle-02.png" width="720" />
 
+<br/>
 
-<br/><br/>
+**#01)**
+<br/>1. `mousedown` 이벤트가 일어난 캔버스 좌표를 시작점과 끝점에 입력합니다.
+
+**#02)**
+<br/>2. `mousemove` 이벤트를 통해 끝점의 좌표를 업데이트합니다.
+
+**#03)**
+<br/>3. `mouseup` 이벤트가 일어났을때 시작점과 끝점이 존재한다면 사각형의 정보를 저장해 렌더링합니다.
+
+<br/>
 
 ### 4. 세번의 클릭을 통한 삼각형 그리기 도구
 
 <br/>
 
 <div align="center">
-<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/triangle/triangle-01.gif" width="300" />
+<img alt="삼각형 그리기" src="./src/assets/readme/images/triangle/triangle-01.gif" width="300" />
 
 <span align="right" style="color: gray">삼각형 그리기 도구</span>
 
@@ -767,16 +778,27 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 이러한 목적으로 구현한 삼각형 그리기 로직의 순서를 이벤트 기준으로 도식화하면 다음과 같습니다.
 <br/>
 
+<img alt="삼각형 그리기 로직" src="./src/assets/readme/images/triangle/triangle-02.png" width="720" />
 
+<br/>
 
-<br/><br/>
+**#01)**
+<br/>1. `mousedown` 이벤트를 통해 꼭지점의 좌표를 저장합니다.
+
+**#02)**
+<br/>2. 저장된 꼭지점이 3개가 될 때까지 계속 저장합니다.
+
+**#03)**
+<br/>3. 저장 후 꼭지점이 3개가 된 경우 삼각형의 정보를 저장하고 렌더링합니다.
+
+<br/>
 
 ### 5. 중심점을 기준으로 하는 원 그리기 도구
 
 <br/>
 
 <div align="center">
-<img alt="베지어 곡선 그리기" src="./src/assets/readme/images/circle/circle-01.gif" width="300" />
+<img alt="원 그리기" src="./src/assets/readme/images/circle/circle-01.gif" width="300" />
 
 <span align="right" style="color: gray">원 그리기 도구</span>
 
@@ -789,9 +811,19 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 이를 위해 원 그리기 로직의 순서를 이벤트 기준으로 도식화하면 다음과 같습니다.
 <br/>
 
-
+<img alt="원 그리기 로직" src="./src/assets/readme/images/circle/circle-02.png" width="720" />
 
 <br/>
+
+**#01)**
+<br/>1. `mousedown` 이벤트를 통해 원의 중심 좌표를 저장합니다.
+
+**#02)**
+<br/>2. `mousemove` 이벤트가 발생하면 마우스의 현재 위치와 중심 좌표를 계산해 결과(반지름)를 저장합니다.
+
+**#03)**
+<br/>3. `mouseup` 이벤트가 발생하고 중심좌표와 반지름이 존재하면 원의 정보를 저장하고 렌더링합니다.
+
 <br/>
 
 ## <span id="develop-log-draw-user">그리기 도구에 사용자 경험을 고려한 기능 추가하기</span>
