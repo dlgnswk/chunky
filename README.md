@@ -598,34 +598,104 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <img alt="폴리라인 mousedown 이벤트" src="./src/assets/readme/images/polyline/polyline-02.png" width="720" />
 
 **#01)**
-<br/>1. getMousePosition 메소드를 통해 클릭한 위치의 좌표를 계산합니다.
+<br/>1. canvasRef에 담아 가져온 canvas요소의 크기를 통해 클릭한 위치의 좌표를 계산합니다.
 <br/>2. 그리는 상태를 판별하는 isDrawing 변수를 true로 설정합니다. (기본값은 false)
 <br/>3. 전역 상태의 변수인 currentPolyline 배열에 해당 좌표를 추가합니다.
+```javascript
+const handleStart = () => {
+  const canvas = canvasRef.current; // canvas 엘리먼트
+  const rect = canvas.getBoundingClientRect(); // 크기 계산
+  // mouse 좌표 계산
+  let mouseX = (event.clientX - rect.left) / scale;
+  let mouseY = (event.clientY - rect.top) / scale;
+  
+  // 근처에 스냅포인트가 있는 경우 mouseX,Y 값 재할당
+  
+  const point = { x: mouseX, y: mouseY };
+
+  if (!isDrawingPolyline || currentPolyline.length === 0) {
+    // 그리는 중이 아니거나 추가된 점이 없는 없는 경우
+    setIsDrawingPolyline(true); // 그리는 중으로 변경
+    setCurrentPolyline([point]); // 폴리라인 점 추가
+  }
+}
+```
 
 **#02)**
 <br/>4. `isDrawing` 변수를 확인합니다. 6. `true`인 경우 즉, 이미 그리기 중인 경우 새로운 점을 `currentPolyline` 배열에 추가합니다.
+```javascript
+if (!isDrawingPolyline || currentPolyline.length === 0) {
+    // 처음 클릭 로직
+  } else {
+    // 그리는 중이고 추가된 점이 있는 경우
+    // ... 
+    setCurrentPolyline((prev) => [...prev, point]); // 새로운 점 추가
+  }
+```
 
 **#03)**
 <br/>5. `keydown` 이벤트가 발생하기 전까지 상기 과정을 반복합니다.
 
 <br/>
 
-#### 1-2. `keydown` 이벤트 - `Space` 또는 `Enter`
+#### 1-2. `keydown` 이벤트 - `Space`
 
 <img alt="폴리라인 keydown 이벤트(Space, Enter)" src="./src/assets/readme/images/polyline/polyline-03.png" width="720" />
 
 **#01)**
-<br/>1. 먼저 `currentPolyline` 변수를 확인해 추가된 점이 2개 이상인지 판별합니다.
-<br/>2. 2개 이상인 경우 `draw` 메소드를 호출합니다. (1개 이하인 경우 아무 작업도 수행하지 않음)
-<br/>3. `draw` 메소드는 canvas API의 기본 기능을 조합해 만든 메소드 입니다.
-<br/>4. `clearRect()` 메소드로 캔버스를 정리합니다.
-<br/>5. `moveTo()` 메소드로 `currentPolyline`의 첫번째 점(폴리라인의 시작점)으로 이동합니다.
+<br/>1. `space` 키를 누른 경우 finalizeLine 함수를 호출합니다.
+<br/>2. 호출된 finalizeLine 함수에서 입력된 점이 2개 이상인 경우 closedPath 객체를 만들어 레이어에 업데이트 합니다.
+```javascript
+const handleKeyDown = () => {
+  if (event.key === ' ' && selectedTool === 'line' && isDrawingPolyline) {
+    drawLine.finalizeLine();
+  }
+}
+
+const finalizeLine = () => {
+  if (currentLayer && isDrawingPolyline && currentPolyline.length > 2) {
+    const closedPath = {
+      type: 'polyline',
+      points: uniquePoints,
+      closed: true,
+      fill: 'none',
+    }; // polyline path 객체 생성
+
+    const updatedLayer = {
+      ...currentLayer,
+      path: [...(currentLayer.path || []), closedPath],
+    }; // polyline을 path 에 추가한 새로운 레이어 객체 생성
+
+    await updateLayerInFirestore(updatedLayer); // firestore에 업데이트
+  }
+}
+```
 
 **#02)**
-<br/>6. `for()` 반복문을 통해 나머지 점들을 순회하며 `lineTo()` 메소드로 가상의 선을 그립니다.
+<br/>3. `beginPath` 메소드를 이용해 선그리기를 시작합니다.
+<br/>4. `moveTo()` 메소드로 `currentPolyline`의 첫번째 점(폴리라인의 시작점)으로 이동합니다.
+<br/>5. `for()` 반복문을 통해 나머지 점들을 순회하며 `lineTo()` 메소드로 가상의 선을 그립니다.
+```javascript
+const renderToolLine = (ctx) => {
+  ctx.beginPath(); // 선 생성 시작
+  ctx.moveTo(currentPolyline[0].x, currentPolyline[0].y); // 첫번째 점으로 이동
+
+  for (let i = 1; i < currentPolyline.length; i += 1) {
+    // 반복문을 통해 이어 그리기
+    ctx.lineTo(currentPolyline[i].x, currentPolyline[i].y);
+  }
+}
+```
 
 **#03)**
-<br/>7. `stroke()` 메소드로 가상의 선을 실제 선으로 변환해 캔버스에 그립니다.
+<br/>6. `stroke()` 메소드로 가상의 선을 실제 선으로 변환해 캔버스에 그립니다.
+
+```javascript
+const renderToolLine = (ctx) => {
+  // 선 그리기 로직
+  ctx.stroke(); // 캔버스에 실제 선 그리기
+}
+```
 
 <br/>
 
@@ -634,14 +704,38 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <img alt="폴리라인 keydown 이벤트(Escape)" src="./src/assets/readme/images/polyline/polyline-04.png" width="720" />
 
 **#01)**
-<br/>1. 먼저 `cancelDrawing()` 메소드를 호출합니다.
+<br/>1. esc를 누르면 라인 그리기 중인지 확인합니다.
+<br/>2. 맞다면 cancelLine 함수를 호출합니다.
+```javascript
+if (event.key === 'Escape') {
+  if (selectedTool === 'line' && isDrawingPolyline) {
+    drawLine.cancelLine();
+  }
+}
+```
 
 **#02)**
-<br/>2. 그리기 상태를 나타내는 `isDrawing` 변수를 `false` 초기화합니다.
+<br/>3. 그리기 상태와 속성을 저장한 모든 변수를 초기화합니다.
+```
+const cancelLine = () => {
+  // 변수 초기화
+  setIsDrawingPolyline(false);
+  setCurrentPolyline([]);
+  setLineStart(null);
+  setLineEnd(null);
+};
+```
 
 **#03)**
-<br/>3. 폴리라인의 데이터들을 나타내는 `currentPolyline` 배열에서 데이터를 삭제합니다.
-<br/>4. `draw()` 메소드를 호출해 `clearRect() 메소드로 캔버스를 정리합니다.
+<br/>4. canvas를 렌더링하는 함수인 renderCanvas를 호출해 캔버스를 새로고침합니다.
+```javascript
+const cancelLine = () => {
+  // 변수 초기화 로직
+
+  // 초기화 한 뒤 canvas 다시 그림
+  renderCanvas();
+}
+```
 
 <br/><br/>
 
@@ -682,16 +776,7 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <br/>3. 베지어 곡선의 `bezierStart`에 해당 좌표를 추가합니다.
 ```javascript
 const handleStart = () => {
-  const canvas = canvasRef.current; // canvas 엘리먼트
-  const rect = canvas.getBoundingClientRect(); // 크기 계산
-  // mouse 좌표 계산
-  let mouseX = (event.clientX - rect.left) / scale;
-  let mouseY = (event.clientY - rect.top) / scale;
-  
-  // 근처에 스냅포인트가 있는 경우 mouseX,Y 값 재할당
-  
-  const point = { x: mouseX, y: mouseY };
-  
+  // 좌표계산 로직
   if (!bezierStart) {
     // 첫번째 클릭인 경우(시작점이 없는 경우)
     setBezierStart(point); // 시작점 설정
