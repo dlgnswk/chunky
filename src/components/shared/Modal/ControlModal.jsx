@@ -47,7 +47,7 @@ function ControlModal({ setIsFirstVisit }) {
                 target="_blank"
                 rel="noreferrer"
               >
-                여기
+                가이드 문서
               </a>
               에서 더 많은 정보를 확인해보세요.
             </p>
