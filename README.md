@@ -1419,7 +1419,7 @@ const handleFileChange = () => {
 
 **#03)**
 <br/>4. 가져온 url을 이미지 객체에 저장하고 layer를 추가합니다.
-```
+```javascript
 const newLayer = {
   type: 'image',
   name: file.name,
