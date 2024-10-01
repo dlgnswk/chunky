@@ -1119,12 +1119,88 @@ if (circleCenter && circleRadius) {
 
 **#01)**
 <br/>1. `mousemove` 이벤트를 통해 마우스가 움직일때마다 그려진 도형의 점들을 확인합니다.
+```javascript
+const handleMouseMove = (event) => {
+  // 마우스 무브 이벤트 발생시마다 findSnapPoint 함수 실행
+  findSnapPoint();
+
+  // ...
+}
+```
 
 **#02)**
 <br/>2. 해당 점과 마우스의 좌표를 계산해 거리가 설정된 `SNAP_THRESHOLD`의 값보다 작은지 확인합니다.
+```javascript
+const findSnapPoint = () => {
+  // 좌표계산 로직
+
+  const nearestPoint = findNearPoint(mouseX, mouseY, scale, layerList);
+
+  // 마우스의 위치를 통해 findNearPoint 함수 실행해 존재하면 snapPoint에 저장
+  if (nearestPoint) {
+    mouseX = nearestPoint.x;
+    mouseY = nearestPoint.y;
+    setSnapPoint({ x: mouseX, y: mouseY });
+  } else {
+    setSnapPoint(null);
+  }
+}
+
+const findNearPoint = () => {
+  // 각 path의 타입마다 확인하며 점들을 points 배열에 저장
+  layer.path.forEach((path) => {
+    let points = [];
+
+    switch (path.type) {
+      case 'rectangle':
+      case 'line':
+      case 'polyline':
+      case 'triangle':
+      case 'bezier':
+      case 'closedBezier':
+      case 'circle':
+      default:
+        break;
+    }
+
+  const checkPoint = (point) => {
+    // 현재 마우스와 점의 거리
+    const distance = Math.sqrt((x - point.x) ** 2 + (y - point.y) ** 2);
+
+    // 거리가 스냅포인트 설정 거리보다 작을때
+    if (distance < minDistance && distance < SNAP_THRESHOLD / scale) { 
+      minDistance = distance;
+
+      // 스냅포인트가 될 점 리턴
+      nearest = point;
+    }
+  };
+
+
+  // 각 점들을 순회하며 마우스 근처에 있는지 확인
+  points.forEach(checkPoint);
+}
+```
 
 **#03)**
 <br/>3. `SNAP_THRESHOLD`의 값보다 작은 경우 스냅포인트를 표시합니다.
+```javascript
+const renderSnapPoint = () => {
+  // 그리는 중인 경우
+  if (
+      snapPoint &&
+      (selectedTool === 'line' ||
+        selectedTool === 'bezier' ||
+        selectedTool === 'rectangle' ||
+        selectedTool === 'triangle' ||
+        selectedTool === 'circle')
+    ) {
+    // 스냅 포인트 그리기 로직
+    ctx.beginPath();
+    ctx.arc();
+   } 
+}  
+```
 
 <br/>
 
@@ -1140,12 +1216,44 @@ if (circleCenter && circleRadius) {
 
 **#01)**
 <br/>1. 어떤 도구를 통해 그리고 있는지 확인합니다.
+```javascript
+const renderCurrentTool = () => {
+  switch (selectedTool) {
+    case 'line':
+      renderToolLine(ctx, { ...props });
+      break;
+    // 다른 tool
+}
+```
 
 **#02)**
 <br/>2. `mousemove` 이벤트를 통해 마우스의 위치를 계속 확인합니다.
+```javascript
+const renderToolLine = () => {
+  if (lineEnd) {
+    // 끝점이 존재하는 경우
+  }
+}
+```
 
 **#03)**
 <br/>3. `context` 를 통해 선을 그리고 스타일을 부여합니다.
+```javascript
+if (lineEnd) {
+    ctx.beginPath(); // 선 생성 시작
+
+    ctx.moveTo(
+      currentPolyline[currentPolyline.length - 1].x,
+      currentPolyline[currentPolyline.length - 1].y,
+    ); // 이전 점으로 이동
+
+    ctx.lineTo(lineEnd.x, lineEnd.y); // 현재 점까지 선 그리기
+    ctx.strokeStyle = 'tomato';
+    ctx.lineWidth = 1;
+    ctx.stroke(); // canvas에 실제 선으로 그림
+  }
+```
+```
 
 <br/>
 
@@ -1160,13 +1268,47 @@ if (circleCenter && circleRadius) {
 
 **#01)**
 <br/>1. `mousedown` 이벤트가 발생한 시점의 마우스 좌표를 확인합니다.
+```javascript
+const handleStart = () => {
+  // 좌표계산 로직
+}
+```
 
 **#02)**
 <br/>2. 선택된 레이어에 존재하는 모든 도형을 순회해 좌표들을 확인합니다.
 <br/>3. 마우스 좌표와 도형의 좌표를 통해 내부를 클릭했는지 판단합니다.
+```javascript
+const handleStart = () => {
+  // 좌표계산 로직
+
+  const clickedLayer = layerList.find((layer) =>
+    layer.path.some((path) => checkMousePoint(path, x, y)),
+  ); // 레이어 순회
+
+  if (clickedLayer) {
+    const clickedPathIndex = clickedLayer.path.findIndex((path) =>
+      checkMousePoint(path, x, y),
+    ); // 마우스 좌표가 도형 내부에 있는지 판단해 해당하는 path의 인덱스 저장
+  }
+}
+```
 
 **#03)**
 <br/>4. 내부가 클릭되었다면 `context`를 통해 `fill` 속성을 업데이트 합니다.
+```javascript
+if (clickedPathIndex !== -1) {
+  const updatedLayer = {
+    ...clickedLayer,
+    path: clickedLayer.path.map((path, index) =>
+      index === clickedPathIndex
+        ? { ...path, fill: clickedLayer.fill } // 해당 path의 fill 색상을 업데이트
+        : path,
+    ),
+  };
+
+  updateLayerInFirestore(updatedLayer); // firestore에 새로운 레이어 업데이트
+}
+```
 
 <br/>
 
@@ -1190,13 +1332,39 @@ if (circleCenter && circleRadius) {
 
 **#01)**
 <br/>1. `mousedown` 이벤트가 발생한 좌표를 시작점과 끝점에 저장합니다.
+```javascript
+const isPathInEraserArea = (path, area) => {
+  // 좌표계산 로직
+
+  setIsErasing(true); // 지우는 중인 상태
+  setEraserStart({ x: mouseX, y: mouseY }); // 시작점 저장
+  setEraserEnd({ x: mouseX, y: mouseY }); // 끝점 저장
+}
+```
 
 **#02)**
 <br/>2. `mousemove` 이벤트를 통해 끝점을 업데이트합니다.
+```javascript
+if (isErasing) {
+  setEraserEnd({ x: mouseX, y: mouseY });
+  // 지우는 중인 경우 끝점 업데이트
+}
+```
 
 **#03)**
 <br/>3. `mouseup` 이벤트가 일어나면 지우개 영역을 계산합니다.
 <br/>4. 해당 레이어를 순회하여 지우개 영역내부에 존재하는 path를 제외하고 새로운 레이어를 생성합니다.
+```javascript
+const updatedPaths = currentLayer.path.filter((path) => {
+  return !isPathInEraserArea(path, {
+    start: eraserStart,
+    end: eraserEnd,
+  }); // path가 영역안에 존재 하지 않는 경우에만 updatedPaths에 추가
+});
+
+const updatedLayer = { ...currentLayer, path: updatedPaths }; // 새로운 레이어 생성
+await updateLayerInFirestore(updatedLayer); // firebase에 새로운 레이어 업데이트
+```
 
 <br/>
 
@@ -1220,13 +1388,53 @@ if (circleCenter && circleRadius) {
 
 **#01)**
 <br/>1. type이 file인 `<input>` 태그를 통해 클릭하면 파일 선택창을 열어줍니다.
+```html
+<input
+  type="file"
+  ref={fileInputRef}
+  style={{ display: 'none' }}
+  accept="image/*"
+  onChange={handleFileChange}
+/>
+```
+```javascript
+const handleImageImport = () => {
+  fileInputRef.current.click();
+};
+```
 
 **#02)**
 <br/>2. 이미지를 선택하면 firestore storage에 업로드 합니다.
 <br/>3. 해당 이미지의 경로를 통해 firestore storage로 부터 url을 가져옵니다.
+```javascript
+const handleFileChange = () => {
+  const file = event.target.files[0];
+
+  const storageRef = ref(storage, `images/${file.name}`);
+  await uploadBytes(storageRef, file);
+
+  const downloadURL = await getDownloadURL(storageRef);
+}
+```
 
 **#03)**
 <br/>4. 가져온 url을 이미지 객체에 저장하고 layer를 추가합니다.
+```
+const newLayer = {
+  type: 'image',
+  name: file.name,
+  imageUrl: downloadURL,
+  width: Math.round(width),
+  height: Math.round(height),
+  x: 0,
+  y: 0,
+  rotation: 0,
+  visible: true,
+  opacity: 1,
+};
+
+addLayer(newLayer);
+```
 
 <br/>
 
