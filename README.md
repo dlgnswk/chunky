@@ -598,25 +598,9 @@ x, y 좌표값로 이루어져있는 비교적으로 단순한 도형을 제외�
 <img alt="폴리라인 mousedown 이벤트" src="./src/assets/readme/images/polyline/polyline-02.png" width="720" />
 
 **#01)**
-<br/>1. canvasRef에 담아 가져온 canvas요소의 크기를 통해 클릭한 위치의 좌표를 계산합니다.
-<br/>2. 그리는 상태를 판별하는 `isBezierDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
-<br/>3. 전역 상태의 변수인 `currentPolyline` 배열에 해당 좌표를 추가합니다.
-```javascript
-const canvas = canvasRef.current;
-const rect = canvas.getBoundingClientRect();
-let mouseX = (event.clientX - rect.left) / scale;
-let mouseY = (event.clientY - rect.top) / scale;
-
-// 근처에 스냅포인트가 있는 경우 mouseX,Y 값 재할당
-
-const point = { x: mouseX, y: mouseY };
-
-if (!bezierStart) {
-  // 첫번째 클릭인 경우
-  setBezierStart(point);
-  setIsBezierDrawing(true);
-}
-```
+<br/>1. getMousePosition 메소드를 통해 클릭한 위치의 좌표를 계산합니다.
+<br/>2. 그리는 상태를 판별하는 isDrawing 변수를 true로 설정합니다. (기본값은 false)
+<br/>3. 전역 상태의 변수인 currentPolyline 배열에 해당 좌표를 추가합니다.
 
 **#02)**
 <br/>4. `isDrawing` 변수를 확인합니다. 6. `true`인 경우 즉, 이미 그리기 중인 경우 새로운 점을 `currentPolyline` 배열에 추가합니다.
@@ -693,15 +677,59 @@ if (!bezierStart) {
   <img alt="베지어 곡선 mousedown 이벤트" src="./src/assets/readme/images/bezier/bezier-02.png" width="720" />
 
 **#01)**
-<br/>1. `mousedown` 이벤트 발생 시 `handleMouseDown` 메소드를 호출합니다.
-<br/>2. 그리는 상태를 판별하는 `isBezierDrawing` 변수를 `true`로 설정합니다. (기본값은 `false`)
-<br/>3. `bezierStart` 를 현재 마우스 위치 좌표로 설정합니다.
+<br/>1. canvasRef에 담아 가져온 canvas요소의 크기를 통해 클릭한 위치의 좌표를 계산합니다.
+<br/>2. 그리는 상태를 판별하는 `isBezierDrawing`를 `true`로 설정합니다. (기본값은 `false`)
+<br/>3. 베지어 곡선의 `bezierStart`에 해당 좌표를 추가합니다.
+```javascript
+const handleStart = () => {
+  const canvas = canvasRef.current; // canvas 엘리먼트
+  const rect = canvas.getBoundingClientRect(); // 크기 계산
+  // mouse 좌표 계산
+  let mouseX = (event.clientX - rect.left) / scale;
+  let mouseY = (event.clientY - rect.top) / scale;
+  
+  // 근처에 스냅포인트가 있는 경우 mouseX,Y 값 재할당
+  
+  const point = { x: mouseX, y: mouseY };
+  
+  if (!bezierStart) {
+    // 첫번째 클릭인 경우(시작점이 없는 경우)
+    setBezierStart(point); // 시작점 설정
+    setIsBezierDrawing(true); // 그리는 중임을 알리는 변수
+  }
+}
+```
 
 **#02)**
 <br/>4. 두번째 클릭시 `bezierEnd` 를 현재 마우스 위치 좌표로 설정합니다.
+```javascript
+const handleStart = () => {
+  // 좌표계산 로직
+
+  if (!bezierStart) {
+    //  첫번째 클릭 로직
+  } else if (!bezierEnd) {
+    // 두번째 클릭인 경우(끝점이 없는 경우)
+      setBezierEnd(point); // 끝점 설정
+  }
+}
+```
 
 **#03)**
 <br/>5. `bezierControl` 을 현재 마우스 위치로 초기화합니다.
+```javascript
+const handleStart = () => {
+  // 좌표계산 로직
+
+  if (!bezierStart) {
+    //  첫번째 클릭 로직
+  } else if (!bezierEnd) {
+    // 두번째 클릭인 경우(끝점이 없는 경우)
+      setBezierEnd(point);
+      setBezierControl(point); // 조절점 설정
+  }
+}
+```
 
 <br/>
 
@@ -711,9 +739,28 @@ if (!bezierStart) {
 
 **#01)**
 <br/>1. `isBezierDrawing` 변수가 `true`이고 `bezierStart`, `bezierEnd` 가 설정되었는지 확인합니다.
+```javascript
+const handleMove = () => { 
+  // 좌표계산 로직
+
+  if(isBezierDrawing && bezierStart && bezierEnd) {
+    // 시작점, 끝점이 존재하고 그리는 중인 경우
+  }
+}
+```
 
 **#02)**
 <br/>2. 모든 조건이 참인 경우 `bezierControl` 을 변경된 마우스 위치로 업데이트 합니다.
+```javascript
+const handleMove = () => { 
+  // 좌표계산 로직
+
+  if(isBezierDrawing && bezierStart && bezierEnd) {
+    // 시작점, 끝점이 존재하고 그리는 중인 경우
+    setBezierControl(point);
+  }
+}
+```
 
 **#03)**
 <br/>3. 마우스 위치를 계속 추적하며 `bezierControl` 을 계속 업데이트 합니다.
@@ -728,18 +775,57 @@ if (!bezierStart) {
 <br/>1. `bezierStart`, `bezierEnd`, `bezierControl` 이 전부 설정되었는지 확인합니다.
 <br/>2. 경로를 담을 수 있는 `closedBezier` 객체를 생성합니다.
 <br/>3. 이 객체의 형태가 <a href="#bezier-curve">베지어 곡선의 개별 속성</a>으로 정의됩니다.
-<br/>4. 이 객체에 `bezierStart`, `bezierEnd`, `bezierControl`의 값을 업데이트 합니다.
-<br/>5. `renderCanvas()` 메소드를 호출합니다.
+```javascript
+const handleEnd = () => {
+  if (bezierStart && bezierEnd && bezierControl) {
+    const newPath = {
+        type: 'closedBezier',
+        curves: [
+          {
+            type: 'bezier', // 조절점을 이용해 구한 곡선
+            // 좌표값
+          },
+          {
+            type: 'line', // 곡선을 닫아주는 선
+            // 좌표값
+          },
+        ],
+        fill: 'none',
+      };
+  }
+}
+```
 
 **#02)**
 <br/>6. `beginPath()` 메소드로 선그리기를 시작합니다.
-<br/>7. 반복문을 통해 `curve` 배열을 순회합니다.
-<br/>8. 첫번째 경로를 확인해 `moveTo` 메소드로 해당 점(시작점)으로 이동합니다.
-<br/>9. `quadraticCurveTo()`메소드로 제어점, 끝점값을 통해 가상의 곡선을 그립니다.
-<br/>10. `lineTo()` 메소드로 시작점과 끝점을 이어 닫는 가상의 직선을 그립니다.
+<br/>7. 첫번째 경로를 확인해 `moveTo` 메소드로 해당 점(시작점)으로 이동합니다.
+<br/>8. `quadraticCurveTo()`메소드로 제어점, 끝점값을 통해 가상의 곡선을 그립니다.
+```javascript
+const renderToolBezier = (ctx) => {
+  if (bezierStart && bezierEnd) {
+    ctx.beginPath(); // 선 그리기 시작
+    ctx.moveTo(bezierStart.x, bezierStart.y); // 시작점으로 이동
+    ctx.quadraticCurveTo(
+      bezierControl ? bezierControl.x : currentMousePos.x,
+      bezierControl ? bezierControl.y : currentMousePos.y,
+      bezierEnd.x,
+      bezierEnd.y,
+    ); // 곡선 그리기
+    ctx.strokeStyle = 'tomato';
+  }
+}
+```
 
 **#03)**
 <br/>11. `stroke()` 메소드로 실제 캔버스에 곡선을 그립니다.
+```javascript
+const renderToolBezier= (ctx) => {
+  if (bezierStart && bezierEnd) {
+    // 가상의 bezier 곡선 생성 로직
+    ctx.stroke(); // 캔버스에 bezier 곡선 그리기
+  }
+}
+```
 
 <br/><br/>
 
