@@ -13,7 +13,7 @@ const findNearPoint = (x, y, scale, layerList) => {
   };
 
   layerList.forEach((layer) => {
-    if (layer.visible && Array.isArray(layer.path)) {
+    if (layer.visible) {
       layer.path.forEach((path) => {
         let points = [];
 

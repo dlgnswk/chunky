@@ -5,7 +5,7 @@ const renderLayers = (canvasRef, layerList, imageCache) => {
 
   layerList.forEach((layer) => {
     if (layer && layer.visible) {
-      if (layer.type === 'draw' && Array.isArray(layer.path)) {
+      if (layer.type === 'draw') {
         layer.path.forEach((path) => {
           ctx.beginPath();
 

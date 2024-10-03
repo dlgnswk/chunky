@@ -93,7 +93,7 @@ function LayerCard({
         setNewZIndex(zIndex);
         setNewFill(fill);
       }
-    }, 500),
+    }, 100),
     [updateLayerInFirestore, setAlertState, name, height, zIndex, fill],
   );
 

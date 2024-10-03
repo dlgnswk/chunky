@@ -31,8 +31,6 @@ function LayerArea() {
     addLayer();
   };
 
-  const safeLayers = Array.isArray(layerList) ? layerList : [];
-
   return (
     <div className="layer-area">
       <div className="layer-header">
@@ -54,10 +52,10 @@ function LayerArea() {
         </button>
       </div>
       <div className="layer-content">
-        {safeLayers.length === 0 ? (
+        {layerList.length === 0 ? (
           <div>레이어를 추가하세요.</div>
         ) : (
-          safeLayers
+          layerList
             .slice()
             .sort((a, b) => b.index - a.index)
             .map((layer) => {
