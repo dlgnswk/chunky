@@ -1,4 +1,4 @@
-import useStore from '../../../../store/store';
+import useStore from '../../../store/store';
 
 function Grid() {
   const canvasSize = useStore((state) => state.canvasSize);

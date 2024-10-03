@@ -1,20 +1,15 @@
 import { useMemo } from 'react';
 import { ExtrudeGeometry, Shape } from 'three';
-import convert2Dto3D from '../utils/convert2Dto3D';
+import convert2Dto3D from '../../../utils/convert2Dto3D';
 
-function RectangleModel({ path, depth, canvasSize, fill, zPosition }) {
+function CircleModel({ path, depth, canvasSize, fill, zPosition }) {
   const geometry = useMemo(() => {
     const shape = new Shape();
-    const { x, y, width, height } = path;
 
-    const [x1, y1] = convert2Dto3D(x, y, 0, canvasSize);
-    const [x2, y2] = convert2Dto3D(x + width, y + height, 0, canvasSize);
+    const { radius, center } = path;
+    const [centerX, centerY] = convert2Dto3D(center.x, center.y, 0, canvasSize);
 
-    shape.moveTo(x1, y1);
-    shape.lineTo(x2, y1);
-    shape.lineTo(x2, y2);
-    shape.lineTo(x1, y2);
-    shape.lineTo(x1, y1);
+    shape.absarc(centerX, centerY, radius, 0, Math.PI * 2, false);
 
     return new ExtrudeGeometry(shape, {
       depth,
@@ -43,4 +38,4 @@ function RectangleModel({ path, depth, canvasSize, fill, zPosition }) {
   );
 }
 
-export default RectangleModel;
+export default CircleModel;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import useStore from '../../store/store';
-import GroupModel from './Canvas3D/components/GroupModel';
+import GroupModel from './Canvas3D/GroupModel';
 
 function Layer3D({ layer, zPosition }) {
   const canvasSize = useStore((state) => state.canvasSize);

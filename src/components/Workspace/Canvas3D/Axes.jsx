@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import useStore from '../../../../store/store';
+import useStore from '../../../store/store';
 
 function Axes() {
   const canvasSize = useStore((state) => state.canvasSize);

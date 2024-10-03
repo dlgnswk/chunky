@@ -1,5 +1,5 @@
-import Canvas2D from './Canvas2D/components/Canvas2D';
-import Canvas3D from './Canvas3D/components/Canvas3D';
+import Canvas2D from './Canvas2D/Canvas2D';
+import Canvas3D from './Canvas3D/Canvas3D';
 
 function DrawingArea() {
   return (

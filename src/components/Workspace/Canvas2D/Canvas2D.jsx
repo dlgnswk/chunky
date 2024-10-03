@@ -1,28 +1,28 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { IoSquareOutline } from 'react-icons/io5';
 
-import useCanvasSetup from '../hooks/useCanvasSetup';
+import useCanvasSetup from '../../../hooks/useCanvasSetup';
 
-import drawGrid from '../utils/drawGrid';
-import handleKeyDown from '../../../../utils/handleKeyDown';
-import getCursorStyle from '../../../../utils/getCursorStyle';
+import drawGrid from '../../../utils/drawGrid';
+import handleKeyDown from '../../../utils/handleKeyDown';
+import getCursorStyle from '../../../utils/getCursorStyle';
 
-import useStore from '../../../../store/store';
+import useStore from '../../../store/store';
 
-import ToolBox from '../../ToolBox';
-import renderEraserArea from '../utils/renderEraserArea';
-import renderSnapPoint from '../utils/renderSnapPoint';
-import renderCurrentTool from '../utils/renderCurrentTool';
-import drawLine from '../utils/drawLine';
-import moveCanvas from '../utils/moveCanvas';
-import drawBezier from '../utils/drawBezier';
-import drawRectangle from '../utils/drawRectangle';
-import drawTriangle from '../utils/drawTriangle';
-import drawCircle from '../utils/drawCircle';
-import removeShapes from '../utils/removeShapes';
-import fillColor from '../utils/fillColor';
-import checkMousePoint from '../utils/checkMousePoint';
-import findSnapPoint from '../utils/findSnapPoint';
+import ToolBox from '../ToolBox';
+import renderEraserArea from '../../../utils/renderEraserArea';
+import renderSnapPoint from '../../../utils/renderSnapPoint';
+import renderCurrentTool from '../../../utils/renderCurrentTool';
+import drawLine from '../../../utils/drawLine';
+import moveCanvas from '../../../utils/moveCanvas';
+import drawBezier from '../../../utils/drawBezier';
+import drawRectangle from '../../../utils/drawRectangle';
+import drawTriangle from '../../../utils/drawTriangle';
+import drawCircle from '../../../utils/drawCircle';
+import removeShapes from '../../../utils/removeShapes';
+import fillColor from '../../../utils/fillColor';
+import checkMousePoint from '../../../utils/checkMousePoint';
+import findSnapPoint from '../../../utils/findSnapPoint';
 
 function Canvas2D() {
   const canvasRef = useRef(null);

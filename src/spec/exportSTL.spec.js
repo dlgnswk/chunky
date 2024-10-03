@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import * as THREE from 'three';
-import { createSceneFromLayers } from '../components/Workspace/Canvas3D/utils/exportSTL';
+import { createSceneFromLayers } from '../utils/exportSTL';
 
 vi.mock('three/examples/jsm/exporters/STLExporter', () => {
   return {

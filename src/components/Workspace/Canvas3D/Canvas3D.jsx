@@ -10,9 +10,9 @@ import { BlendFunction } from 'postprocessing';
 
 import { IoCubeOutline } from 'react-icons/io5';
 
-import ToolBox from '../../ToolBox';
-import Layer3D from '../../Layer3D';
-import useStore from '../../../../store/store';
+import ToolBox from '../ToolBox';
+import Layer3D from '../Layer3D';
+import useStore from '../../../store/store';
 import GridWithAxes from './GridWithAxes';
 import CameraControl from './CameraControl';
 

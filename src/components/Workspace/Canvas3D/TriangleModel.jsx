@@ -1,26 +1,21 @@
 import { useMemo } from 'react';
 import { ExtrudeGeometry, Shape } from 'three';
-import convert2Dto3D from '../utils/convert2Dto3D';
+import convert2Dto3D from '../../../utils/convert2Dto3D';
 
-function BezierModel({ path, depth, canvasSize, fill, zPosition }) {
+function TriangleModel({ path, depth, canvasSize, fill, zPosition }) {
   const geometry = useMemo(() => {
     const shape = new Shape();
+    const { points } = path;
 
-    path.curves.forEach((curve, index) => {
-      const [x1, y1] = convert2Dto3D(curve.x1, curve.y1, 0, canvasSize);
-      const [x2, y2] = convert2Dto3D(curve.x2, curve.y2, 0, canvasSize);
-
-      if (index === 0) {
-        shape.moveTo(x1, y1);
-      }
-
-      if (curve.type === 'bezier') {
-        const [cx, cy] = convert2Dto3D(curve.cx, curve.cy, 0, canvasSize);
-        shape.quadraticCurveTo(cx, cy, x2, y2);
-      } else if (curve.type === 'line') {
-        shape.lineTo(x2, y2);
-      }
+    const convertedPoints = points.map((point) => {
+      const [pointX, pointY] = convert2Dto3D(point.x, point.y, 0, canvasSize);
+      return { x: pointX, y: pointY };
     });
+
+    shape.moveTo(convertedPoints[0].x, convertedPoints[0].y);
+    shape.lineTo(convertedPoints[1].x, convertedPoints[1].y);
+    shape.lineTo(convertedPoints[2].x, convertedPoints[2].y);
+    shape.lineTo(convertedPoints[0].x, convertedPoints[0].y);
 
     shape.closePath();
 
@@ -51,4 +46,4 @@ function BezierModel({ path, depth, canvasSize, fill, zPosition }) {
   );
 }
 
-export default BezierModel;
+export default TriangleModel;
