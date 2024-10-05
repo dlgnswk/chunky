@@ -1,29 +1,11 @@
-import { useMemo } from 'react';
-import { ExtrudeGeometry, Shape } from 'three';
-import convert2Dto3D from '../../../utils/convert2Dto3D';
+import useCircleShape from '../../../hooks/useCircleShape';
 
 function CircleModel({ path, depth, canvasSize, fill, zPosition }) {
-  const geometry = useMemo(() => {
-    const shape = new Shape();
-
-    const { radius, center } = path;
-    const [centerX, centerY] = convert2Dto3D(center.x, center.y, 0, canvasSize);
-
-    shape.absarc(centerX, centerY, radius, 0, Math.PI * 2, false);
-
-    return new ExtrudeGeometry(shape, {
-      depth,
-      bevelEnabled: false,
-    });
-  });
+  const shape = useCircleShape(path, canvasSize);
 
   return (
-    <mesh
-      geometry={geometry}
-      position={[0, 0, zPosition]}
-      castShadow
-      receiveShadow
-    >
+    <mesh position={[0, 0, zPosition]} castShadow receiveShadow>
+      <extrudeGeometry args={[shape, { depth, bevelEnabled: false }]} />
       <meshStandardMaterial
         visible
         transparent={false}

@@ -1,36 +1,11 @@
-import { useMemo } from 'react';
-import { ExtrudeGeometry, Shape, Vector2 } from 'three';
-import convert2Dto3D from '../../../utils/convert2Dto3D';
+import usePolygonShape from '../../../hooks/usePolygonShape';
 
 function PolygonModel({ path, depth, canvasSize, fill, zPosition }) {
-  const geometry = useMemo(() => {
-    const shape = new Shape();
-    const { points, closed } = path;
-
-    const convertedPoints = points.map((point) => {
-      const [pointX, pointY] = convert2Dto3D(point.x, point.y, 0, canvasSize);
-      return new Vector2(pointX, pointY);
-    });
-
-    shape.setFromPoints(convertedPoints);
-
-    if (closed) {
-      shape.closePath();
-    }
-
-    return new ExtrudeGeometry(shape, {
-      depth,
-      bevelEnabled: false,
-    });
-  }, [path, depth, canvasSize]);
+  const shape = usePolygonShape(path, canvasSize);
 
   return (
-    <mesh
-      geometry={geometry}
-      position={[0, 0, zPosition]}
-      castShadow
-      receiveShadow
-    >
+    <mesh position={[0, 0, zPosition]} castShadow receiveShadow>
+      <extrudeGeometry args={[shape, { depth, bevelEnabled: false }]} />
       <meshStandardMaterial
         visible
         transparent={false}
