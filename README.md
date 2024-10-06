@@ -1451,18 +1451,18 @@ addLayer(newLayer);
 
 **#01)**
 <br/>1. 그려진 2D 스케치의 좌표값을 확인합니다.
-```js
+```javascript
 ```
 
 **#02)**
 <br/>2. 2D 좌표값을 3D 캔버스의 중심을 기준으로 변경합니다.
 <br/>3. `Three.js`의 `Shape()` 메소드를 통해 도형을 생성합니다.
-```js
+```javascript
 ```
 
 **#03)**
 <br/>4. 가져온 높이값으로 `Three.js`의 `(ExtrudeGeometry())` 메소드를 통해 모델링과 렌더링을 진행합니다.
-```js
+```javascript
 ```
 
 <br/>
