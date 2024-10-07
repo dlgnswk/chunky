@@ -1530,7 +1530,7 @@ return (
 이러한 기능을 제공해 공간감각을 제공하고, 거리와 크기 그리고 방향을 인식하기 쉽게 만듭니다.<br/><br/>
 이 기능을 구현하기 위해 작성한 순서는 다음과 같습니다.
 
-<img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/renderingUser/grid-axi.png" width="720" >
+<img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/renderingUser/grid-axis.png" width="720" >
 
 **#01)**
 <br/>1. 현재 레이아웃 크기를 가져옵니다.
