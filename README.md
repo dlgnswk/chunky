@@ -1625,19 +1625,47 @@ function Canvas3D() {
 <br/>
 
 **#01)**
-<br/>1. 원근뷰로 기본 카메라 설정입니다. 3D를 가장 자연스럽게 보여주며 전체 형태를 관찰하기 용이합니다.
+<br/>1. React Three Fiber의 OrbitControls 컴포넌트를 모드에 따라 다른 설정값으로 세팅합니다.
+<br/>2. 원근뷰로 기본 카메라 설정입니다. 3D를 가장 자연스럽게 보여주며 전체 형태를 관찰하기 용이합니다.
 ```javascript
+// OrbitControls 기본값 설정
+cameraSetting: {
+  makeDefault: true,
+  enableDamping: false,
+  zoomSpeed: 2,
+  position: new THREE.Vector3(-400, -400, 500),
+  up: new THREE.Vector3(0, 0, 1),
+  target: new THREE.Vector3(0, 0, 0),
+  mouseButtons: {
+    LEFT: THREE.MOUSE.ROTATE,
+    MIDDLE: THREE.MOUSE.PAN,
+  },
+},
+```
+```javascript
+const CameraControl = forwardRef(function CameraControl(props, ref) {
+  const cameraSetting = useStore((state) => state.cameraSetting);
+
+  return <OrbitControls ref={ref} {...cameraSetting} {...props} />;
+});
+```
+```javascript
+function Canvas3D() {
+  return (
+    <Canvas
+      // ...
+      <CameraControl {...cameraSetting} />
+    >      
+    </Canvas>
+  );
+}
 ```
 
 **#02)**
 <br/>2. 평면뷰로 정면, 후면, 좌측, 우측뷰가 있습니다. 2D 평면처럼 보이게 설정해 디테일한 부분을 확인할 수 있습니다.
-```javascript
-```
 
 **#03)**
 <br/>3. 배치뷰로 전체 모델의 배치를 확인할 수 있습니다.
-```javascript
-```
 
 <br/>
 <br/>
