@@ -1450,19 +1450,74 @@ addLayer(newLayer);
 <br/>
 
 **#01)**
-<br/>1. 그려진 2D 스케치의 좌표값을 확인합니다.
+<br/>1. 3D 캔버스에 표시할 path의 타입을 확인합니다.
+<br/>2. path 타입을 통해 분기처리된 타입별 모델링 함수를 호출합니다.
 ```javascript
+// 3D 캔버스에 렌더링할 Layer3D 컴포넌트
+return (
+  <group visible={layer.visible}>
+    {layer.path.map((path) => (
+      <GroupModel
+        // 여러 속성들
+      />
+    ))}
+  </group>
+);
+```
+```javascript
+// GroupModel 컴포넌트
+// ...
+  switch (path.type) {
+    case 'rectangle':
+      ModelComponent = RectangleModel;
+      break;
+    // 다른 type 로직
+    default:
+      return null;
+  }
 ```
 
 **#02)**
-<br/>2. 2D 좌표값을 3D 캔버스의 중심을 기준으로 변경합니다.
-<br/>3. `Three.js`의 `Shape()` 메소드를 통해 도형을 생성합니다.
+<br/>3. useRectangleShape 커스텀 훅으로 rectangle 타입의 shape을 구합니다.
 ```javascript
+function RectangleModel({ path, depth, canvasSize, fill, zPosition }) {
+  const shape = useRectangleShape(path, canvasSize);
+
+  return (
+    // rectangle 3D 컴포넌트
+  );
+}
+```
+```javascript
+const useRectangleShape = (path, canvasSize) => {
+  return useMemo(() => {
+    const { x, y, width, height } = path;
+    const [x1, y1] = convert2Dto3D(x, y, 0, canvasSize);
+    const [x2, y2] = convert2Dto3D(x + width, y + height, 0, canvasSize);
+
+    const shape = new Shape();
+    shape.moveTo(x1, y1);
+    shape.lineTo(x2, y1);
+    shape.lineTo(x2, y2);
+    shape.lineTo(x1, y2);
+    shape.lineTo(x1, y1);
+
+    return shape;
+  }, [path, canvasSize]);
+};
 ```
 
 **#03)**
-<br/>4. 가져온 높이값으로 `Three.js`의 `(ExtrudeGeometry())` 메소드를 통해 모델링과 렌더링을 진행합니다.
+<br/>4. 가져온 shape으로 메쉬 컴포넌트를 렌더링합니다.
 ```javascript
+return (
+  <mesh position={[0, 0, zPosition]} castShadow receiveShadow>
+    <extrudeGeometry args={[shape, { depth, bevelEnabled: false }]} />
+    <meshStandardMaterial
+      // 렌더링 재질 설정값
+    />
+  </mesh>
+);
 ```
 
 <br/>
@@ -1479,17 +1534,17 @@ addLayer(newLayer);
 
 **#01)**
 <br/>1. 2D 캔버스의 레이아웃 크기를 가져옵니다.
-```js
+```javascript
 ```
 
 **#02)**
 <br/>2. 크기를 20개로 분할하여 그리드를 렌더링합니다.
-```js
+```javascript
 ```
 
 **#03)**
 <br/>3. 렌더링한 그리드 위에 세개의 축을 추가해 가시성을 확보할 수 있게 하였습니다.
-```js
+```javascript
 ```
 
 <br/>
@@ -1505,17 +1560,17 @@ addLayer(newLayer);
 
 **#01)**
 <br/>1. 원근뷰로 기본 카메라 설정입니다. 3D를 가장 자연스럽게 보여주며 전체 형태를 관찰하기 용이합니다.
-```js
+```javascript
 ```
 
 **#02)**
 <br/>2. 평면뷰로 정면, 후면, 좌측, 우측뷰가 있습니다. 2D 평면처럼 보이게 설정해 디테일한 부분을 확인할 수 있습니다.
-```js
+```javascript
 ```
 
 **#03)**
 <br/>3. 배치뷰로 전체 모델의 배치를 확인할 수 있습니다.
-```js
+```javascript
 ```
 
 <br/>
