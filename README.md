@@ -1445,7 +1445,7 @@ addLayer(newLayer);
 스케치를 하고 있는 2D 캔버스의 좌표를 가져와 3D 캔버스의 좌표에 렌더링합니다.<br/>
 예를들어 그려진 사각형을 3D 렌더링하는 과정을 도식화 하면 다음과 같습니다.
 
-<img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/rendering/xyz-rendering.png" width="720" >
+<img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/rendering/yz-rendering.png" width="720" >
 
 <br/>
 
