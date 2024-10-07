@@ -79,6 +79,27 @@ function AlertModal({ id, message, onClose }) {
     case 'failed-load-image':
       displayMessage = '이미지 로드에 실패했어요.';
       break;
+    case 'not-select-layer':
+      displayMessage = '레이어를 선택해 주세요.';
+      break;
+    case 'invalid-line':
+      displayMessage = '선을 더 그려 주세요.';
+      break;
+    case 'failed-draw':
+      displayMessage = '다시 그려주세요.';
+      break;
+    case 'failed-remove':
+      displayMessage = '다시 지워주세요.';
+      break;
+    case 'failed-save-drawing':
+      displayMessage = '그린 선을 업데이트하지 못했어요.';
+      break;
+    case 'failed-remove-drawing':
+      displayMessage = '지우기에 실패했어요.';
+      break;
+    case 'not-found-path':
+      displayMessage = '채울 도형을 찾지 못했어요.';
+      break;
     default:
       displayMessage = '알 수 없는 오류가 발생했어요.';
       break;
