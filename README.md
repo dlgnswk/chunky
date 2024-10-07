@@ -1584,7 +1584,7 @@ function Axes() {
 ```
 
 **#03)**
-<br/>3. 렌더링한 그리드 위에 세개의 축을 추가해 가시성을 확보할 수 있게 하였습니다.
+<br/>7. 그리드, 축 컴포넌트를 다른 3D 모델과 함께 렌더링해 가시성을 확보하였습니다.
 ```javascript
 function GridWithAxes() {
   return (
