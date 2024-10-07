@@ -1,14 +1,7 @@
 import findNearPoint from './findNearPoint';
 
 const handleStart = (event, state) => {
-  const {
-    canvasRef,
-    scale,
-    setTrianglePoints,
-    selectedLayer,
-    addPathToLayer,
-    layerList,
-  } = state;
+  const { canvasRef, scale, setTrianglePoints, layerList } = state;
 
   const canvas = canvasRef.current;
   const rect = canvas.getBoundingClientRect();
@@ -26,15 +19,7 @@ const handleStart = (event, state) => {
 
   setTrianglePoints((prevPoints) => {
     const newPoints = [...prevPoints, point];
-    if (newPoints.length === 3) {
-      if (selectedLayer) {
-        addPathToLayer(selectedLayer.index, {
-          type: 'triangle',
-          points: newPoints,
-        });
-      }
-      return [];
-    }
+
     return newPoints;
   });
 };
@@ -59,7 +44,41 @@ const handleMove = (event, state) => {
   setCurrentMousePos(point);
 };
 
+const handleEnd = async (event, state) => {
+  const {
+    layerList,
+    trianglePoints,
+    selectedLayer,
+    updateLayerInFirestore,
+    renderCanvas,
+  } = state;
+
+  const currentLayer = layerList.find((layer) => layer.id === selectedLayer.id);
+
+  if (!currentLayer) return { success: false, message: 'not-select-layer' };
+
+  const newPath = {
+    type: 'triangle',
+    points: trianglePoints,
+  };
+
+  const updatedLayer = {
+    ...currentLayer,
+    path: [...currentLayer.path, newPath],
+  };
+
+  try {
+    await updateLayerInFirestore(updatedLayer);
+    renderCanvas();
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: 'failed-save-drawing' };
+  }
+};
+
 export default {
   handleStart,
   handleMove,
+  handleEnd,
 };

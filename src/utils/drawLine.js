@@ -108,10 +108,6 @@ const finalizeLine = async (state) => {
   const {
     isDrawingPolyline,
     currentPolyline,
-    setIsDrawingPolyline,
-    setCurrentPolyline,
-    setLineStart,
-    setLineEnd,
     selectedLayer,
     layerList,
     updateLayerInFirestore,
@@ -119,39 +115,35 @@ const finalizeLine = async (state) => {
 
   const currentLayer = layerList.find((layer) => layer.id === selectedLayer.id);
 
-  if (currentLayer && isDrawingPolyline && currentPolyline.length > 2) {
-    const uniquePoints = currentPolyline.filter(
-      (point, index, self) =>
-        index === self.findIndex((t) => t.x === point.x && t.y === point.y),
-    );
+  if (!currentLayer) return { success: false, message: 'not-select-layer' };
 
-    const closedPath = {
-      type: 'polyline',
-      points: uniquePoints,
-      closed: true,
-      fill: 'none',
-    };
+  if (!isDrawingPolyline || currentPolyline.length <= 2)
+    return { success: false, message: 'invalid-line' };
 
-    const updatedLayer = {
-      ...currentLayer,
-      path: [...(currentLayer.path || []), closedPath],
-    };
+  const uniquePoints = currentPolyline.filter(
+    (point, index, self) =>
+      index === self.findIndex((t) => t.x === point.x && t.y === point.y),
+  );
 
-    try {
-      await updateLayerInFirestore(updatedLayer);
+  const closedPath = {
+    type: 'polyline',
+    points: uniquePoints,
+    closed: true,
+    fill: 'none',
+  };
 
-      setIsDrawingPolyline(false);
-      setCurrentPolyline([]);
-      setLineStart(null);
-      setLineEnd(null);
+  const updatedLayer = {
+    ...currentLayer,
+    path: [...(currentLayer.path || []), closedPath],
+  };
 
-      return true;
-    } catch (error) {
-      return false;
-    }
+  try {
+    await updateLayerInFirestore(updatedLayer);
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: 'failed-save-drawing' };
   }
-
-  return false;
 };
 
 const cancelLine = (state) => {

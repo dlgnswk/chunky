@@ -52,37 +52,36 @@ const handleMove = (event, state) => {
 const handleEnd = async (event, state) => {
   const {
     circleCenter,
-    setCircleCenter,
     circleRadius,
-    setCircleRadius,
     layerList,
     selectedLayer,
     updateLayerInFirestore,
     renderCanvas,
   } = state;
 
-  if (circleCenter && circleRadius) {
-    const newPath = {
-      type: 'circle',
-      center: circleCenter,
-      radius: circleRadius,
-    };
+  const currentLayer = layerList.find((layer) => layer.id === selectedLayer.id);
 
-    const currentLayer = layerList.find(
-      (layer) => layer.id === selectedLayer.id,
-    );
-    if (currentLayer) {
-      const updatedLayer = {
-        ...currentLayer,
-        path: [...currentLayer.path, newPath],
-      };
-      await updateLayerInFirestore(updatedLayer);
-      renderCanvas();
-    }
+  if (!currentLayer) return { success: false, message: 'not-select-layer' };
+
+  const newPath = {
+    type: 'circle',
+    center: circleCenter,
+    radius: circleRadius,
+  };
+
+  const updatedLayer = {
+    ...currentLayer,
+    path: [...currentLayer.path, newPath],
+  };
+
+  try {
+    await updateLayerInFirestore(updatedLayer);
+    renderCanvas();
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: 'failed-save-drawing' };
   }
-
-  setCircleCenter(null);
-  setCircleRadius(0);
 };
 
 export default {

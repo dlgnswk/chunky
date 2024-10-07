@@ -37,7 +37,7 @@ function Canvas2D() {
   const initializeLayerListener = useStore(
     (state) => state.initializeLayerListener,
   );
-  const setLayerList = useStore((state) => state.setLayerList);
+  const setAlertState = useStore((state) => state.setAlertState);
 
   // lineTool
   const [setLineStart] = useState(null);
@@ -360,19 +360,24 @@ function Canvas2D() {
       if (event.key === ' ' && selectedTool === 'line' && isDrawingPolyline) {
         event.preventDefault();
 
-        drawLine.finalizeLine({
-          isDrawingPolyline,
-          currentPolyline,
-          setIsDrawingPolyline,
-          setCurrentPolyline,
-          setLineStart,
-          setLineEnd,
-          selectedLayer,
-          layerList,
-          setLayerList,
-          updateLayerInFirestore,
-          renderCanvas,
-        });
+        drawLine
+          .finalizeLine({
+            isDrawingPolyline,
+            currentPolyline,
+            selectedLayer,
+            layerList,
+            updateLayerInFirestore,
+          })
+          .then((result) => {
+            if (result.success) {
+              setIsDrawingPolyline(false);
+              setCurrentPolyline([]);
+              setLineStart(null);
+              setLineEnd(null);
+            } else {
+              setAlertState(result.message);
+            }
+          });
       }
     };
 
@@ -477,8 +482,6 @@ function Canvas2D() {
           canvasRef,
           scale,
           setTrianglePoints,
-          selectedLayer,
-          addPathToLayer,
           layerList,
         });
       } else if (selectedTool === 'circle') {
@@ -651,51 +654,115 @@ function Canvas2D() {
           setDragging,
         });
       } else if (selectedTool === 'bezier') {
-        drawBezier.handleEnd(event, {
-          bezierStart,
-          setBezierStart,
-          bezierEnd,
-          setBezierEnd,
-          bezierControl,
-          setBezierControl,
-          selectedLayer,
-          layerList,
-          updateLayerInFirestore,
-        });
+        if (bezierStart && bezierEnd && bezierControl) {
+          drawBezier
+            .handleEnd(event, {
+              bezierStart,
+              bezierEnd,
+              bezierControl,
+              selectedLayer,
+              layerList,
+              updateLayerInFirestore,
+            })
+            .then((result) => {
+              if (result.success) {
+                setBezierStart(null);
+                setBezierEnd(null);
+                setBezierControl(null);
+              } else {
+                setBezierStart(null);
+                setBezierEnd(null);
+                setBezierControl(null);
+                setAlertState(result.message);
+              }
+            });
+        }
       } else if (selectedTool === 'rectangle') {
-        drawRectangle.handleEnd(event, {
-          rectStart,
-          rectEnd,
-          setRectStart,
-          setRectEnd,
-          selectedLayer,
-          layerList,
-          updateLayerInFirestore,
-          renderCanvas,
-        });
+        drawRectangle
+          .handleEnd(event, {
+            rectStart,
+            rectEnd,
+            selectedLayer,
+            layerList,
+            updateLayerInFirestore,
+            renderCanvas,
+          })
+          .then((result) => {
+            if (result.success) {
+              setRectStart(null);
+              setRectEnd(null);
+            } else {
+              setRectStart(null);
+              setRectEnd(null);
+              setAlertState(result.message);
+            }
+          });
+      } else if (selectedTool === 'triangle') {
+        if (trianglePoints.length === 3) {
+          drawTriangle
+            .handleEnd(event, {
+              layerList,
+              trianglePoints,
+              selectedLayer,
+              updateLayerInFirestore,
+              renderCanvas,
+            })
+            .then((result) => {
+              if (result.success) {
+                setTrianglePoints([]);
+              } else {
+                setTrianglePoints([]);
+                setAlertState(result.message);
+              }
+            });
+        }
       } else if (selectedTool === 'circle') {
-        drawCircle.handleEnd(event, {
-          circleCenter,
-          setCircleCenter,
-          circleRadius,
-          setCircleRadius,
-          layerList,
-          selectedLayer,
-          updateLayerInFirestore,
-          renderCanvas,
-        });
+        if (circleCenter && circleRadius) {
+          drawCircle
+            .handleEnd(event, {
+              circleCenter,
+              setCircleCenter,
+              circleRadius,
+              setCircleRadius,
+              layerList,
+              selectedLayer,
+              updateLayerInFirestore,
+              renderCanvas,
+            })
+            .then((result) => {
+              if (result.success) {
+                setCircleCenter(null);
+                setCircleRadius(0);
+              } else {
+                setCircleCenter(null);
+                setCircleRadius(0);
+                setAlertState(result.message);
+              }
+            });
+        }
       } else if (selectedTool === 'eraser') {
-        removeShapes.handleEnd({
-          isErasing,
-          eraserStart,
-          eraserEnd,
-          selectedLayer,
-          layerList,
-          updateLayerInFirestore,
-          setIsErasing,
-          setEraserStart,
-          setEraserEnd,
-        });
+        if (isErasing && eraserStart && eraserEnd) {
+          removeShapes
+            .handleEnd({
+              eraserStart,
+              eraserEnd,
+              selectedLayer,
+              layerList,
+              updateLayerInFirestore,
+            })
+            .then((result) => {
+              if (result.success) {
+                setIsErasing(false);
+                setEraserStart(null);
+                setEraserEnd(null);
+              } else {
+                setIsErasing(false);
+                setEraserStart(null);
+                setEraserEnd(null);
+                setAlertState(result.message);
+              }
+            });
+        }
       }
     },
     [

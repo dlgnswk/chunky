@@ -69,56 +69,51 @@ const handleMove = (event, state) => {
 const handleEnd = async (event, state) => {
   const {
     bezierStart,
-    setBezierStart,
     bezierEnd,
-    setBezierEnd,
     bezierControl,
-    setBezierControl,
     selectedLayer,
     layerList,
     updateLayerInFirestore,
   } = state;
 
-  if (bezierStart && bezierEnd && bezierControl) {
-    if (selectedLayer) {
-      const newPath = {
-        type: 'closedBezier',
-        curves: [
-          {
-            type: 'bezier',
-            x1: bezierStart.x,
-            y1: bezierStart.y,
-            x2: bezierEnd.x,
-            y2: bezierEnd.y,
-            cx: bezierControl.x,
-            cy: bezierControl.y,
-          },
-          {
-            type: 'line',
-            x1: bezierEnd.x,
-            y1: bezierEnd.y,
-            x2: bezierStart.x,
-            y2: bezierStart.y,
-          },
-        ],
-        fill: 'none',
-      };
+  const currentLayer = layerList.find((layer) => layer.id === selectedLayer.id);
 
-      const currentLayer = layerList.find(
-        (layer) => layer.id === selectedLayer.id,
-      );
-      if (currentLayer) {
-        const updatedLayer = {
-          ...currentLayer,
-          path: [...currentLayer.path, newPath],
-        };
-        await updateLayerInFirestore(updatedLayer);
-      }
-    }
+  if (!currentLayer) return { success: false, message: 'not-select-layer' };
 
-    setBezierStart(null);
-    setBezierEnd(null);
-    setBezierControl(null);
+  const newPath = {
+    type: 'closedBezier',
+    curves: [
+      {
+        type: 'bezier',
+        x1: bezierStart.x,
+        y1: bezierStart.y,
+        x2: bezierEnd.x,
+        y2: bezierEnd.y,
+        cx: bezierControl.x,
+        cy: bezierControl.y,
+      },
+      {
+        type: 'line',
+        x1: bezierEnd.x,
+        y1: bezierEnd.y,
+        x2: bezierStart.x,
+        y2: bezierStart.y,
+      },
+    ],
+    fill: 'none',
+  };
+
+  const updatedLayer = {
+    ...currentLayer,
+    path: [...currentLayer.path, newPath],
+  };
+
+  try {
+    await updateLayerInFirestore(updatedLayer);
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: 'failed-save-drawing' };
   }
 };
 

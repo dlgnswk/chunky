@@ -63,42 +63,40 @@ const handleEnd = async (event, state) => {
   const {
     rectStart,
     rectEnd,
-    setRectStart,
-    setRectEnd,
     selectedLayer,
     layerList,
     updateLayerInFirestore,
     renderCanvas,
   } = state;
 
-  if (rectStart && rectEnd) {
-    const currentLayer = layerList.find(
-      (layer) => layer.id === selectedLayer.id,
-    );
+  if (!rectStart || !rectEnd) return { success: false, message: 'failed-draw' };
 
-    if (currentLayer) {
-      const newPath = {
-        type: 'rectangle',
-        x: Math.min(rectStart.x, rectEnd.x),
-        y: Math.min(rectStart.y, rectEnd.y),
-        width: Math.abs(rectEnd.x - rectStart.x),
-        height: Math.abs(rectEnd.y - rectStart.y),
-        fill: 'none',
-      };
+  const currentLayer = layerList.find((layer) => layer.id === selectedLayer.id);
 
-      const updatedLayer = {
-        ...currentLayer,
-        path: [...currentLayer.path, newPath],
-      };
+  if (!currentLayer) return { success: false, message: 'not-select-layer' };
 
-      await updateLayerInFirestore(updatedLayer);
-    }
+  const newPath = {
+    type: 'rectangle',
+    x: Math.min(rectStart.x, rectEnd.x),
+    y: Math.min(rectStart.y, rectEnd.y),
+    width: Math.abs(rectEnd.x - rectStart.x),
+    height: Math.abs(rectEnd.y - rectStart.y),
+    fill: 'none',
+  };
 
-    setRectStart(null);
-    setRectEnd(null);
+  const updatedLayer = {
+    ...currentLayer,
+    path: [...currentLayer.path, newPath],
+  };
+
+  try {
+    await updateLayerInFirestore(updatedLayer);
+    renderCanvas();
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: 'failed-save-drawing' };
   }
-
-  renderCanvas();
 };
 
 export default {

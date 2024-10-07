@@ -137,38 +137,31 @@ const handleMove = (event, state) => {
 
 const handleEnd = async (state) => {
   const {
-    isErasing,
     eraserStart,
     eraserEnd,
     selectedLayer,
     layerList,
     updateLayerInFirestore,
-    setIsErasing,
-    setEraserStart,
-    setEraserEnd,
   } = state;
 
-  if (isErasing && eraserStart && eraserEnd && selectedLayer) {
-    try {
-      const currentLayer = layerList.find(
-        (layer) => layer.id === selectedLayer.id,
-      );
-      if (!currentLayer) return;
+  const currentLayer = layerList.find((layer) => layer.id === selectedLayer.id);
 
-      const updatedPaths = currentLayer.path.filter((path) => {
-        return !isPathInEraserArea(path, {
-          start: eraserStart,
-          end: eraserEnd,
-        });
+  if (!currentLayer) return { success: false, message: 'not-select-layer' };
+
+  try {
+    const updatedPaths = currentLayer.path.filter((path) => {
+      return !isPathInEraserArea(path, {
+        start: eraserStart,
+        end: eraserEnd,
       });
+    });
 
-      const updatedLayer = { ...currentLayer, path: updatedPaths };
-      await updateLayerInFirestore(updatedLayer);
-    } finally {
-      setIsErasing(false);
-      setEraserStart(null);
-      setEraserEnd(null);
-    }
+    const updatedLayer = { ...currentLayer, path: updatedPaths };
+    await updateLayerInFirestore(updatedLayer);
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: 'failed-remove-drawing' };
   }
 };
 
