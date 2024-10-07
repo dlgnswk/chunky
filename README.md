@@ -1643,6 +1643,7 @@ cameraSetting: {
 },
 ```
 ```javascript
+// OrbitControls에 설정값을 넣어 구현한 CameraControls
 const CameraControl = forwardRef(function CameraControl(props, ref) {
   const cameraSetting = useStore((state) => state.cameraSetting);
 
@@ -1650,6 +1651,7 @@ const CameraControl = forwardRef(function CameraControl(props, ref) {
 });
 ```
 ```javascript
+// Canavs3D 컴포넌트의 CameraControl(OrbitControls) `Canvas` 속성으로 추가
 function Canvas3D() {
   return (
     <Canvas
