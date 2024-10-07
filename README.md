@@ -1443,7 +1443,7 @@ addLayer(newLayer);
 ### 저장된 2D 스케치의 좌표를 가져와 3D 모델링 및 렌더링
 
 스케치를 하고 있는 2D 캔버스의 좌표를 가져와 3D 캔버스의 좌표에 렌더링합니다.<br/>
-이 과정을 도식화 하면 다음과 같습니다.
+예를들어 그려진 사각형을 3D 렌더링하는 과정을 도식화 하면 다음과 같습니다.
 
 <img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/rendering/xyz-rendering.png" width="720" >
 
@@ -1478,9 +1478,9 @@ return (
 ```
 
 **#02)**
-<br/>3. useRectangleShape 커스텀 훅으로 rectangle 타입의 shape을 구합니다.
+<br/>3. shape을 구하는 커스텀 훅으로 rectangle 타입의 shape을 구합니다.
 ```javascript
-function RectangleModel({ path, depth, canvasSize, fill, zPosition }) {
+function RectangleModel({ ...path, canvasSize }) {
   const shape = useRectangleShape(path, canvasSize);
 
   return (
@@ -1508,7 +1508,7 @@ const useRectangleShape = (path, canvasSize) => {
 ```
 
 **#03)**
-<br/>4. 가져온 shape으로 메쉬 컴포넌트를 렌더링합니다.
+<br/>4. 가져온 shape으로 메쉬 컴포넌트를 렌더링합니다.
 ```javascript
 return (
   <mesh position={[0, 0, zPosition]} castShadow receiveShadow>
