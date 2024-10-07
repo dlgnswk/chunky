@@ -1651,7 +1651,8 @@ const CameraControl = forwardRef(function CameraControl(props, ref) {
 });
 ```
 ```javascript
-// Canavs3D 컴포넌트의 CameraControl(OrbitControls) `Canvas` 속성으로 추가
+// Canavs3D 컴포넌트 내 Canvas의 속성으로
+// CameraControl(OrbitControls) 추가
 function Canvas3D() {
   return (
     <Canvas
