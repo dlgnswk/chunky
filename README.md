@@ -1533,18 +1533,87 @@ return (
 <img alt="좌표 기준 모델링 렌더링" src="./src/assets/readme/images/renderingUser/grid-axis.png" width="720" >
 
 **#01)**
-<br/>1. 2D 캔버스의 레이아웃 크기를 가져옵니다.
+<br/>1. 현재 레이아웃 크기를 가져옵니다.
+<br/>2. 10만큼의 간격만큼 들어갈 그리드 갯수를 설정합니다.
+<br/>2. 그리드 3D 컴포넌트를 생성합니다.
 ```javascript
+function Grid() {
+  const canvasSize = useStore((state) => state.canvasSize);
+  const size = Math.max(width, depth);
+  const { width, depth } = canvasSize;
+  const divisions = width / 10;
+  
+  return (
+    <gridHelper
+      args={[size, divisions, 0x555555, 0x555555]}
+      position={[0, 0, 0]}
+      rotation={[Math.PI / 2, 0, 0]}
+    >
+      <lineBasicMaterial
+        attach="material"
+        transparent
+        opacity={1}
+        color="#898f99"
+      />
+    </gridHelper>
+  );
+}
 ```
 
 **#02)**
-<br/>2. 크기를 20개로 분할하여 그리드를 렌더링합니다.
+<br/>4. 현재 레이아웃 크기를 가져옵니다.
+<br/>5. 레이아웃의 크기에 맞게 축의 크기를 설정합니다.
+<br/>6. 축 3D 컴포넌트를 생성합니다.
 ```javascript
+function Axes() {
+  const canvasSize = useStore((state) => state.canvasSize);
+  const { width, height, depth } = canvasSize;
+  const size = (Math.max(width, height, depth) / 2) * 1.3;
+
+  return (
+    <group>
+      <arrowHelper
+        args={[ ... ]} // x축
+      />
+      <arrowHelper
+        args={[ ... ]} // y축
+      />
+      <arrowHelper
+        args={[ ... ]} // z축
+      />
+    </group>
+  );
+}
 ```
 
 **#03)**
 <br/>3. 렌더링한 그리드 위에 세개의 축을 추가해 가시성을 확보할 수 있게 하였습니다.
 ```javascript
+function GridWithAxes() {
+  return (
+    <group rotation={[0, 0, Math.PI / 2]}>
+      <Grid />
+      <Axes />
+    </group>
+  );
+}
+```
+```javascript
+function Canvas3D() {
+  // 다른 로직...
+
+  return (
+    <group ref={sceneRef}>
+      <GridWithAxes /> // 3D 모델링과 함께 렌더링
+      {layerList.map(
+        (layer) =>
+          layer.visible && (
+            <Layer3D />
+          ),
+      )}
+    </group>
+  );
+}
 ```
 
 <br/>
