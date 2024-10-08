@@ -113,18 +113,17 @@ function Canvas3D() {
           <CameraControl {...cameraSetting} />
           <group ref={sceneRef}>
             <GridWithAxes />
-            {layerList.map(
-              (layer) =>
-                layer.visible && (
-                  <Layer3D
-                    key={layer.id}
-                    layer={layer}
-                    zPosition={layer.zIndex}
-                    thickness={layer.height}
-                    renderOrder={1}
-                  />
-                ),
-            )}
+            {layerList
+              .filter((layer) => layer.visible)
+              .map((layer) => (
+                <Layer3D
+                  key={layer.id}
+                  layer={layer}
+                  zPosition={layer.zIndex}
+                  thickness={layer.height}
+                  renderOrder={1}
+                />
+              ))}
           </group>
         </Canvas>
       )}
