@@ -3,26 +3,26 @@ import { IoSquareOutline } from 'react-icons/io5';
 
 import useCanvasSetup from '../../../hooks/useCanvasSetup';
 
-import drawGrid from '../../../utils/drawGrid';
+import drawGrid from '../../../utils/draw/drawGrid';
 import handleKeyDown from '../../../utils/handleKeyDown';
 import getCursorStyle from '../../../utils/getCursorStyle';
 
 import useStore from '../../../store/store';
 
 import ToolBox from '../ToolBox';
-import renderEraserArea from '../../../utils/renderEraserArea';
-import renderSnapPoint from '../../../utils/renderSnapPoint';
-import renderCurrentTool from '../../../utils/renderCurrentTool';
-import drawLine from '../../../utils/drawLine';
-import moveCanvas from '../../../utils/moveCanvas';
-import drawBezier from '../../../utils/drawBezier';
-import drawRectangle from '../../../utils/drawRectangle';
-import drawTriangle from '../../../utils/drawTriangle';
-import drawCircle from '../../../utils/drawCircle';
-import removeShapes from '../../../utils/removeShapes';
-import fillColor from '../../../utils/fillColor';
-import checkMousePoint from '../../../utils/checkMousePoint';
-import findSnapPoint from '../../../utils/findSnapPoint';
+import renderEraserArea from '../../../utils/render/renderEraserArea';
+import renderSnapPoint from '../../../utils/render/renderSnapPoint';
+import renderCurrentTool from '../../../utils/render/renderCurrentTool';
+import drawLine from '../../../utils/draw/drawLine';
+import moveCanvas from '../../../utils/tool/moveCanvas';
+import drawBezier from '../../../utils/draw/drawBezier';
+import drawRectangle from '../../../utils/draw/drawRectangle';
+import drawTriangle from '../../../utils/draw/drawTriangle';
+import drawCircle from '../../../utils/draw/drawCircle';
+import removeShapes from '../../../utils/tool/removeShapes';
+import fillColor from '../../../utils/tool/fillColor';
+import checkMousePoint from '../../../utils/tool/checkMousePoint';
+import findSnapPoint from '../../../utils/tool/findSnapPoint';
 
 function Canvas2D() {
   const canvasRef = useRef(null);

@@ -1,4 +1,4 @@
-import findNearPoint from './findNearPoint';
+import findNearPoint from '../tool/findNearPoint';
 
 const handleStart = (event, state) => {
   const {
