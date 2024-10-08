@@ -146,26 +146,9 @@ const finalizeLine = async (state) => {
   }
 };
 
-const cancelLine = (state) => {
-  const {
-    setIsDrawingPolyline,
-    setCurrentPolyline,
-    setLineStart,
-    setLineEnd,
-    renderCanvas,
-  } = state;
-
-  setIsDrawingPolyline(false);
-  setCurrentPolyline([]);
-  setLineStart(null);
-  setLineEnd(null);
-  renderCanvas();
-};
-
 export default {
   handleStart,
   handleMove,
   handleEnd,
   finalizeLine,
-  cancelLine,
 };

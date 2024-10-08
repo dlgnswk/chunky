@@ -346,13 +346,11 @@ function Canvas2D() {
 
       if (event.key === 'Escape') {
         if (selectedTool === 'line' && isDrawingPolyline) {
-          drawLine.cancelLine({
-            setIsDrawingPolyline,
-            setCurrentPolyline,
-            setLineStart,
-            setLineEnd,
-            renderCanvas,
-          });
+          setIsDrawingPolyline(false);
+          setCurrentPolyline([]);
+          setLineStart(null);
+          setLineEnd(null);
+          renderCanvas();
         } else if (bezierStart || rectStart) {
           renderCanvas();
         }
