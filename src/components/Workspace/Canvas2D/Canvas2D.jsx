@@ -335,10 +335,9 @@ function Canvas2D() {
 
   useEffect(() => {
     if (canvasRef.current) {
-      renderLayers();
       renderCanvas();
     }
-  }, [renderLayers, renderCanvas]);
+  }, [renderCanvas]);
 
   useEffect(() => {
     const handleKeyDownCallback = (event) => {
@@ -367,14 +366,15 @@ function Canvas2D() {
             updateLayerInFirestore,
           })
           .then((result) => {
-            if (result.success) {
-              setIsDrawingPolyline(false);
-              setCurrentPolyline([]);
-              setLineStart(null);
-              setLineEnd(null);
-            } else {
+            if (!result.success) {
               setAlertState(result.message);
             }
+          })
+          .finally(() => {
+            setIsDrawingPolyline(false);
+            setCurrentPolyline([]);
+            setLineStart(null);
+            setLineEnd(null);
           });
       }
     };
@@ -663,38 +663,37 @@ function Canvas2D() {
               updateLayerInFirestore,
             })
             .then((result) => {
-              if (result.success) {
-                setBezierStart(null);
-                setBezierEnd(null);
-                setBezierControl(null);
-              } else {
-                setBezierStart(null);
-                setBezierEnd(null);
-                setBezierControl(null);
+              if (!result.success) {
                 setAlertState(result.message);
               }
+            })
+            .finally(() => {
+              setBezierStart(null);
+              setBezierEnd(null);
+              setBezierControl(null);
             });
         }
       } else if (selectedTool === 'rectangle') {
-        drawRectangle
-          .handleEnd(event, {
-            rectStart,
-            rectEnd,
-            selectedLayer,
-            layerList,
-            updateLayerInFirestore,
-            renderCanvas,
-          })
-          .then((result) => {
-            if (result.success) {
+        if (rectStart && rectEnd) {
+          drawRectangle
+            .handleEnd(event, {
+              rectStart,
+              rectEnd,
+              selectedLayer,
+              layerList,
+              updateLayerInFirestore,
+              renderCanvas,
+            })
+            .then((result) => {
+              if (!result.success) {
+                setAlertState(result.message);
+              }
+            })
+            .finally(() => {
               setRectStart(null);
               setRectEnd(null);
-            } else {
-              setRectStart(null);
-              setRectEnd(null);
-              setAlertState(result.message);
-            }
-          });
+            });
+        }
       } else if (selectedTool === 'triangle') {
         if (trianglePoints.length === 3) {
           drawTriangle
@@ -706,12 +705,12 @@ function Canvas2D() {
               renderCanvas,
             })
             .then((result) => {
-              if (result.success) {
-                setTrianglePoints([]);
-              } else {
-                setTrianglePoints([]);
+              if (!result.success) {
                 setAlertState(result.message);
               }
+            })
+            .finally(() => {
+              setTrianglePoints([]);
             });
         }
       } else if (selectedTool === 'circle') {
@@ -728,14 +727,13 @@ function Canvas2D() {
               renderCanvas,
             })
             .then((result) => {
-              if (result.success) {
-                setCircleCenter(null);
-                setCircleRadius(0);
-              } else {
-                setCircleCenter(null);
-                setCircleRadius(0);
+              if (!result.success) {
                 setAlertState(result.message);
               }
+            })
+            .finally(() => {
+              setCircleCenter(null);
+              setCircleRadius(0);
             });
         }
       } else if (selectedTool === 'eraser') {
@@ -749,16 +747,14 @@ function Canvas2D() {
               updateLayerInFirestore,
             })
             .then((result) => {
-              if (result.success) {
-                setIsErasing(false);
-                setEraserStart(null);
-                setEraserEnd(null);
-              } else {
-                setIsErasing(false);
-                setEraserStart(null);
-                setEraserEnd(null);
+              if (!result.success) {
                 setAlertState(result.message);
               }
+            })
+            .finally(() => {
+              setIsErasing(false);
+              setEraserStart(null);
+              setEraserEnd(null);
             });
         }
       }

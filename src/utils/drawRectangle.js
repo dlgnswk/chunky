@@ -69,8 +69,6 @@ const handleEnd = async (event, state) => {
     renderCanvas,
   } = state;
 
-  if (!rectStart || !rectEnd) return { success: false, message: 'failed-draw' };
-
   const currentLayer = layerList.find((layer) => layer.id === selectedLayer.id);
 
   if (!currentLayer) return { success: false, message: 'not-select-layer' };
