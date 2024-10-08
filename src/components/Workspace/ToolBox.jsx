@@ -24,7 +24,7 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
 
     const { width, height, depth } = canvasSize;
     const distance = Math.max(width, height, depth) * 1.1;
-    let newCameraSetting = {
+    const newCameraSetting = {
       enableDamping: false,
       dampingFactor: 0.05,
       zoomSpeed: 2,
@@ -32,52 +32,38 @@ function ToolBox({ type, iconList, selectTool, selectedTool }) {
 
     switch (viewId) {
       case 'viewPerspective':
-        newCameraSetting = {
-          ...newCameraSetting,
-          position: new THREE.Vector3(-distance, -distance, distance * 1.25),
-          up: new THREE.Vector3(0, 0, 1),
-          target: new THREE.Vector3(0, 0, 0),
-        };
+        newCameraSetting.position = new THREE.Vector3(
+          -distance,
+          -distance,
+          distance * 1.25,
+        );
+        newCameraSetting.up = new THREE.Vector3(0, 0, 1);
+        newCameraSetting.target = new THREE.Vector3(0, 0, 0);
         break;
       case 'viewFront':
-        newCameraSetting = {
-          ...newCameraSetting,
-          position: new THREE.Vector3(0, -distance * 1.5, 0),
-          up: new THREE.Vector3(0, 0, 1),
-          target: new THREE.Vector3(0, 0, 0),
-        };
+        newCameraSetting.position = new THREE.Vector3(0, -distance * 1.5, 0);
+        newCameraSetting.up = new THREE.Vector3(0, 0, 1);
+        newCameraSetting.target = new THREE.Vector3(0, 0, 0);
         break;
       case 'viewBack':
-        newCameraSetting = {
-          ...newCameraSetting,
-          position: new THREE.Vector3(0, distance * 1.5, 0),
-          up: new THREE.Vector3(0, 0, 1),
-          target: new THREE.Vector3(0, 0, 0),
-        };
+        newCameraSetting.position = new THREE.Vector3(0, distance * 1.5, 0);
+        newCameraSetting.up = new THREE.Vector3(0, 0, 1);
+        newCameraSetting.target = new THREE.Vector3(0, 0, 0);
         break;
       case 'viewLeft':
-        newCameraSetting = {
-          ...newCameraSetting,
-          position: new THREE.Vector3(-distance * 1.5, 0, 0),
-          up: new THREE.Vector3(0, 0, 1),
-          target: new THREE.Vector3(0, 0, 0),
-        };
+        newCameraSetting.position = new THREE.Vector3(-distance * 1.5, 0, 0);
+        newCameraSetting.up = new THREE.Vector3(0, 0, 1);
+        newCameraSetting.target = new THREE.Vector3(0, 0, 0);
         break;
       case 'viewRight':
-        newCameraSetting = {
-          ...newCameraSetting,
-          position: new THREE.Vector3(distance * 1.5, 0, 0),
-          up: new THREE.Vector3(0, 0, 1),
-          target: new THREE.Vector3(0, 0, 0),
-        };
+        newCameraSetting.position = new THREE.Vector3(distance * 1.5, 0, 0);
+        newCameraSetting.up = new THREE.Vector3(0, 0, 1);
+        newCameraSetting.target = new THREE.Vector3(0, 0, 0);
         break;
       case 'viewUp':
-        newCameraSetting = {
-          ...newCameraSetting,
-          position: new THREE.Vector3(0, 0, distance * 1.5),
-          up: new THREE.Vector3(0, 1, 0),
-          target: new THREE.Vector3(0, 0, 0),
-        };
+        newCameraSetting.position = new THREE.Vector3(0, 0, distance * 1.5);
+        newCameraSetting.up = new THREE.Vector3(0, 1, 0);
+        newCameraSetting.target = new THREE.Vector3(0, 0, 0);
         break;
       default:
         break;
